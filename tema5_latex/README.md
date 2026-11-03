@@ -10,8 +10,11 @@ cd tema5_latex
 latexmk main.tex          # LuaLaTeX + biber (varias pasadas, unos 10 min)
 ```
 
-* Se compila con **LuaLaTeX**: la superficie 3D de la portada y los retratos de
-  fase superan la memoria de pdfLaTeX.
+* Se compila con **LuaLaTeX**: los retratos de fase superan la memoria de
+  pdfLaTeX.
+* La superficie 3D de la portada (`figuras/portada_superficie.png`, 600 ppp,
+  fondo transparente) se renderiza con iluminación mediante
+  `python3 scripts/generar_portada.py` (requiere numpy y matplotlib).
 * Para iterar deprisa, crea un fichero vacío `rapido.flag`: las superficies y
   retratos de fase se generan a baja resolución y cada pasada tarda unos
   20 s. Bórralo antes de la compilación final.

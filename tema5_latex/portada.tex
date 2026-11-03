@@ -24,24 +24,10 @@
      {\color{cian}\rule{3.2cm}{0.7pt}}\\[12pt]
      {\color{texto}\itshape\large\SubtituloTema}};
 
-  % Superficie |f(z)| de f(z) = 1/(1+z^2), coloreada por arg f(z)
-  \node[anchor=center, inner sep=0] at ($(C)+(0,10.9cm)$) {%
-    \begin{tikzpicture}
-      % La fase salta de +180 a -180 grados sobre el eje imaginario |y|>1:
-      % se dibuja la superficie en dos mitades (primero la lejana, x>0) para que el
-      % sombreado interpolado no recorra todo el círculo cromático en el corte.
-      \begin{axis}[superficie, width=15.5cm, height=11.5cm,
-          view={-28}{24}, axis lines=none, clip=false,
-          y domain=-2:2, samples=\resPx, samples y=\resPy,
-          zmin=0, zmax=4.6, point meta min=-180, point meta max=180]
-        \addplot3[surf, z buffer=sort, domain=0.0001:2,
-            point meta={-atan2(2*x*y,1+x^2-y^2)}]
-          {min(1/sqrt((1+x^2-y^2)^2+4*x^2*y^2+0.00005),4.6)};
-        \addplot3[surf, z buffer=sort, domain=-2:-0.0001,
-            point meta={-atan2(2*x*y,1+x^2-y^2)}]
-          {min(1/sqrt((1+x^2-y^2)^2+4*x^2*y^2+0.00005),4.6)};
-      \end{axis}
-    \end{tikzpicture}};
+  % Superficie |f(z)| de f(z) = 1/(1+z^2), coloreada por arg f(z) e iluminada
+  % (generada con scripts/generar_portada.py)
+  \node[anchor=center, inner sep=0] at ($(C)+(0,11.0cm)$)
+    {\includegraphics[height=10.2cm]{figuras/portada_superficie.png}};
 
   % Epígrafe: la serie entera y la cota del radio
   \node[anchor=north, align=center, inner sep=0] at ($(C)+(0,5.5cm)$)
