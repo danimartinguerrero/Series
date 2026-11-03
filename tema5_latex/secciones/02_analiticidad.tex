@@ -1,0 +1,200 @@
+% =========================================================================
+\section{Planteamiento del problema y funciones analíticas}\label{sec:planteamiento}
+% =========================================================================
+
+% -------------------------------------------------------------------------
+\subsection{La ecuación}\label{sec:ecuacion}
+% -------------------------------------------------------------------------
+Nos limitamos a ecuaciones lineales homogéneas de segundo orden que, tras
+«quitar denominadores», adoptan la forma
+\begin{equation}\label{eq:edo}
+  \boxed{\;P(x)\,y''(x)+A(x)\,y'(x)+B(x)\,y(x)=0\;}
+\end{equation}
+sobre un intervalo abierto $I\subseteq\R$, donde $P$ es un polinomio de grado
+bajo (habitualmente dos, a lo sumo tres) y $A$, $B$ son funciones analíticas
+en $I$ \cite{TEMAV}. Son ejemplos típicos
+\[
+  y''-x^{3}y'+y=0,\qquad
+  y''+(\sin x)\,y=0,\qquad
+  (1-x^{2})\,y''-2x\,y'+\ell(\ell+1)\,y=0 ,
+\]
+la última de las cuales es la \emph{ecuación de Legendre}. Para las
+ecuaciones completas $P\,y''+A\,y'+B\,y=g(x)$ se aplican los métodos ya
+conocidos (variación de las constantes) para obtener una solución
+particular, de modo que basta estudiar la homogénea.
+
+Los coeficientes ya no son constantes y el ansatz exponencial fracasa: en
+$y''-x\,y=0$, por ejemplo, $y=\eul^{\lambda x}$ conduce a
+$(\lambda^{2}-x)\,\eul^{\lambda x}=0$, que no puede cumplirse para todo $x$
+con $\lambda$ constante. Necesitamos otra herramienta.
+
+\begin{teorema}[Existencia y unicidad; recordatorio]\label{teo:eyu}
+Sea $J\subseteq I$ un intervalo abierto en el que $P$ no se anula, y sea
+$x_0\in J$. Para cualesquiera $\alpha,\beta\in\R$ existe una única solución
+$y\in\mathcal C^{2}(J)$ de \eqref{eq:edo} con $y(x_0)=\alpha$,
+$y'(x_0)=\beta$. En consecuencia, las soluciones de \eqref{eq:edo} en $J$
+forman un espacio vectorial real de dimensión $2$
+\textup{\cite{ELSGOLTZ}, \cite[cap.~IV]{TEMAV}}.
+\end{teorema}
+
+El \cref{teo:eyu} garantiza que las soluciones existen, pero no dice cómo
+construirlas. El método de series proporcionará una construcción explícita
+y, además, una propiedad cualitativa nueva: la \emph{analiticidad} de las
+soluciones.
+
+% -------------------------------------------------------------------------
+\subsection{Funciones analíticas}\label{sec:analiticas}
+% -------------------------------------------------------------------------
+
+\begin{definicion}[Función analítica]\label{def:analitica}
+Una función $f\colon I\to\R$ es \emph{analítica en $x_0\in I$} si existen
+$R>0$ y coeficientes $(c_k)_{k\ge0}\subset\R$ tales que
+\begin{equation}\label{eq:analitica}
+  f(x)=\sum_{k=0}^{\infty}c_k\,(x-x_0)^k
+  \qquad\text{para todo } x \text{ con } \abs{x-x_0}<R .
+\end{equation}
+Es decir: \textup{(i)} $f$ admite un desarrollo en serie de potencias
+centrado en $x_0$ y \textup{(ii)} dicha serie \emph{converge a la propia
+función} en un entorno de $x_0$. Se dice que $f$ es analítica en $I$ si lo es
+en cada punto de $I$, y se escribe $f\in\Com(I)$.
+\end{definicion}
+
+La herramienta técnica que legitima todo el método es la siguiente.
+
+\begin{teorema}[Series de potencias]\label{teo:series}
+Sea $\sum_{k\ge0}c_k(x-x_0)^k$ una serie de potencias y sea $R\in[0,\infty]$
+su \emph{radio de convergencia}, dado por la fórmula de Cauchy--Hadamard
+\begin{equation}\label{eq:hadamard}
+  \frac1R=\limsup_{k\to\infty}\abs{c_k}^{1/k}.
+\end{equation}
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item La serie converge absolutamente si $\abs{x-x_0}<R$, y uniformemente
+        en cada intervalo cerrado $\abs{x-x_0}\le r<R$; diverge si
+        $\abs{x-x_0}>R$.
+  \item Su suma $f$ es derivable en $(x_0-R,x_0+R)$ y se deriva
+        \emph{término a término}:
+        $f'(x)=\sum_{k\ge1}k\,c_k(x-x_0)^{k-1}$; la serie derivada tiene
+        \emph{el mismo radio} $R$.
+  \item En consecuencia $f\in\Cinf(x_0-R,x_0+R)$ y
+        $c_k=f^{(k)}(x_0)/k!$: la serie es la serie de Taylor de su suma.
+\end{enumerate}
+\end{teorema}
+
+\begin{proof}
+(i) es el criterio de la raíz aplicado a $\sum\abs{c_k}\abs{x-x_0}^k$, junto
+con el criterio M de Weierstrass. (ii) Como $k^{1/k}\to1$,
+$\limsup\abs{k\,c_k}^{1/k}=\limsup\abs{c_k}^{1/k}$, de modo que la serie
+derivada tiene radio $R$ y converge uniformemente en cada
+$\abs{x-x_0}\le r<R$; el teorema de derivación de sucesiones de funciones
+con derivadas uniformemente convergentes permite intercambiar suma y
+derivada. (iii) Se obtiene iterando (ii) y evaluando en $x=x_0$.
+\end{proof}
+
+\begin{corolario}[Unicidad del desarrollo]\label{cor:unicidad}
+Si $\sum_{k\ge0}c_k(x-x_0)^k=0$ para todo $\abs{x-x_0}<R$, con $R>0$, entonces
+$c_k=0$ para todo $k$. En particular, si dos series de potencias coinciden en
+un entorno de $x_0$, sus coeficientes son iguales uno a uno.
+\end{corolario}
+
+\begin{proof}
+Por el \cref{teo:series}\,(iii), $c_k=f^{(k)}(x_0)/k!$ con $f\equiv0$.
+La segunda afirmación se obtiene aplicando la primera a la diferencia.
+\end{proof}
+
+El \cref{cor:unicidad} es el principio de \emph{identificación de
+coeficientes} que usaremos para obtener la relación de recurrencia. La
+siguiente proposición garantiza que las operaciones algebraicas que haremos
+con los coeficientes de la EDO no destruyen la analiticidad.
+
+\begin{proposicion}[Álgebra de funciones analíticas]\label{prop:algebra}
+Si $f$ y $g$ son analíticas en $x_0$, también lo son $f+g$, $f\,g$ y, si
+$g(x_0)\neq0$, el cociente $f/g$. Los radios de convergencia de $f+g$ y $fg$
+son al menos $\min(R_f,R_g)$.
+\end{proposicion}
+
+\begin{proof}[Comentario sobre la demostración]
+Para la suma es inmediato; para el producto se usa el producto de Cauchy de
+series absolutamente convergentes (\cref{lem:cauchy}). El cociente se reduce
+a probar que $1/g$ es analítica cuando $g(x_0)\neq0$, lo que resulta
+inmediato en variable compleja: $1/g$ es holomorfa en un disco donde $g$ no
+se anula y toda función holomorfa en un disco es suma de su serie de Taylor
+en él \cite[cap.~4]{AHLFORS}, \cite[§1.1]{KRANTZ}.
+\end{proof}
+
+\paragraph{Analítica es más que $\Cinf$}
+La condición (ii) de la \cref{def:analitica} no es trivial: existen funciones
+infinitamente derivables cuya serie de Taylor converge, pero no a la función.
+
+\begin{proposicion}[Una función $\Cinf$ que no es analítica]\label{prop:suave}
+La función
+\begin{equation}\label{eq:suave}
+  f(x)=\begin{cases}\eul^{-1/x^{2}}, & x\neq0,\\ 0, & x=0,\end{cases}
+\end{equation}
+es de clase $\Cinf(\R)$ y $f^{(k)}(0)=0$ para todo $k\ge0$. Su serie de
+Taylor en $0$ es idénticamente nula y converge en todo $\R$, pero sólo
+coincide con $f$ en $x=0$. Por tanto $f$ no es analítica en $0$, y
+\[
+  \Com(I)\subsetneq\Cinf(I).
+\]
+\end{proposicion}
+
+\begin{proof}
+Por inducción, para $x\neq0$ se tiene $f^{(k)}(x)=Q_k(1/x)\,\eul^{-1/x^{2}}$
+con $Q_k$ un polinomio: $Q_0=1$ y
+$Q_{k+1}(t)=2t^{3}Q_k(t)-t^{2}Q_k'(t)$. Como
+$\lim_{x\to0}x^{-m}\eul^{-1/x^{2}}=\lim_{t\to\infty}t^{m}\eul^{-t^{2}}=0$
+para todo $m\in\N$, se sigue que $f^{(k)}(x)\to0$ cuando $x\to0$. Si
+$f^{(k)}(0)=0$, entonces
+\[
+  f^{(k+1)}(0)=\lim_{x\to0}\frac{f^{(k)}(x)-0}{x}
+  =\lim_{x\to0}\frac1x\,Q_k(1/x)\,\eul^{-1/x^{2}}=0,
+\]
+lo que completa la inducción. La serie de Taylor es $\sum 0\cdot x^k\equiv0$,
+y $f(x)>0$ para $x\neq0$.
+\end{proof}
+
+\input{figuras/fig_suave}
+
+\begin{observacion}[La explicación está en el plano complejo]\label{obs:suave-complejo}
+Sobre el eje imaginario, $z=\iu t$, la misma expresión vale
+$\eul^{-1/z^{2}}=\eul^{+1/t^{2}}$, que diverge de forma explosiva cuando
+$t\to0$. Vista como función de variable compleja, $\eul^{-1/z^2}$ tiene en
+$z=0$ una \emph{singularidad esencial} (\cref{sec:polos}), y ninguna serie
+de potencias centrada en $0$ puede representarla. La regularidad sobre la
+recta real es engañosa: la analiticidad real es una propiedad que sólo se
+entiende cabalmente en $\C$.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Las soluciones se comportan mejor que los coeficientes}\label{sec:regularidad}
+% -------------------------------------------------------------------------
+Una idea guía de todo el tema es que \emph{integrar mejora la regularidad y
+derivar la empeora}. En los puntos donde $P\neq0$, despejando en
+\eqref{eq:edo},
+\begin{equation}\label{eq:despeje}
+  y''=-\frac{A}{P}\,y'-\frac{B}{P}\,y .
+\end{equation}
+Para recuperar $y$ hay que integrar dos veces, de modo que $y$ es, en un
+sentido heurístico, «dos grados más regular» que los coeficientes $A/P$ y
+$B/P$. El ejemplo extremo lo proporciona la delta de Dirac, que ni
+siquiera es una función: en el sentido de las distribuciones,
+\begin{equation}\label{eq:delta}
+  y''=\delta(x)\;\Longrightarrow\;y'=\Heav(x)\ \text{(escalón)}
+  \;\Longrightarrow\;y=x\,\Heav(x)\ \text{(rampa, continua)},
+\end{equation}
+donde se han tomado nulas las constantes de integración. Cada integración
+«suaviza»: $\int\delta\,\dif x$ ya es una función acotada (con un salto), y
+la siguiente integral es continua (con un pico); véase la \cref{fig:regularidad}.
+
+\input{figuras/fig_regularidad}
+
+\begin{observacion}[Singularidades fijas]\label{obs:fijas}
+Para ecuaciones \emph{lineales}, las únicas singularidades posibles de las
+soluciones están en los puntos donde los coeficientes de la forma normal
+\eqref{eq:despeje} son singulares, es decir, en los ceros de $P$; por eso se
+llaman \emph{singularidades fijas}. Las ecuaciones no lineales no tienen esta
+propiedad: la solución de $y'=y^{2}$, $y(0)=1$, es $y=1/(1-x)$, que
+explota en $x=1$ aunque el «coeficiente» $y^{2}$ sea perfectamente regular
+\cite[cap.~3]{BENDER}. El \cref{teo:fuchs} hará precisa esta idea en el
+contexto analítico.
+\end{observacion}

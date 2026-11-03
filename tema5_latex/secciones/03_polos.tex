@@ -1,0 +1,245 @@
+% =========================================================================
+\section{Singularidades aisladas: polos}\label{sec:polos}
+% =========================================================================
+
+Los puntos donde $P$ se anula son aquellos en los que los coeficientes de la
+forma normal \eqref{eq:despeje} pueden dejar de ser analíticos. Para
+clasificarlos necesitamos medir \emph{cómo} diverge una función. La
+herramienta adecuada procede de la variable compleja, y por eso adoptamos
+desde ahora el punto de vista de que $x$ puede tomar valores en $\C$.
+
+% -------------------------------------------------------------------------
+\subsection{Definición y caracterizaciones}\label{sec:def-polo}
+% -------------------------------------------------------------------------
+
+\emph{Idea intuitiva.} Un polo es un punto donde la función se va a
+infinito \emph{como una potencia}, igual que $1/x$ o $1/x^{2}$ en $x=0$. El
+\emph{orden} mide lo rápido que diverge: $1/x^{2}$ explota más deprisa que
+$1/x$.
+
+\begin{definicion}[Polo de orden $p$]\label{def:polo}
+Sea $f$ analítica en un entorno reducido
+$U^{*}=\{x:0<\abs{x-x_0}<\rho\}$ de $x_0$. Se dice que $f$ tiene un
+\emph{polo de orden $p$} en $x_0$, con $p\in\N$, $p\ge1$, si $f$ no admite
+extensión analítica a $x_0$ pero
+\begin{equation}\label{eq:polo}
+  g(x)\defeq(x-x_0)^{p}f(x)\quad\text{es analítica en } x_0
+  \quad\text{y}\quad g(x_0)\neq0 .
+\end{equation}
+Si $f$ coincide en $U^{*}$ con una función analítica en $x_0$, se dice que
+$x_0$ es una \emph{singularidad evitable} (o «polo de orden $0$»).
+\end{definicion}
+
+Multiplicar por $(x-x_0)^p$ «compensa» exactamente la divergencia.
+Despejando, $f=g/(x-x_0)^p$, y como $g(x)\to g(x_0)\eqqcolon c\neq0$,
+\begin{equation}\label{eq:asintotico}
+  f(x)\sim\frac{c}{(x-x_0)^{p}},\qquad x\to x_0 .
+\end{equation}
+
+\begin{proposicion}[Caracterizaciones del orden]\label{prop:orden}
+Sea $f$ analítica en un entorno reducido de $x_0$ y no extensible
+analíticamente a $x_0$. Para $p\ge1$, son equivalentes:
+\begin{enumerate}[label=\textup{(\alph*)}]
+  \item $f$ tiene un polo de orden $p$ en $x_0$;
+  \item $p$ es el \emph{menor} entero $m\ge0$ tal que $(x-x_0)^{m}f$ es
+        analítica en $x_0$;
+  \item $f$ admite en un entorno reducido de $x_0$ un desarrollo de
+        \emph{Laurent} con un número finito de potencias negativas, la más
+        negativa de las cuales es $(x-x_0)^{-p}$:
+        \begin{equation}\label{eq:laurent}
+          f(x)=\ubr{\frac{g_0}{(x-x_0)^{p}}+\frac{g_1}{(x-x_0)^{p-1}}+\dots
+          +\frac{g_{p-1}}{x-x_0}}{\text{parte singular}}
+          +\ubr{g_p+g_{p+1}(x-x_0)+\cdots}{\text{parte analítica}}
+        \end{equation}
+        con $g_0\neq0$.
+\end{enumerate}
+\end{proposicion}
+
+\begin{proof}
+(a)$\Rightarrow$(c). Escribiendo $g=\sum_{j\ge0}g_j(x-x_0)^{j}$ con
+$g_0=g(x_0)\neq0$ y dividiendo por $(x-x_0)^{p}$ se obtiene \eqref{eq:laurent}.
+(c)$\Rightarrow$(a). Multiplicando \eqref{eq:laurent} por $(x-x_0)^p$ se
+obtiene una serie de potencias convergente $g$ con $g(x_0)=g_0\neq0$.
+
+(a)$\Rightarrow$(b). Si $(x-x_0)^{m}f\eqqcolon h$ fuese analítica con
+$m<p$, entonces $g=(x-x_0)^{p-m}h$ se anularía en $x_0$, en contra de
+$g(x_0)\neq0$. (b)$\Rightarrow$(a). Sea $m$ el mínimo; $m\ge1$ porque $f$
+no es extensible. Si $h=(x-x_0)^{m}f$ cumpliera $h(x_0)=0$, se podría
+extraer un factor, $h=(x-x_0)h_1$ con $h_1$ analítica, y
+$(x-x_0)^{m-1}f=h_1$ sería analítica, contra la minimalidad. Luego
+$h(x_0)\neq0$ y $m=p$.
+\end{proof}
+
+\begin{observacion}[Por qué «el menor $p$»]\label{obs:menor-p}
+Si $(x-x_0)^{2}f$ es analítica, también lo son $(x-x_0)^{3}f$,
+$(x-x_0)^{4}f,\dots$, por ser productos de funciones analíticas: multiplicar
+de más siempre «funciona». Por eso el orden es el \emph{mínimo} exponente que
+lo consigue, y exigir $g(x_0)\neq0$ en \eqref{eq:polo} es una forma
+equivalente de imponer esa minimalidad. Un polo de orden $p$ es, en suma,
+una serie de potencias a la que se le permiten potencias negativas, pero
+sólo hasta $(x-x_0)^{-p}$.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Ejemplos y clasificación}\label{sec:ejemplos-polos}
+% -------------------------------------------------------------------------
+
+\begin{ejemplo}[Polos simples y dobles]\label{ej:polos}
+\leavevmode
+\begin{enumerate}[label=(\roman*)]
+  \item $f(x)=1/x$ en $x_0=0$: $x\,f=1$ es analítica y no nula, luego polo
+        de orden $1$ (\emph{polo simple}).
+  \item $f(x)=\dfrac{1}{x^{2}(x-1)}$ tiene dos polos de órdenes distintos.
+        \begin{itemize}
+          \item En $x_0=0$: $x\,f=\dfrac1{x(x-1)}$ sigue divergiendo, pero
+                \begin{equation}\label{eq:ej-doble}
+                  x^{2}f=\frac{1}{x-1}\ \text{es analítica en }0,\qquad g(0)=-1\neq0,
+                \end{equation}
+                luego es un polo de orden $2$, con $f\sim-1/x^{2}$ cerca de $0$.
+          \item En $x_0=1$: $(x-1)\,f=1/x^{2}$ es analítica en $1$ y vale
+                $1\neq0$: polo de orden $1$, con $f\sim1/(x-1)$.
+          \item En cualquier otro punto (por ejemplo, $x_0=2$) $f$ es
+                analítica: no hay polo.
+        \end{itemize}
+  \item $f(x)=\dfrac{\sin x}{x^{3}}$ en $x_0=0$. Parece de orden $3$, pero
+        \begin{equation}\label{eq:sen-x3}
+          \frac{\sin x}{x^{3}}=\frac{x-\frac{x^{3}}{6}+\frac{x^{5}}{120}-\cdots}{x^{3}}
+          =\frac1{x^{2}}-\frac16+\frac{x^{2}}{120}-\cdots ,
+        \end{equation}
+        de modo que $x^{2}f=1-\tfrac{x^{2}}{6}+\cdots$ es analítica con valor
+        $1\neq0$, mientras que $x\,f\sim1/x$ todavía diverge: polo de orden
+        $2$. El cero del numerador «se come» una potencia.
+  \item $f(x)=\dfrac{\sin x}{x}=1-\dfrac{x^{2}}{6}+\cdots$ no tiene un polo:
+        definiendo $f(0)=1$ es analítica (singularidad evitable).
+\end{enumerate}
+\end{ejemplo}
+
+\begin{proposicion}[Regla práctica para cocientes de polinomios]\label{prop:regla}
+Sean $N$, $D$ polinomios sin factores comunes salvo, eventualmente, una
+potencia de $(x-x_0)$. Si $x_0$ es un cero de multiplicidad $m$ de $D$ y de
+multiplicidad $k\ge0$ de $N$, entonces $N/D$ tiene en $x_0$ un polo de orden
+$m-k$ si $m>k$, y una singularidad evitable si $m\le k$.
+\end{proposicion}
+
+\begin{proof}
+Escribiendo $N=(x-x_0)^{k}\tilde N$ y $D=(x-x_0)^{m}\tilde D$ con
+$\tilde N(x_0)\tilde D(x_0)\neq0$, se tiene
+$(x-x_0)^{m-k}\,N/D=\tilde N/\tilde D$, analítica y no nula en $x_0$
+(\cref{prop:algebra}).
+\end{proof}
+
+No toda singularidad es un polo. Las funciones $\sqrt{x}$, $\ln x$ y
+$\eul^{1/x}$ en $x_0=0$ no lo son, porque ninguna potencia $x^{p}$ las vuelve
+analíticas: $x^{p}\sqrt{x}=x^{p+1/2}$ tiene exponente no entero; $x^{p}\ln x$
+conserva el logaritmo; y
+\[
+  \eul^{1/x}=\sum_{m=0}^{\infty}\frac{1}{m!\,x^{m}}
+\]
+tiene \emph{infinitas} potencias negativas. Son singularidades «peores» que
+un polo. La \cref{tab:singularidades} resume la clasificación.
+
+\begin{table}[ht]
+\centering
+\caption{Clasificación de las singularidades en $x_0$ según el desarrollo de
+Laurent $f=\sum_{j}c_j(x-x_0)^{j}$ y el comportamiento de $\abs{f}$.}
+\label{tab:singularidades}
+\renewcommand{\arraystretch}{1.4}
+\small
+\begin{tabular}{@{}l l l l@{}}
+\toprule
+\textcolor{cian}{\bfseries Tipo} & \textcolor{cian}{\bfseries Laurent} &
+\textcolor{cian}{\bfseries Comportamiento} & \textcolor{cian}{\bfseries Ejemplo}\\
+\midrule
+Evitable              & sin potencias negativas            & $f$ acotada               & $\dfrac{\sin x}{x}$\\[4pt]
+Polo de orden $p$     & la más negativa es $(x-x_0)^{-p}$  & $\abs{f}\sim\abs{c}\,\abs{x-x_0}^{-p}$ & $\dfrac{1}{x^{2}(x-1)}$\\[4pt]
+Esencial              & infinitas potencias negativas      & sin límite en $\C$        & $\eul^{1/x}$\\[4pt]
+Punto de ramificación & no existe desarrollo de Laurent    & $f$ multivaluada en $\C$  & $\sqrt{x}$, $\ln x$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La \cref{fig:fases} muestra la firma de cada polo en el plano complejo: en
+un \emph{retrato de fase} se colorea cada punto $z$ según el argumento
+$\arg f(z)$, y alrededor de un polo de orden $p$ el círculo cromático se
+recorre exactamente $p$ veces (en sentido opuesto al de un cero de orden $p$),
+de acuerdo con el principio del argumento \cite[cap.~4]{AHLFORS}.
+
+\input{figuras/fig_fases}
+
+% -------------------------------------------------------------------------
+\subsection{Relación con la ecuación diferencial}\label{sec:polos-edo}
+% -------------------------------------------------------------------------
+Escribamos \eqref{eq:edo} en forma normal con
+$p\defeq A/P$ y $q\defeq B/P$. Si $P(x_0)\neq0$, $p$ y $q$ son analíticas en
+$x_0$ (\cref{prop:algebra}): no hay nada que compensar. Si $P$ tiene un cero
+de orden $m$ en $x_0$, por la \cref{prop:regla} los cocientes pueden tener
+polos de orden \emph{a lo sumo} $m$ (menos, si $A$ o $B$ se anulan también
+en $x_0$ y cancelan factores).
+
+\begin{ejemplo}[Legendre y Bessel]\label{ej:legendre-bessel}
+\leavevmode
+\begin{enumerate}[label=(\roman*)]
+  \item \emph{Legendre}, $P=1-x^{2}$:
+        \[
+          p=\frac{-2x}{(1-x)(1+x)},\qquad
+          q=\frac{\ell(\ell+1)}{(1-x)(1+x)}
+        \]
+        tienen polos de orden $1$ en $x=\pm1$ (si $\ell(\ell+1)\neq0$).
+  \item \emph{Bessel}, $x^{2}y''+x\,y'+(x^{2}-\nu^{2})\,y=0$:
+        \[
+          p=\frac1x\ \ (\text{orden }1),\qquad
+          q=\frac{x^{2}-\nu^{2}}{x^{2}}\ \ (\text{orden }2\text{ si }\nu\neq0)
+        \]
+        en $x=0$. Si $\nu=0$, $q\equiv1$ es analítica.
+\end{enumerate}
+\end{ejemplo}
+
+\begin{observacion}[Avance de la Parte II]\label{obs:avance}
+El orden de estos polos es lo que distinguirá, en la segunda parte del tema,
+los puntos \emph{singulares regulares} ---en los que $p$ tiene a lo sumo un
+polo de orden $1$ y $q$ a lo sumo uno de orden $2$, es decir, $(x-x_0)\,p$ y
+$(x-x_0)^{2}q$ son analíticas--- de los \emph{irregulares}. En los primeros
+se buscan soluciones de la forma $(x-x_0)^{r}\sum a_n(x-x_0)^n$ (método de
+Frobenius), con un exponente $r$ fijado por la \emph{ecuación indicial}
+\cite{TEMAV}. Tanto $x=\pm1$ en Legendre como $x=0$ en Bessel son singulares
+regulares.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Por qué los polos complejos limitan el radio}\label{sec:radio}
+% -------------------------------------------------------------------------
+La función $f(x)=1/(1+x^{2})$ no tiene ninguna singularidad real: es
+analítica en todo $\R$, acotada y de clase $\Cinf$. Y, sin embargo, su
+desarrollo en $x_0=0$,
+\begin{equation}\label{eq:lorentz}
+  \frac{1}{1+x^{2}}=1-x^{2}+x^{4}-x^{6}+\cdots=\sum_{n=0}^{\infty}(-1)^{n}x^{2n},
+\end{equation}
+\emph{sólo converge para $\abs{x}<1$}: es una serie geométrica de razón
+$-x^{2}$. La razón está en el plano complejo: $1+z^{2}=0$ en $z=\pm\iu$, que
+son polos de orden $1$ situados a distancia $1$ del origen. Una serie de
+potencias converge en un \emph{disco}, y ese disco no puede contener un
+polo; por eso el radio es la distancia al polo complejo más cercano
+(\cref{fig:radio}).
+
+\begin{teorema}[Radio de convergencia y singularidades]\label{teo:radio}
+Sea $f$ holomorfa en el disco $\disco{z_0}{\rho}=\{z\in\C:\abs{z-z_0}<\rho\}$.
+Entonces la serie de Taylor de $f$ en $z_0$ converge a $f$ en todo
+$\disco{z_0}{\rho}$. En particular, si $f$ es racional, el radio de
+convergencia de su serie de Taylor en $z_0$ es exactamente la distancia de
+$z_0$ al polo más próximo.
+\end{teorema}
+
+\begin{proof}
+La primera afirmación es el teorema de Cauchy--Taylor \cite[§4.3]{AHLFORS}.
+Para la segunda, sea $d$ la distancia al polo más cercano $z_1$; la primera
+parte da $R\ge d$. Si fuera $R>d$, la suma de la serie sería continua en el
+disco cerrado $\overline{\disco{z_0}{d}}$, y por tanto acotada en él, y
+coincidiría con $f$ en $\disco{z_0}{d}$; pero $\abs{f(z)}\to\infty$ cuando
+$z\to z_1$ dentro de ese disco. Luego $R=d$.
+\end{proof}
+
+\input{figuras/fig_radio}
+
+Esta es la idea que explota el \cref{teo:fuchs}: para conocer dónde
+converge la serie de una solución \emph{real} hay que mirar dónde se anula
+$P$ en el plano \emph{complejo}.

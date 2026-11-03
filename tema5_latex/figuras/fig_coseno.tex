@@ -1,0 +1,26 @@
+% Figura: sumas parciales de la serie del coseno (R = infinito)
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{axis}[oscuro, width=0.92\textwidth, height=6.0cm,
+      xmin=-7, xmax=7, ymin=-2.2, ymax=2.2,
+      xtick={-6.2832,-3.1416,0,3.1416,6.2832},
+      xticklabels={$-2\pi$,$-\pi$,$0$,$\pi$,$2\pi$},
+      ytick={-2,-1,0,1,2}, xlabel={$x$},
+      samples=400, domain=-7:7, restrict y to domain=-4:4,
+      legend style={at={(0.5,-0.22)}, anchor=north, legend columns=5,
+                    /tikz/every even column/.append style={column sep=8pt}}]
+    \addplot[c2] {1-x^2/2};
+    \addplot[c3] {1-x^2/2+x^4/24};
+    \addplot[c4] {1-x^2/2+x^4/24-x^6/720+x^8/40320};
+    \addplot[c5] {1-x^2/2+x^4/24-x^6/720+x^8/40320-x^10/3628800+x^12/479001600};
+    \addplot[blanco, line width=1.6pt] {cos(deg(x))};
+    \legend{$S_2$, $S_4$, $S_8$, $S_{12}$, $\cos x$}
+  \end{axis}
+\end{tikzpicture}
+\caption{Sumas parciales $S_{2m}(x)=\sum_{k=0}^{m}(-1)^k x^{2k}/(2k)!$ de la
+solución $y_1=\cos x$ del \cref{ej:oscilador}. Como $P\equiv1$ no tiene
+ceros, el radio es infinito: al aumentar el orden, la aproximación es buena
+en intervalos cada vez mayores, sin barrera alguna.}
+\label{fig:coseno}
+\end{figure}

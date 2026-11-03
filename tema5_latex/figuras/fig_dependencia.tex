@@ -1,0 +1,34 @@
+% Figura: estructura de dependencia de la recurrencia general
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \tikzset{coef/.style={circle, draw=grismedio, fill=cajafondo, line width=0.6pt,
+                        minimum size=0.95cm, inner sep=0pt, font=\small}}
+  \foreach \i in {0,...,6}{
+    \node[coef] (a\i) at (1.75*\i,0) {$a_{\i}$};}
+  \node[font=\small, text=gris] at (1.75*7-0.35,0) {$\cdots$};
+  % datos libres
+  \node[coef, draw=ambar, line width=1pt] at (a0) {$a_{0}$};
+  \node[coef, draw=ambar, line width=1pt] at (a1) {$a_{1}$};
+  % coeficiente calculado
+  \node[coef, draw=cian, line width=1.2pt] at (a4) {$a_{4}$};
+  % flechas de dependencia hacia a4 (n = 2)
+  \foreach \j/\h in {0/62, 1/52, 2/40, 3/30}{
+    \draw[flecha, cian!75] (a\j.north) to[out=\h, in=180-\h+8] (a4.north);}
+  % llave bajo los datos libres
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, ambar, line width=0.6pt]
+    ($(a0.south west)+(0,-0.15)$) -- ($(a1.south east)+(0,-0.15)$)
+    node[midway, below=7pt, font=\footnotesize, text=ambar, align=center]
+    {datos libres\\$a_0=y(x_0)$,\ $a_1=y'(x_0)$};
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, grismedio, line width=0.6pt]
+    ($(a2.south west)+(0,-0.15)$) -- ($(a6.south east)+(0,-0.15)$)
+    node[midway, below=7pt, font=\footnotesize, text=gris, align=center]
+    {determinados por \eqref{eq:despeje-an2},\\uno tras otro};
+  \node[font=\footnotesize, text=cian, anchor=west, align=left] at ($(a5.north)+(-0.1,0.95)$)
+    {$a_{4}$ depende de $a_0,a_1,a_2,a_3$\\($n=2$ en la recurrencia)};
+\end{tikzpicture}
+\caption{Estructura de la recurrencia \eqref{eq:despeje-an2}: el coeficiente
+$a_{n+2}$ depende de \emph{todos} los anteriores (aquí, $a_4$). Sólo $a_0$ y
+$a_1$ quedan libres; son las dos constantes de integración.}
+\label{fig:dependencia}
+\end{figure}

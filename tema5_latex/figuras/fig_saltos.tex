@@ -1,0 +1,53 @@
+% Figura: cadenas de coeficientes desacopladas (saltos de 2 y de 3)
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \tikzset{coef/.style={circle, draw=#1, fill=cajafondo, line width=0.8pt,
+                        minimum size=0.82cm, inner sep=0pt, font=\small},
+           coef/.default=grismedio,
+           cadena/.style={-{Stealth[length=5pt,width=4.5pt]}, line width=0.7pt, #1}}
+  % ---------------- (a) Salto de dos ----------------
+  \begin{scope}
+    \node[font=\small, text=texto, anchor=west] at (-0.5,1.45) {(a) Salto de dos: $a_{n+2}\propto a_n$};
+    \foreach \i/\k in {0/0,1/2,2/4,3/6}{
+      \node[coef=cian] (p\i) at (1.35*\i,0.45) {$a_{\k}$};}
+    \foreach \i/\k in {0/1,1/3,2/5,3/7}{
+      \node[coef=magenta] (q\i) at (1.35*\i,-0.65) {$a_{\k}$};}
+    \foreach \i in {0,1,2}{
+      \pgfmathtruncatemacro{\j}{\i+1}
+      \draw[cadena=cian] (p\i) -- (p\j);
+      \draw[cadena=magenta] (q\i) -- (q\j);}
+    \node[font=\small, text=gris] at (1.35*4-0.25,0.45) {$\cdots$};
+    \node[font=\small, text=gris] at (1.35*4-0.25,-0.65) {$\cdots$};
+    \node[etiqgris, anchor=north west, align=left] at (-0.5,-1.3)
+      {cadena par $\propto a_0$, cadena impar $\propto a_1$\\
+       $y''+y=0$, \ Legendre, \ $y''+xy'+y=0$};
+  \end{scope}
+  % ---------------- (b) Salto de tres ----------------
+  \begin{scope}[xshift=7.6cm]
+    \node[font=\small, text=texto, anchor=west] at (-0.5,1.45) {(b) Salto de tres: $a_{n+2}\propto a_{n-1}$};
+    \foreach \i/\k in {0/0,1/3,2/6,3/9}{
+      \node[coef=cian] (r\i) at (1.35*\i,0.45) {$a_{\k}$};}
+    \foreach \i/\k in {0/1,1/4,2/7,3/10}{
+      \node[coef=magenta] (s\i) at (1.35*\i,-0.65) {$a_{\k}$};}
+    \foreach \i/\k in {0/2,1/5,2/8,3/11}{
+      \node[coef, text=gris] (t\i) at (1.35*\i,-1.75) {$a_{\k}$};}
+    \foreach \i in {0,1,2}{
+      \pgfmathtruncatemacro{\j}{\i+1}
+      \draw[cadena=cian] (r\i) -- (r\j);
+      \draw[cadena=magenta] (s\i) -- (s\j);
+      \draw[cadena=grismedio, densely dashed] (t\i) -- (t\j);}
+    \foreach \y in {0.45,-0.65,-1.75}{
+      \node[font=\small, text=gris] at (1.35*4-0.25,\y) {$\cdots$};}
+    \node[etiqgris, anchor=west] at (1.35*4+0.15,-1.75) {$=0$};
+    \node[etiqgris, anchor=north west, align=left] at (-0.5,-2.4)
+      {$a_2=0$ anula la tercera cadena; ecuación de Airy};
+  \end{scope}
+\end{tikzpicture}
+\caption{Cuando $p$ y $q$ son polinomios sencillos, la recurrencia
+desacopla los coeficientes en cadenas independientes. (a) Si sólo
+intervienen $a_n$ y $a_{n+2}$, la cadena par depende de $a_0$ y la impar de
+$a_1$. (b) En la ecuación de Airy intervienen $a_{n-1}$ y $a_{n+2}$: hay tres
+cadenas, y la que arranca en $a_2=0$ es idénticamente nula.}
+\label{fig:saltos}
+\end{figure}

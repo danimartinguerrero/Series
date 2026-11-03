@@ -1,0 +1,63 @@
+% =========================================================================
+\section{Resumen del método y perspectivas}\label{sec:resumen}
+% =========================================================================
+
+\begin{metodo}[Receta para un punto ordinario $x_0$]
+\begin{enumerate}[label=\textcolor{ambar}{\bfseries\arabic*.}, leftmargin=1.6em]
+  \item Comprobar que $P(x_0)\neq0$ y estimar
+        $R\ge\dist\bigl(x_0,\mathcal Z(P)\bigr)$, la distancia al cero
+        \emph{complejo} de $P$ más cercano (\cref{teo:fuchs}).
+  \item Proponer $y=\sum_{n\ge0}a_nz^{n}$, con $z=x-x_0$, y derivar término
+        a término.
+  \item Sustituir ---en la forma normal o, si $P$ es un polinomio,
+        directamente en \eqref{eq:edo}---, desplazar índices para que todo
+        vaya en $z^{n}$ y usar el producto de Cauchy.
+  \item Igualar a cero el coeficiente de cada $z^{n}$
+        (\cref{cor:unicidad}): se obtiene la recurrencia para $a_{n+2}$.
+  \item Dejar libres $a_0=y(x_0)$ y $a_1=y'(x_0)$: $y_1$ corresponde a
+        $(a_0,a_1)=(1,0)$ e $y_2$ a $(0,1)$; la solución general es
+        $y=a_0y_1+a_1y_2$.
+\end{enumerate}
+\end{metodo}
+
+La \cref{fig:flujo} recoge el mismo algoritmo en forma de diagrama, y la
+\cref{tab:resumen} compara los cuatro ejemplos de la \cref{sec:ejemplos}.
+
+\begin{table}[!htb]
+\centering
+\caption{Resumen de los ejemplos resueltos en $x_0=0$.}
+\label{tab:resumen}
+\renewcommand{\arraystretch}{2.25}
+\small
+\begin{tabular}{@{}l l l c l@{}}
+\toprule
+\textcolor{cian}{\bfseries Ecuación} & \textcolor{cian}{\bfseries Recurrencia} &
+\textcolor{cian}{\bfseries Salto} & \textcolor{cian}{\bfseries $R$} &
+\textcolor{cian}{\bfseries Soluciones}\\
+\midrule
+$y''+y=0$ & $a_{n+2}=-\dfrac{a_n}{(n+2)(n+1)}$ & $2$ & $\infty$ & $\cos x$, $\sin x$\\
+$y''-xy=0$ & $a_{n+2}=\dfrac{a_{n-1}}{(n+2)(n+1)}$ & $3$ & $\infty$ & $\Ai$, $\Bi$ (no elementales)\\
+$y''+xy'+y=0$ & $a_{n+2}=-\dfrac{a_n}{n+2}$ & $2$ & $\infty$ & $\eul^{-x^2/2}$, tipo Dawson\\
+Legendre & $a_{n+2}=\dfrac{(n-\ell)(n+\ell+1)}{(n+2)(n+1)}\,a_n$ & $2$ & $1$ & $P_\ell$ si $\ell\in\N$; otra con $R=1$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\input{figuras/fig_flujo}
+
+
+\paragraph{Perspectivas}
+El método de la serie entera falla cuando $P(x_0)=0$: en un punto singular
+la solución puede no ser analítica (piénsese en $y=x^{r}$ con $r\notin\N$,
+o en $y=\ln x$). La segunda parte del tema \cite[cap.~V]{TEMAV} estudia los
+puntos \emph{singulares regulares} (\cref{obs:avance}) mediante series de
+Frobenius $y=(x-x_0)^{r}\sum_n a_n(x-x_0)^n$, cuyo exponente $r$ fija la
+\emph{ecuación indicial}; el caso de raíces que difieren en un entero
+conduce a las \emph{series logarítmicas}. El cambio $\bar x=1/x$ permite,
+además, analizar el comportamiento de las soluciones en un entorno del
+infinito. Finalmente, las ecuaciones clásicas de la física ---Hermite,
+Chebyshev, Legendre--- comparten la estructura de la \cref{sec:legendre}:
+una recurrencia de salto dos cuya serie sólo se trunca para valores
+discretos del parámetro, lo que da lugar a familias de polinomios
+ortogonales y a la cuantización de magnitudes físicas
+\cite{ARFKEN,RILEY}.

@@ -1,0 +1,239 @@
+% =========================================================================
+\section{Ejemplos}\label{sec:ejemplos}
+% =========================================================================
+
+Aplicamos ahora el método a cuatro ecuaciones de complejidad creciente. En
+todas ellas $x_0=0$, de modo que $z=x$. La \cref{fig:saltos} anticipa la
+estructura de las recurrencias que aparecerán: cuando $p$ y $q$ son
+polinomios sencillos, la recurrencia «salta» de dos en dos o de tres en
+tres y desacopla los coeficientes en cadenas independientes.
+
+\input{figuras/fig_saltos}
+
+% -------------------------------------------------------------------------
+\subsection{Comprobación: el oscilador armónico}\label{sec:oscilador}
+% -------------------------------------------------------------------------
+
+\begin{ejemplo}[$y''+y=0$]\label{ej:oscilador}
+Aquí $p\equiv0$ y $q\equiv1$, es decir, $q_0=1$ y el resto de coeficientes
+son nulos. En \eqref{eq:recurrencia} sólo sobrevive el término $k=0$ de
+$q$:
+\begin{equation}\label{eq:rec-oscilador}
+  (n+2)(n+1)\,a_{n+2}+a_n=0
+  \quad\Longrightarrow\quad
+  a_{n+2}=-\frac{a_n}{(n+2)(n+1)} .
+\end{equation}
+La recurrencia salta de dos en dos (\cref{fig:saltos}\,(a)) y una inducción
+inmediata da $a_{2m}=(-1)^{m}a_0/(2m)!$ y $a_{2m+1}=(-1)^{m}a_1/(2m+1)!$:
+\begin{itemize}
+  \item con $a_0=1$, $a_1=0$: $a_2=-\frac1{2!}$, $a_4=\frac1{4!},\dots$, e
+        impares nulos;
+  \item con $a_0=0$, $a_1=1$: $a_3=-\frac1{3!}$, $a_5=\frac1{5!},\dots$, y
+        pares nulos.
+\end{itemize}
+Por tanto
+\begin{equation}\label{eq:cos-sen}
+  y_1=\sum_{m=0}^{\infty}\frac{(-1)^{m}x^{2m}}{(2m)!}=\cos x,
+  \qquad
+  y_2=\sum_{m=0}^{\infty}\frac{(-1)^{m}x^{2m+1}}{(2m+1)!}=\sin x .
+\end{equation}
+Recuperamos lo que ya sabíamos, lo cual es una buena señal. Como $P\equiv1$
+no tiene ceros, el radio es $R=\infty$ (\cref{fig:coseno}).
+\end{ejemplo}
+
+\input{figuras/fig_coseno}
+
+% -------------------------------------------------------------------------
+\subsection{La ecuación de Airy}\label{sec:airy}
+% -------------------------------------------------------------------------
+
+\begin{ejemplo}[$y''-x\,y=0$]\label{ej:airy}
+Ahora $p\equiv0$ y $q=-x$, es decir, $q_1=-1$ y el resto nulos. En el
+sumatorio de \eqref{eq:recurrencia} sólo sobrevive $k=1$, que existe si
+$n\ge1$:
+\begin{equation}\label{eq:rec-airy}
+  (n+2)(n+1)\,a_{n+2}-a_{n-1}=0\quad(n\ge1),\qquad a_2=0\quad(n=0).
+\end{equation}
+La recurrencia salta de tres en tres, $a_{n+2}=a_{n-1}/\bigl((n+2)(n+1)\bigr)$
+(\cref{fig:saltos}\,(b)):
+\begin{equation}\label{eq:coef-airy}
+  a_3=\frac{a_0}{3\cdot2},\quad a_6=\frac{a_0}{6\cdot5\cdot3\cdot2},\qquad
+  a_4=\frac{a_1}{4\cdot3},\quad a_7=\frac{a_1}{7\cdot6\cdot4\cdot3},\qquad
+  a_2=a_5=a_8=\dots=0 .
+\end{equation}
+En general, como $(3j-1)(3j)=9j\,(j-\tfrac13)$ y $3j\,(3j+1)=9j\,(j+\tfrac13)$,
+\begin{equation}\label{eq:coef-airy-gamma}
+  a_{3m}=\frac{\Gamma(\tfrac23)}{9^{m}\,m!\,\Gamma(m+\tfrac23)}\,a_0,
+  \qquad
+  a_{3m+1}=\frac{\Gamma(\tfrac43)}{9^{m}\,m!\,\Gamma(m+\tfrac43)}\,a_1 ,
+\end{equation}
+y el sistema fundamental es
+\begin{equation}\label{eq:airy-y1y2}
+  y_1=1+\frac{x^{3}}{6}+\frac{x^{6}}{180}+\cdots,\qquad
+  y_2=x+\frac{x^{4}}{12}+\frac{x^{7}}{504}+\cdots ,
+\end{equation}
+con radio $R=\infty$. Estas funciones \emph{no son elementales}: el método de
+series \emph{define} funciones nuevas. Las funciones de Airy de uso habitual
+son las combinaciones \cite[§9.4]{DLMF}
+\begin{equation}\label{eq:Ai-Bi}
+  \Ai(x)=c_1\,y_1(x)-c_2\,y_2(x),\qquad
+  \Bi(x)=\sqrt3\,\bigl(c_1\,y_1(x)+c_2\,y_2(x)\bigr),
+\end{equation}
+con $c_1=\Ai(0)=3^{-2/3}/\Gamma(\tfrac23)\approx0{,}355028$ y
+$c_2=-\Ai'(0)=3^{-1/3}/\Gamma(\tfrac13)\approx0{,}258819$.
+\end{ejemplo}
+
+\begin{observacion}[Interpretación cualitativa]\label{obs:airy}
+Para $x<0$ la ecuación es $y''=-\abs{x}\,y$: un oscilador de «frecuencia»
+$\sqrt{\abs{x}}$ creciente, y las soluciones oscilan cada vez más deprisa
+con amplitud decreciente. Para $x>0$ es $y''=x\,y$ y las soluciones crecen o
+decrecen exponencialmente; $\Ai$ es la única (salvo múltiplos) que decae.
+La ecuación de Airy es la ecuación de Schrödinger en un potencial lineal y
+describe el comportamiento de las funciones de onda cerca de un punto de
+retroceso clásico \cite[§10.2]{BENDER}.
+\end{observacion}
+
+\input{figuras/fig_airy}
+
+% -------------------------------------------------------------------------
+\subsection{Un problema de valores iniciales}\label{sec:pvi}
+% -------------------------------------------------------------------------
+
+\begin{ejemplo}[$y''+x\,y'+y=0$, $y(0)=y_0$, $y'(0)=v_0$]\label{ej:pvi}
+Este problema procede de \cite{TEMAV}. Ahora $p=x$ y $q\equiv1$, es decir,
+$p_1=1$ y $q_0=1$. En \eqref{eq:recurrencia} sobreviven el término $k=1$ de
+$p$, que vale $n\,p_1\,a_n$, y el término $k=0$ de $q$:
+\begin{equation}\label{eq:rec-pvi}
+  (n+2)(n+1)\,a_{n+2}+(n+1)\,a_n=0
+  \quad\Longrightarrow\quad
+  a_{n+2}=-\frac{a_n}{n+2},\qquad n\ge0 .
+\end{equation}
+De nuevo la recurrencia salta de dos en dos. Con la notación del doble
+factorial, $(2i)!!=2\cdot4\cdots(2i)=2^{i}\,i!$ y
+$(2i+1)!!=1\cdot3\cdots(2i+1)$,
+\begin{equation}\label{eq:coef-pvi}
+  a_{2i}=\frac{(-1)^{i}}{(2i)!!}\,a_0,\qquad
+  a_{2i+1}=\frac{(-1)^{i}}{(2i+1)!!}\,a_1 ,
+\end{equation}
+de donde
+\begin{equation}\label{eq:pvi-y1y2}
+  y_1=\sum_{i=0}^{\infty}\frac{(-1)^{i}}{(2i)!!}\,x^{2i}
+     =\sum_{i=0}^{\infty}\frac{1}{i!}\Bigl(-\frac{x^{2}}{2}\Bigr)^{i}
+     =\eul^{-x^{2}/2},
+  \qquad
+  y_2=\sum_{i=0}^{\infty}\frac{(-1)^{i}}{(2i+1)!!}\,x^{2i+1}.
+\end{equation}
+Imponiendo las condiciones iniciales, $a_0=y_0$ y $a_1=v_0$, y la solución
+del problema es $y=y_0\,y_1+v_0\,y_2$, con radio $R=\infty$.
+\end{ejemplo}
+
+\begin{observacion}[Comprobación por integración directa]\label{obs:pvi-exacta}
+La ecuación es exacta: $y''+x\,y'+y=\bigl(y'+x\,y\bigr)'$. Integrando una vez
+con los datos iniciales, $y'+x\,y=v_0$, ecuación lineal de primer orden con
+factor integrante $\eul^{x^{2}/2}$:
+\[
+  y(x)=\eul^{-x^{2}/2}\Bigl(y_0+v_0\int_0^{x}\eul^{t^{2}/2}\,\dif t\Bigr).
+\]
+Por la unicidad del \cref{teo:eyu}, $y_1=\eul^{-x^{2}/2}$ (confirmando
+\eqref{eq:pvi-y1y2}) e
+$y_2=\eul^{-x^{2}/2}\int_0^{x}\eul^{t^{2}/2}\,\dif t$, que es, salvo
+reescalado, la función de Dawson: $y_2(x)=\sqrt2\,F(x/\sqrt2)$ con
+$F(u)=\eul^{-u^{2}}\int_0^{u}\eul^{s^{2}}\dif s$ \cite[§7.2]{DLMF}. El método
+de series ha reconstruido, sin integrar, una gaussiana y una función no
+elemental.
+\end{observacion}
+
+\input{figuras/fig_gauss}
+
+% -------------------------------------------------------------------------
+\subsection{La ecuación de Legendre}\label{sec:legendre}
+% -------------------------------------------------------------------------
+\paragraph{Truco práctico: no dividir por $P$}
+Si $P$ es un polinomio, suele ser más cómodo sustituir la serie
+directamente en \eqref{eq:edo}, sin pasar a la forma normal: así se evita
+desarrollar los cocientes $A/P$ y $B/P$. Las multiplicaciones por potencias
+de $x$ sólo desplazan índices: por ejemplo,
+$x^{2}\,y''=\sum_{n\ge0}n(n-1)\,a_n\,x^{n}$ y $x\,y'=\sum_{n\ge0}n\,a_n\,x^{n}$
+(los términos añadidos con $n=0,1$ son nulos).
+
+\begin{ejemplo}[Legendre en $x_0=0$]\label{ej:legendre}
+Consideremos
+\begin{equation}\label{eq:legendre}
+  (1-x^{2})\,y''-2x\,y'+\ell(\ell+1)\,y=0 .
+\end{equation}
+Sustituyendo y agrupando potencias $x^{n}$ ---el término $-x^{2}y''$ aporta
+$-n(n-1)\,a_n$ y $-2x\,y'$ aporta $-2n\,a_n$---,
+\begin{equation}\label{eq:rec-legendre-0}
+  (n+2)(n+1)\,a_{n+2}-\bigl[n(n+1)-\ell(\ell+1)\bigr]\,a_n=0 ,
+\end{equation}
+y, factorizando $n(n+1)-\ell(\ell+1)=(n-\ell)(n+\ell+1)$,
+\begin{equation}\label{eq:rec-legendre}
+  \boxed{\;a_{n+2}=\frac{(n-\ell)(n+\ell+1)}{(n+2)(n+1)}\,a_n ,\qquad n\ge0.\;}
+\end{equation}
+El radio de convergencia garantizado es $R=1$, distancia de $0$ a los ceros
+$x=\pm1$ de $P$. Para una serie que no se corte es exactamente $1$: como
+$a_{n+2}/a_n\to1$, el criterio del cociente aplicado a la serie en $x^{2}$
+da divergencia para $\abs{x}>1$.
+\end{ejemplo}
+
+\begin{proposicion}[Polinomios de Legendre]\label{prop:polinomios-legendre}
+Si $\ell\in\N$, la serie de la misma paridad que $\ell$ se trunca: el
+numerador de \eqref{eq:rec-legendre} se anula para $n=\ell$, luego
+$a_{\ell+2}=a_{\ell+4}=\dots=0$, y la solución correspondiente es un
+polinomio de grado $\ell$. Normalizado por $P_\ell(1)=1$, es el
+\emph{polinomio de Legendre} $P_\ell$:
+\[
+  P_0=1,\quad P_1=x,\quad P_2=\tfrac12(3x^{2}-1),\quad
+  P_3=\tfrac12(5x^{3}-3x),\quad P_4=\tfrac18(35x^{4}-30x^{2}+3).
+\]
+La serie de la otra paridad no se corta y tiene radio exactamente $1$.
+\end{proposicion}
+
+\begin{proof}
+El truncamiento es inmediato a partir de \eqref{eq:rec-legendre}. Por
+ejemplo, para $\ell=4$: $a_2=\frac{(-4)\cdot5}{2}\,a_0=-10\,a_0$,
+$a_4=\frac{(-2)\cdot7}{12}\,a_2=\frac{35}{3}\,a_0$ y $a_6=0$; imponiendo
+$a_0\bigl(1-10+\frac{35}3\bigr)=1$ se obtiene $a_0=\frac38$ y la expresión
+de $P_4$. Si la otra serie se cortara, ambas soluciones serían polinomios y
+estarían acotadas en $[-1,1]$; el apartado siguiente muestra (para $\ell=1$)
+que no es así, y el caso general se trata en \cite[§15.6]{ARFKEN}.
+\end{proof}
+
+\input{figuras/fig_legendre}
+
+\begin{ejemplo}[Legendre con $\ell=1$]\label{ej:legendre-1}
+Para $(1-x^{2})\,y''-2x\,y'+2y=0$ \cite{TEMAV}, la recurrencia
+\eqref{eq:rec-legendre} se reduce a
+\begin{equation}\label{eq:rec-legendre-1}
+  a_{n+2}=\frac{(n-1)(n+2)}{(n+2)(n+1)}\,a_n=\frac{n-1}{n+1}\,a_n .
+\end{equation}
+\begin{itemize}
+  \item \emph{Serie impar.} $a_3=0\cdot a_1=0$, y con él todos los impares
+        posteriores: la serie impar se reduce a $y_2=x=P_1(x)$.
+  \item \emph{Serie par.} $a_2=-a_0$, $a_4=\tfrac13a_2=-\tfrac13a_0$,
+        $a_6=\tfrac35a_4=-\tfrac15a_0$ y, por inducción,
+        $a_{2k}=-a_0/(2k-1)$ para $k\ge1$. Por tanto
+        \begin{equation}\label{eq:legendre-q1}
+          y_1=1-\sum_{k=1}^{\infty}\frac{x^{2k}}{2k-1}
+             =1-x\,\artanh x
+             =1-\frac{x}{2}\,\ln\frac{1+x}{1-x},\qquad\abs{x}<1 .
+        \end{equation}
+\end{itemize}
+La función $y_1$ (que es $-Q_1$, con $Q_1$ la función de Legendre de segunda
+especie) diverge logarítmicamente en $x=\pm1$: la cota del \cref{teo:fuchs}
+es \emph{óptima} en este caso. Obsérvese también que la ecuación
+$(1-x^{2})\,y''-2x\,y'+\tfrac34y=0$ del \cref{ej:ordinario} es la de Legendre
+con $\ell(\ell+1)=\tfrac34$, es decir, $\ell=\tfrac12\notin\N$: ninguna de sus
+dos series se corta y ambas tienen radio exactamente $1$.
+\end{ejemplo}
+
+\begin{observacion}[Origen físico y «cuantización»]\label{obs:legendre-fisica}
+La ecuación de Legendre aparece al separar variables en la ecuación de
+Laplace en coordenadas esféricas, con $x=\cos\theta$. Los puntos $x=\pm1$
+corresponden a los polos $\theta=0,\pi$, donde la solución física debe ser
+finita. Por \eqref{eq:legendre-q1} y la \cref{prop:polinomios-legendre}, eso
+sólo es posible si una serie se trunca, lo que exige $\ell\in\N$: la
+condición de regularidad \emph{cuantiza} el parámetro, exactamente como la
+condición de normalizabilidad cuantiza la energía en la ecuación de Hermite
+del oscilador cuántico \cite{TEMAV}, \cite[§13.1]{ARFKEN}.
+\end{observacion}

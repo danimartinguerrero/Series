@@ -1,0 +1,100 @@
+\documentclass[a4paper,11pt,twoside]{article}
+
+% =========================================================================
+%  Ecuaciones Diferenciales — Tema 5: EDO lineales de segundo orden con
+%  coeficientes variables.  Parte I: puntos ordinarios y series enteras.
+%
+%  Compilación:   latexmk -pdf main.tex      (pdfLaTeX + biber)
+%  Datos de las gráficas: python3 scripts/generar_datos.py  (ya incluidos)
+% =========================================================================
+\input{preambulo}
+
+% =========================================================================
+%                     VARIABLES PARA LA PORTADA
+% =========================================================================
+\newcommand{\Universidad}{Universidad de Salamanca}
+\newcommand{\Facultad}{Facultad de Ciencias}
+\newcommand{\Titulacion}{Grado en Física}
+\newcommand{\Asignatura}{Ecuaciones Diferenciales}
+\newcommand{\NumTema}{Tema 5}
+\newcommand{\TituloTema}{EDO lineales de segundo orden\\con coeficientes variables}
+\newcommand{\SubtituloTema}{Parte I\,·\,Puntos ordinarios y soluciones en serie entera}
+\newcommand{\tipotrabajo}{Apuntes formalizados}
+\newcommand{\miNombre}{Daniel Martín Guerrero}
+\newcommand{\miProfesorado}{\begin{tabular}{@{}c@{}}Pilar García Estévez\\José Beltrán Jiménez\\María Pérez Garrote\end{tabular}}
+\newcommand{\miUbicacion}{Salamanca, curso 2026/2027}
+
+% =========================================================================
+%                                DOCUMENTO
+% =========================================================================
+\begin{document}
+
+% --- PORTADA ----------------------------------------------------------------
+\pagenumbering{alph}
+\input{portada}
+\newpage\thispagestyle{empty}\null\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% --- CABECERA DEL ARTÍCULO ------------------------------------------------
+\thispagestyle{plain}
+\begin{center}
+  {\color{gris}\scshape\small\textls[120]{\Asignatura\ \,·\ \,\NumTema}}\par\vspace{10pt}
+  {\color{blanco}\LARGE\bfseries Puntos ordinarios y soluciones\\[3pt]
+   en serie entera de EDO lineales de segundo orden}\par\vspace{12pt}
+  {\color{cian}\rule{2.8cm}{0.6pt}}\par\vspace{10pt}
+  {\large\color{texto}\miNombre}\par\vspace{2pt}
+  {\small\itshape\color{gris}\Titulacion, \Facultad, \Universidad}\par
+\end{center}
+\vspace{14pt}
+
+\begin{center}
+\begin{minipage}{0.86\textwidth}
+\small
+{\scshape\color{cian}Resumen.}\ \
+Estudiamos la ecuación lineal homogénea de segundo orden
+$P(x)\,y''+A(x)\,y'+B(x)\,y=0$ con coeficientes variables en un entorno de
+un \emph{punto ordinario} $x_0$, esto es, un punto en el que $P(x_0)\neq 0$.
+Tras motivar el método a través de la analogía entre ecuaciones diferenciales
+y ecuaciones en diferencias, fijamos los fundamentos analíticos
+---funciones analíticas, derivación término a término, unicidad del
+desarrollo en serie y clasificación de singularidades aisladas, con especial
+atención a los polos--- y explicamos por qué las singularidades
+\emph{complejas} de los coeficientes acotan el radio de convergencia de las
+soluciones \emph{reales}. Enunciamos y demostramos el teorema de existencia
+de soluciones analíticas (teorema de Fuchs para puntos ordinarios) mediante
+el método de las series mayorantes, deducimos la relación de recurrencia
+general para los coeficientes y construimos un sistema fundamental de
+soluciones. El método se ilustra con el oscilador armónico, la ecuación de
+Airy, un problema de valores iniciales con solución gaussiana y la ecuación
+de Legendre, cuyo truncamiento conduce a los polinomios de Legendre.
+
+\medskip
+{\scshape\color{cian}Palabras clave.}\ \
+función analítica, polo, serie de Laurent, radio de convergencia, punto
+ordinario, teorema de Fuchs, relación de recurrencia, producto de Cauchy,
+wronskiano, ecuación de Airy, ecuación de Legendre.
+
+\medskip
+{\scshape\color{cian}MSC 2020.}\ \ 34A25, 34A30, 34M05, 30B10, 30D10.
+\end{minipage}
+\end{center}
+
+\clearpage
+{\hypersetup{linkcolor=texto}\tableofcontents}
+\clearpage
+
+\input{secciones/01_motivacion}
+\input{secciones/02_analiticidad}
+\input{secciones/03_polos}
+\input{secciones/04_puntos_ordinarios}
+\input{secciones/05_ejemplos}
+\input{secciones/06_resumen}
+
+% =========================================================================
+%                              BIBLIOGRAFÍA
+% =========================================================================
+\FloatBarrier
+\printbibliography[heading=bibnumbered, title={Referencias}]
+
+\end{document}

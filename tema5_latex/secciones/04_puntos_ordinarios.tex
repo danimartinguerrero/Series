@@ -1,0 +1,373 @@
+% =========================================================================
+\section{Puntos ordinarios: soluciones en serie entera}\label{sec:ordinarios}
+% =========================================================================
+
+% -------------------------------------------------------------------------
+\subsection{Puntos ordinarios y puntos singulares}\label{sec:def-ordinario}
+% -------------------------------------------------------------------------
+
+\begin{definicion}[Punto ordinario y punto singular]\label{def:ordinario}
+Un punto $x_0\in\R$ es un \emph{punto ordinario} de la ecuación
+\eqref{eq:edo} si \emph{no anula} el polinomio $P$, es decir,
+$P(x_0)\neq0$. En caso contrario, $P(x_0)=0$, se dice que $x_0$ es un
+\emph{punto singular}.
+\end{definicion}
+
+\begin{ejemplo}\label{ej:ordinario}
+En $(1-x^{2})\,y''-2x\,y'+\tfrac34\,y=0$ el punto $x_0=0$ es ordinario. De
+hecho, todo $x_0\neq\pm1$ es ordinario, mientras que $x_0=\pm1$ son
+singulares \cite{TEMAV}.
+\end{ejemplo}
+
+Si $x_0$ es ordinario podemos dividir por $P$ en un entorno de $x_0$.
+Definimos
+\begin{equation}\label{eq:pq}
+  p(x)\defeq\frac{A(x)}{P(x)},\qquad
+  q(x)\defeq\frac{B(x)}{P(x)},\qquad
+  z\defeq x-x_0 ,
+\end{equation}
+con lo que la ecuación adopta la \emph{forma normal}
+\begin{equation}\label{eq:normal}
+  y''+p\,y'+q\,y=0 .
+\end{equation}
+Como $P(x_0)\neq0$, $p$ y $q$ son analíticas en $x_0$ por ser cocientes de
+funciones analíticas con denominador no nulo (\cref{prop:algebra}):
+\begin{equation}\label{eq:pq-serie}
+  p=\sum_{k=0}^{\infty}p_k\,z^{k},\qquad
+  q=\sum_{k=0}^{\infty}q_k\,z^{k},\qquad \abs{z}<R\defeq\min(R_p,R_q).
+\end{equation}
+
+\begin{observacion}[Una definición más general]\label{obs:ordinario-general}
+Lo que interviene en toda la teoría es la analiticidad de $p$ y $q$ en
+$x_0$, no el valor de $P(x_0)$. Por eso muchos textos llaman ordinario a
+todo punto en el que $p$ y $q$ son analíticas \cite[§5.2]{BOYCE}. Por
+ejemplo, en $x\,y''+(\sin x)\,y=0$ se tiene $P(0)=0$, pero
+$q=\sin x/x$ tiene en $0$ una singularidad evitable
+(\cref{ej:polos}\,(iv)): el punto $x_0=0$ es ordinario en sentido amplio y
+todos los resultados de esta sección se le aplican.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{El teorema de Fuchs}\label{sec:fuchs}
+% -------------------------------------------------------------------------
+El resultado central del tema afirma que en un punto ordinario el método de
+series no sólo es formalmente viable, sino que produce soluciones
+convergentes, y da una cota inferior explícita del radio
+\cite[cap.~16]{RILEY}, \cite[cap.~5]{SIMMONS}.
+
+\begin{teorema}[Fuchs, puntos ordinarios]\label{teo:fuchs}
+Sea $x_0$ un punto ordinario de \eqref{eq:edo} y sean $p$, $q$ analíticas
+en $\abs{z}<R$, con $z=x-x_0$ y $R=\min(R_p,R_q)$. Entonces:
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item para cada par $(a_0,a_1)\in\R^{2}$ existe una única serie
+        $y=\sum_{n\ge0}a_n z^{n}$ que es solución de \eqref{eq:normal} con
+        $y(x_0)=a_0$, $y'(x_0)=a_1$, y converge \emph{al menos} en
+        $\abs{z}<R$;
+  \item toda solución de \eqref{eq:normal} en $(x_0-R,\,x_0+R)$ es de esta
+        forma; en particular, toda solución es analítica en $x_0$;
+  \item si $A$ y $B$ son polinomios (o, más en general, funciones enteras),
+        \begin{equation}\label{eq:cota-radio}
+          R\;\ge\;\dist\bigl(x_0,\,\mathcal Z(P)\bigr),
+          \qquad \mathcal Z(P)\defeq\{\zeta\in\C: P(\zeta)=0\},
+        \end{equation}
+        es decir, el radio es al menos la distancia, \emph{en el plano
+        complejo}, de $x_0$ al cero de $P$ más cercano.
+\end{enumerate}
+\end{teorema}
+
+La demostración se da en la \cref{sec:demo-fuchs}, una vez obtenida la
+relación de recurrencia. La \cref{fig:fuchs} ilustra la cota
+\eqref{eq:cota-radio}: es la versión, para las soluciones de la EDO, de lo
+que el \cref{teo:radio} afirma para funciones racionales.
+
+\input{figuras/fig_fuchs}
+
+\begin{observacion}[El radio garantizado es una cota inferior]\label{obs:cota}
+La cota \eqref{eq:cota-radio} puede no alcanzarse: si una de las series
+solución se trunca en un polinomio, ésta converge en todo $\R$ aunque $P$
+tenga ceros (polinomios de Legendre, \cref{sec:legendre}). Lo que el teorema
+asegura es que \emph{ninguna} solución deja de converger antes de llegar al
+cero complejo de $P$ más próximo.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Ansatz y derivación término a término}\label{sec:ansatz}
+% -------------------------------------------------------------------------
+Proponemos
+\begin{equation}\label{eq:ansatz}
+  y=\sum_{n=0}^{\infty}a_n\,z^{n}.
+\end{equation}
+Derivando término a término (\cref{teo:series}),
+\begin{align}
+  y'  &=\sum_{n=1}^{\infty}n\,a_n\,z^{n-1}, \label{eq:yp}\\
+  y'' &=\sum_{n=2}^{\infty}n(n-1)\,a_n\,z^{n-2}. \label{eq:ypp}
+\end{align}
+Los límites inferiores suben porque el término $n=0$ de $y'$ (y los
+$n=0,1$ de $y''$) son nulos. De momento el cálculo es \emph{formal}: la
+convergencia de \eqref{eq:ansatz} se establecerá en la \cref{sec:demo-fuchs},
+y es entonces cuando el \cref{teo:series} legitima a posteriori cada paso.
+
+% -------------------------------------------------------------------------
+\subsection{Sustitución y cambio de índices}\label{sec:indices}
+% -------------------------------------------------------------------------
+Introduciendo \eqref{eq:pq-serie}, \eqref{eq:yp} y \eqref{eq:ypp} en
+\eqref{eq:normal}:
+\begin{equation}\label{eq:sustitucion}
+  \sum_{n=2}^{\infty}n(n-1)\,a_n z^{n-2}
+  +\Bigl(\sum_{k=0}^{\infty}p_k z^{k}\Bigr)\Bigl(\sum_{n=1}^{\infty}n\,a_n z^{n-1}\Bigr)
+  +\Bigl(\sum_{k=0}^{\infty}q_k z^{k}\Bigr)\Bigl(\sum_{n=0}^{\infty}a_n z^{n}\Bigr)=0 .
+\end{equation}
+Queremos escribir todas las series en potencias $z^{n}$. El índice de
+suma es \emph{mudo} y puede desplazarse libremente:
+\begin{equation}\label{eq:desplazamiento}
+  \sum_{n=m}^{\infty}c_n\,z^{n-m}
+  \;\overset{n\,\mapsto\,n+m}{=}\;
+  \sum_{n=0}^{\infty}c_{n+m}\,z^{n}.
+\end{equation}
+\begin{itemize}
+  \item En $y''$ tomamos $m=2$ (es decir, llamamos $n$ a $n-2$):
+        \begin{equation}\label{eq:ypp-desplazada}
+          y''=\sum_{n=0}^{\infty}(n+2)(n+1)\,a_{n+2}\,z^{n}.
+        \end{equation}
+  \item En $y'$ tomamos $m=1$:
+        \begin{equation}\label{eq:yp-desplazada}
+          y'=\sum_{n=0}^{\infty}(n+1)\,a_{n+1}\,z^{n}.
+        \end{equation}
+\end{itemize}
+Ahora las tres series empiezan en $n=0$ y llevan $z^{n}$; usando un índice
+$n'$ en los factores para no confundirlo con el de los productos,
+\begin{equation}\label{eq:sustitucion2}
+  \sum_{n}(n+2)(n+1)a_{n+2}z^{n}
+  +\Bigl(\sum_{k}p_k z^{k}\Bigr)\Bigl(\sum_{n'}(n'+1)a_{n'+1}z^{n'}\Bigr)
+  +\Bigl(\sum_{k}q_k z^{k}\Bigr)\Bigl(\sum_{n'}a_{n'}z^{n'}\Bigr)=0 .
+\end{equation}
+
+% -------------------------------------------------------------------------
+\subsection{Producto de Cauchy}\label{sec:cauchy}
+% -------------------------------------------------------------------------
+
+\begin{lema}[Producto de Cauchy]\label{lem:cauchy}
+Si las series $\sum_{k\ge0}c_kz^{k}$ y $\sum_{n'\ge0}b_{n'}z^{n'}$ convergen
+absolutamente en $\abs{z}<R$, entonces, en ese disco,
+\begin{equation}\label{eq:cauchy}
+  \Bigl(\sum_{k=0}^{\infty}c_k z^{k}\Bigr)\Bigl(\sum_{n'=0}^{\infty}b_{n'}z^{n'}\Bigr)
+  =\sum_{n=0}^{\infty}\Bigl(\sum_{k=0}^{n}c_k\,b_{n-k}\Bigr)z^{n},
+\end{equation}
+y la serie del miembro derecho converge también absolutamente.
+\end{lema}
+
+\begin{proof}
+Al multiplicar aparecen los términos $c_kb_{n'}z^{k}z^{n'}=c_kb_{n'}z^{k+n'}$
+para todos los pares $(k,n')\in\N^{2}$. La serie doble correspondiente
+converge absolutamente, pues
+$\sum_{k,n'}\abs{c_k}\abs{b_{n'}}\abs{z}^{k+n'}
+=\bigl(\sum_k\abs{c_k}\abs{z}^k\bigr)\bigl(\sum_{n'}\abs{b_{n'}}\abs{z}^{n'}\bigr)<\infty$,
+y por tanto puede sumarse en cualquier orden. Agrupamos los términos con la
+misma potencia total $n=k+n'$, es decir, recorremos las diagonales de la
+\cref{fig:cauchy}. Fijado $n$, se tiene $n'=n-k$, y como $n'\ge0$, el
+índice $k$ sólo recorre $0,1,\dots,n$.
+\end{proof}
+
+\input{figuras/fig_cauchy}
+
+Aplicando el \cref{lem:cauchy} con $b_{n'}=(n'+1)\,a_{n'+1}$, de modo que
+$b_{n-k}=(n-k+1)\,a_{n-k+1}$, y con $b_{n'}=a_{n'}$:
+\begin{align}
+  p\,y' &=\sum_{n=0}^{\infty}\Bigl(\sum_{k=0}^{n}(n-k+1)\,p_k\,a_{n-k+1}\Bigr)z^{n},\label{eq:pyp}\\
+  q\,y  &=\sum_{n=0}^{\infty}\Bigl(\sum_{k=0}^{n}q_k\,a_{n-k}\Bigr)z^{n}.\label{eq:qy}
+\end{align}
+
+% -------------------------------------------------------------------------
+\subsection{Identificación de coeficientes: la relación de recurrencia}\label{sec:recurrencia}
+% -------------------------------------------------------------------------
+Toda la ecuación es ahora una única serie $\sum_n C_n z^{n}=0$ válida para
+todo $\abs{z}<R$. Por la unicidad del desarrollo en serie de potencias
+(\cref{cor:unicidad}) ---la serie nula sólo tiene coeficientes nulos---,
+cada coeficiente debe anularse.
+
+\begin{resultado}[Relación de recurrencia en un punto ordinario]\label{res:recurrencia}
+Los coeficientes de toda solución \eqref{eq:ansatz} de \eqref{eq:normal}
+satisfacen, para todo $n\ge0$,
+\begin{equation}\label{eq:recurrencia}
+  (n+2)(n+1)\,a_{n+2}
+  +\sum_{k=0}^{n}\Bigl[(n-k+1)\,p_k\,a_{n-k+1}+q_k\,a_{n-k}\Bigr]=0 .
+\end{equation}
+\end{resultado}
+
+Ésta es la ecuación en diferencias anunciada en la \cref{sec:por-que}: la
+EDO se ha convertido en una relación de recurrencia para los coeficientes.
+Si $p$ y $q$ son polinomios de grado $\le d$, la suma en \eqref{eq:recurrencia}
+tiene a lo sumo $d+1$ términos no nulos y la recurrencia es de orden finito;
+en general involucra todos los coeficientes anteriores.
+
+\begin{observacion}[Erratas frecuentes]\label{obs:erratas}
+Al transcribir \eqref{eq:recurrencia} conviene vigilar dos detalles en los
+que es fácil equivocarse: en el término de $q$ la potencia que acompaña a
+$q_k$ es $z^{k}$, no $z^{2}$; y en el de $p$ el subíndice correcto es
+$a_{n-k+1}$, multiplicado por el factor $(n-k+1)$ procedente de la derivada.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Resolución de la recurrencia}\label{sec:resolucion}
+% -------------------------------------------------------------------------
+Como $(n+2)(n+1)\neq0$ para $n\ge0$, podemos despejar el coeficiente de
+mayor índice:
+\begin{equation}\label{eq:despeje-an2}
+  \boxed{\;a_{n+2}=-\frac{1}{(n+2)(n+1)}
+  \sum_{k=0}^{n}\Bigl[(n-k+1)\,p_k\,a_{n-k+1}+q_k\,a_{n-k}\Bigr],
+  \qquad n\ge0.\;}
+\end{equation}
+El miembro derecho sólo contiene $a_0,a_1,\dots,a_{n+1}$: conocidos todos los
+anteriores, $a_{n+2}$ queda determinado (\cref{fig:dependencia}).
+
+\begin{proposicion}[Determinación por inducción]\label{prop:induccion}
+Para cada par $(a_0,a_1)$ existe una única sucesión $(a_n)_{n\ge0}$ que
+cumple \eqref{eq:despeje-an2}. Además, cada $a_n$ es una combinación lineal
+de $a_0$ y $a_1$.
+\end{proposicion}
+
+\begin{proof}
+Por inducción fuerte sobre $n$: \eqref{eq:despeje-an2} define $a_{n+2}$ a
+partir de $a_0,\dots,a_{n+1}$, ya determinados. La linealidad se debe a que
+\eqref{eq:despeje-an2} es lineal en los $a_j$.
+\end{proof}
+
+\input{figuras/fig_dependencia}
+
+\paragraph{Primeros términos}
+Particularizando \eqref{eq:despeje-an2}:
+\begin{itemize}
+  \item $n=0$ (sólo $k=0$):
+        \begin{equation}\label{eq:a2}
+          a_2=-\tfrac12\bigl(p_0a_1+q_0a_0\bigr).
+        \end{equation}
+  \item $n=1$ ($k=0,1$):
+        \begin{equation}\label{eq:a3}
+          a_3=-\tfrac16\bigl(2p_0a_2+q_0a_1+p_1a_1+q_1a_0\bigr).
+        \end{equation}
+  \item $n=2$ ($k=0,1,2$):
+        \begin{equation}\label{eq:a4}
+          a_4=-\tfrac1{12}\bigl(3p_0a_3+(q_0+2p_1)\,a_2+(q_1+p_2)\,a_1+q_2a_0\bigr).
+        \end{equation}
+\end{itemize}
+
+\begin{observacion}[Comprobación]\label{obs:comprobacion}
+La fórmula \eqref{eq:a2} puede verificarse sin series: evaluando
+\eqref{eq:normal} en $x_0$ se obtiene
+$y''(x_0)=-p(x_0)\,y'(x_0)-q(x_0)\,y(x_0)=-p_0a_1-q_0a_0$, y por el
+\cref{teo:series}\,(iii), $a_2=y''(x_0)/2$. Del mismo modo, derivando la
+ecuación sucesivamente se recupera cada $a_n=y^{(n)}(x_0)/n!$: la
+recurrencia es el algoritmo de Taylor organizado.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Condiciones iniciales y sistema fundamental}\label{sec:fundamental}
+% -------------------------------------------------------------------------
+Evaluando la serie \eqref{eq:ansatz} y su derivada \eqref{eq:yp} en $z=0$,
+\begin{equation}\label{eq:a0a1}
+  a_0=y(x_0),\qquad a_1=y'(x_0).
+\end{equation}
+Son las condiciones iniciales: las dos constantes de integración que se
+esperan en una EDO de segundo orden. La recurrencia no las fija; quedan
+libres.
+
+Como la ecuación es lineal, basta elegir dos juegos de condiciones
+iniciales:
+\begin{equation}\label{eq:y1y2}
+  y_1\defeq y\big|_{(a_0,a_1)=(1,0)},\qquad
+  y_2\defeq y\big|_{(a_0,a_1)=(0,1)}.
+\end{equation}
+
+\begin{proposicion}[Sistema fundamental]\label{prop:fundamental}
+Las funciones $y_1$, $y_2$ forman un sistema fundamental de soluciones de
+\eqref{eq:normal} en $(x_0-R,\,x_0+R)$, y la solución general es
+\begin{equation}\label{eq:general}
+  y=a_0\,y_1+a_1\,y_2,\qquad a_0,a_1\in\R .
+\end{equation}
+\end{proposicion}
+
+\begin{proof}
+Su wronskiano en $x_0$ es
+\begin{equation}\label{eq:wronskiano}
+  W(x_0)=\begin{vmatrix} y_1(x_0) & y_2(x_0)\\ y_1'(x_0) & y_2'(x_0)\end{vmatrix}
+  =\begin{vmatrix}1&0\\0&1\end{vmatrix}=1\neq0 .
+\end{equation}
+Además $W'=y_1y_2''-y_1''y_2=-p\,W$, de donde (fórmula de Abel)
+$W(x)=\exp\bigl(-\int_{x_0}^{x}p(t)\,\dif t\bigr)\neq0$ en todo el
+intervalo: $y_1$ e $y_2$ son linealmente independientes. Por la
+\cref{prop:induccion}, la solución con datos $(a_0,a_1)$ tiene coeficientes
+lineales en $(a_0,a_1)$, luego es $a_0y_1+a_1y_2$.
+\end{proof}
+
+% -------------------------------------------------------------------------
+\subsection{Demostración del teorema de Fuchs}\label{sec:demo-fuchs}
+% -------------------------------------------------------------------------
+La única afirmación no trivial del \cref{teo:fuchs} es que la serie formal
+construida con \eqref{eq:despeje-an2} \emph{converge}. Lo probaremos con el
+\emph{método de las series mayorantes} de Cauchy: acotaremos $\abs{a_n}$ por
+una sucesión $b_n$ cuyo comportamiento conocemos exactamente
+\cite[cap.~3]{CODDINGTON}, \cite[§4.1]{TESCHL}.
+
+\begin{proof}[Demostración del \cref{teo:fuchs}]
+Si $a_0=a_1=0$, todos los $a_n$ son nulos y no hay nada que probar;
+supongamos $(a_0,a_1)\neq(0,0)$.
+
+\emph{Paso 1: cotas de Cauchy.} Fijemos $0<r<R$. Como $\sum p_kr^{k}$ y
+$\sum q_kr^{k}$ convergen, sus términos están acotados: existe $M>0$ tal que
+\begin{equation}\label{eq:cotas-cauchy}
+  \abs{p_k}\le M\,r^{-k},\qquad \abs{q_k}\le M\,r^{-k}\qquad\forall k\ge0 .
+\end{equation}
+
+\emph{Paso 2: sucesión mayorante.} Definimos $b_0=\abs{a_0}$,
+$b_1=\abs{a_1}$ y, para $n\ge0$,
+\begin{equation}\label{eq:mayorante}
+  (n+2)(n+1)\,b_{n+2}=M\sum_{j=0}^{n}r^{\,j-n}\bigl[(j+1)\,b_{j+1}+b_j\bigr]+M\,r\,b_{n+1}.
+\end{equation}
+Veamos por inducción que $\abs{a_n}\le b_n$. Tomando módulos en
+\eqref{eq:recurrencia}, usando \eqref{eq:cotas-cauchy} y cambiando
+$j=n-k$,
+\begin{align*}
+  (n+2)(n+1)\abs{a_{n+2}}
+  &\le\sum_{k=0}^{n}\bigl[(n-k+1)\abs{p_k}\abs{a_{n-k+1}}+\abs{q_k}\abs{a_{n-k}}\bigr]\\
+  &\le M\sum_{j=0}^{n}r^{\,j-n}\bigl[(j+1)\,b_{j+1}+b_j\bigr]
+  \;\le\;(n+2)(n+1)\,b_{n+2}.
+\end{align*}
+
+\emph{Paso 3: el cociente $b_{n+2}/b_{n+1}$.} Escribiendo
+\eqref{eq:mayorante} para $n$ (multiplicada por $r$) y para $n-1$, con
+$n\ge1$, y restando, todos los términos de la suma salvo el de $j=n$ se
+cancelan:
+\[
+  r\,(n+2)(n+1)\,b_{n+2}-(n+1)n\,b_{n+1}
+  =M r\bigl[(n+1)b_{n+1}+b_n\bigr]+Mr^{2}b_{n+1}-Mr\,b_n ,
+\]
+es decir,
+\begin{equation}\label{eq:cociente}
+  \frac{b_{n+2}}{b_{n+1}}
+  =\frac{n(n+1)+Mr\,(n+1)+Mr^{2}}{r\,(n+2)(n+1)}
+  \;\xrightarrow[n\to\infty]{}\;\frac1r .
+\end{equation}
+(Todos los $b_n$ con $n\ge2$ son positivos: $b_2=\tfrac M2(b_0+b_1+rb_1)>0$
+y \eqref{eq:cociente} propaga la positividad.)
+
+\emph{Paso 4: convergencia.} Por el criterio del cociente,
+$\sum b_n\abs{z}^{n}$ converge si $\abs{z}<r$, y por comparación
+$\sum a_nz^{n}$ converge absolutamente en $\abs{z}<r$. Como $r<R$ es
+arbitrario, la serie converge en $\abs{z}<R$.
+
+\emph{Paso 5: es solución.} En $\abs{z}<R$ son lícitas la derivación término a
+término (\cref{teo:series}) y el producto de Cauchy (\cref{lem:cauchy}); el
+coeficiente de $z^{n}$ en $y''+py'+qy$ es exactamente el miembro izquierdo de
+\eqref{eq:recurrencia}, que es nulo. Además $y(x_0)=a_0$ e $y'(x_0)=a_1$.
+Esto prueba (i).
+
+\emph{Paso 6: toda solución es una serie.} Si $\varphi$ es una solución en
+$(x_0-R,x_0+R)$, la serie $y$ con $a_0=\varphi(x_0)$, $a_1=\varphi'(x_0)$ es
+otra solución con los mismos datos, y por el \cref{teo:eyu}, $\varphi=y$.
+Esto prueba (ii).
+
+\emph{Paso 7: cota mediante los ceros de $P$.} Si $A$ y $B$ son enteras,
+$p=A/P$ y $q=B/P$ son holomorfas en el disco
+$\disco{x_0}{d}$, $d=\dist(x_0,\mathcal Z(P))$, y por el \cref{teo:radio}
+sus series de Taylor convergen en él: $R_p,R_q\ge d$. Esto prueba (iii).
+\end{proof}

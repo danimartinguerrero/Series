@@ -1,0 +1,4 @@
+# Compilación con: latexmk main.tex   (LuaLaTeX + biber)
+$pdf_mode = 4;
+$lualatex = 'lualatex -interaction=nonstopmode -halt-on-error -synctex=1 %O %S';
+$bibtex_use = 2;

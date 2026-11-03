@@ -1,0 +1,38 @@
+% Figura: producto de Cauchy como suma por diagonales k + n' = n
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=0.82cm, y=0.82cm]
+  % diagonales k + n' = n
+  \foreach \n in {1,...,6}{
+    \draw[guia] (\n+0.3,-0.3) -- (-0.3,\n+0.3);}
+  % diagonal destacada n = 4
+  \draw[cian, line width=1.2pt] (4.35,-0.35) -- (-0.35,4.35);
+  % ejes
+  \draw[eje] (-0.4,0) -- (6.6,0) node[right, etiqgris] {$k$};
+  \draw[eje] (0,-0.4) -- (0,6.6) node[above, etiqgris] {$n'$};
+  \foreach \t in {0,...,5}{
+    \node[etiqgris, anchor=north] at (\t,-0.45) {$\t$};
+    \node[etiqgris, anchor=east] at (-0.45,\t) {$\t$};}
+  % malla de pares (k, n')
+  \foreach \k in {0,...,5}{\foreach \m in {0,...,5}{
+    \fill[grismedio] (\k,\m) circle (2.2pt);}}
+  \foreach \k in {0,...,4}{
+    \pgfmathtruncatemacro{\m}{4-\k}
+    \fill[cian] (\k,\m) circle (3.4pt);}
+  % rótulo de la diagonal
+  \node[nodocian, anchor=west, align=left] (r) at (7.4,4.1)
+    {\textcolor{cian}{\bfseries Diagonal $n=4$}\\[2pt]
+     $c_0b_4+c_1b_3+c_2b_2+c_3b_1+c_4b_0$\\[1pt]
+     \footnotesize\color{gris} coeficiente de $z^{4}$ en el producto};
+  \draw[flecha, cian] (r.west) to[out=180, in=45] (2.15,2.15);
+  \node[nodo, anchor=west, align=left] at (7.4,1.4)
+    {\footnotesize\color{gris} Cada punto $(k,n')$ es el término\\
+     \footnotesize\color{gris} $c_k b_{n'}z^{k+n'}$; en la diagonal\\
+     \footnotesize\color{gris} $k+n'=n$ todos llevan $z^{n}$.};
+\end{tikzpicture}
+\caption{Producto de Cauchy de dos series de potencias. Los términos
+$c_kb_{n'}z^{k+n'}$ se agrupan por diagonales $k+n'=n$; como $n'=n-k\ge0$,
+en la diagonal $n$ el índice $k$ sólo recorre $0,1,\dots,n$, lo que da el
+coeficiente $\sum_{k=0}^{n}c_kb_{n-k}$ de \eqref{eq:cauchy}.}
+\label{fig:cauchy}
+\end{figure}

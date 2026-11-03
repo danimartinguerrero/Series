@@ -1,0 +1,133 @@
+% =========================================================================
+\section{Motivación: la analogía con las ecuaciones en diferencias}\label{sec:motivacion}
+% =========================================================================
+
+Las ecuaciones diferenciales lineales con coeficientes \emph{constantes} se
+resuelven con el ansatz exponencial $y=\eul^{\lambda x}$, que transforma la
+ecuación en un polinomio característico. Existe un mecanismo idéntico para
+las ecuaciones \emph{discretas}, y es precisamente ese mundo discreto el que
+reaparecerá, de forma inesperada, cuando busquemos soluciones en serie de
+ecuaciones con coeficientes \emph{variables}.
+
+% -------------------------------------------------------------------------
+\subsection{Ecuaciones en diferencias con coeficientes constantes}\label{sec:diferencias}
+% -------------------------------------------------------------------------
+
+\begin{definicion}[Ecuación en diferencias lineal]\label{def:diferencias}
+Sean $k\in\N$, $k\ge 1$, y $a_0,\dots,a_k\in\C$ con $a_k\neq 0$ y $a_0\neq0$.
+Una \emph{ecuación en diferencias lineal homogénea de orden $k$ con
+coeficientes constantes} es una relación
+\begin{equation}\label{eq:diferencias}
+  a_k\,f(n+k)+a_{k-1}\,f(n+k-1)+\dots+a_1\,f(n+1)+a_0\,f(n)=0,
+  \qquad n\in\N ,
+\end{equation}
+cuya incógnita es una sucesión $f\colon\N\to\C$. Su \emph{polinomio
+característico} es $\chi(\lambda)=a_k\lambda^k+a_{k-1}\lambda^{k-1}+\dots+a_0$.
+\end{definicion}
+
+Como $a_k\neq 0$, la ecuación \eqref{eq:diferencias} permite despejar
+$f(n+k)$ en función de los $k$ valores anteriores: fijados
+$f(0),\dots,f(k-1)$, la sucesión queda determinada por inducción. El conjunto
+de soluciones es, por tanto, un espacio vectorial de dimensión $k$, en
+perfecto paralelismo con el teorema de existencia y unicidad de las EDO
+lineales.
+
+\begin{proposicion}[Ansatz exponencial discreto]\label{prop:ansatz-discreto}
+La sucesión $f(n)=\lambda^n$, con $\lambda\neq0$, es solución de
+\eqref{eq:diferencias} si y solo si $\chi(\lambda)=0$. Si $\chi$ tiene $k$
+raíces distintas $\lambda_1,\dots,\lambda_k$, la solución general es
+\begin{equation}\label{eq:sol-diferencias}
+  f(n)=C_1\lambda_1^{\,n}+C_2\lambda_2^{\,n}+\dots+C_k\lambda_k^{\,n},
+  \qquad C_1,\dots,C_k\in\C .
+\end{equation}
+Si $\lambda_j$ es raíz de multiplicidad $m_j$, las sucesiones
+$n^{i}\lambda_j^{\,n}$, $0\le i<m_j$, sustituyen a las potencias repetidas.
+\end{proposicion}
+
+\begin{proof}
+Sustituyendo $f(n)=\lambda^n$ y extrayendo el factor común $\lambda^n\neq0$,
+\begin{equation}\label{eq:caracteristico}
+  \lambda^n\bigl(a_k\lambda^k+a_{k-1}\lambda^{k-1}+\dots+a_0\bigr)=\lambda^n\chi(\lambda)=0
+  \iff \chi(\lambda)=0 .
+\end{equation}
+Por linealidad, \eqref{eq:sol-diferencias} es solución. Para ver que es la
+general basta comprobar que se pueden imponer datos iniciales arbitrarios
+$f(0),\dots,f(k-1)$: el sistema lineal resultante para $(C_1,\dots,C_k)$
+tiene por matriz la de Vandermonde $\bigl(\lambda_j^{\,i}\bigr)_{0\le i<k,\,1\le j\le k}$,
+cuyo determinante $\prod_{i<j}(\lambda_j-\lambda_i)$ no se anula por ser las
+raíces distintas. El caso de raíces múltiples es análogo al de las EDO y
+se omite (véase \cite[cap.~2]{ELAYDI}).
+\end{proof}
+
+\begin{ejemplo}[Sucesión de Fibonacci]\label{ej:fibonacci}
+La ecuación $f(n+2)=f(n+1)+f(n)$, con $f(0)=0$, $f(1)=1$, tiene polinomio
+característico $\lambda^2-\lambda-1$, de raíces
+$\varphi=\tfrac{1+\sqrt5}{2}$ y $\psi=\tfrac{1-\sqrt5}{2}$. Imponiendo los
+datos iniciales en $f(n)=C_1\varphi^n+C_2\psi^n$ se obtiene la fórmula de
+Binet,
+\[
+  f(n)=\frac{\varphi^{n}-\psi^{n}}{\sqrt5},
+\]
+exactamente como se resolvería $y''-y'-y=0$ con $y=\eul^{\lambda x}$.
+\end{ejemplo}
+
+El paralelismo es completo y se resume en la \cref{tab:analogia}: el
+operador de derivación $D=\dif/\dif x$ desempeña en el continuo el papel del
+operador de desplazamiento $E\colon f(n)\mapsto f(n+1)$ en el discreto.
+
+\begin{table}[ht]
+\centering
+\caption{Diccionario entre las EDO lineales con coeficientes constantes y
+las ecuaciones en diferencias lineales con coeficientes constantes.}
+\label{tab:analogia}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}l>{\centering\arraybackslash}p{4.6cm}>{\centering\arraybackslash}p{4.6cm}@{}}
+\toprule
+ & \textcolor{cian}{\bfseries Continuo (EDO)} & \textcolor{cian}{\bfseries Discreto (diferencias)}\\
+\midrule
+Incógnita            & $y(x)$, $x\in\R$                     & $f(n)$, $n\in\N$\\
+Operador básico      & $D\colon y\mapsto y'$                & $E\colon f(n)\mapsto f(n+1)$\\
+Ecuación             & $\sum_{j} a_j\,D^{j}y=0$             & $\sum_{j} a_j\,E^{j}f=0$\\
+Ansatz               & $y=\eul^{\lambda x}$                 & $f(n)=\lambda^{n}$\\
+Polinomio característico & $\sum_j a_j\lambda^j=0$          & $\sum_j a_j\lambda^j=0$\\
+Raíz de multiplicidad $m$ & $x^{i}\eul^{\lambda x}$, $i<m$  & $n^{i}\lambda^{n}$, $i<m$\\
+Datos que fijan la solución & $y(x_0),\dots,y^{(k-1)}(x_0)$ & $f(0),\dots,f(k-1)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{observacion}[$E=\eul^{D}$]\label{obs:E-expD}
+El diccionario no es una mera coincidencia formal. Si $y$ es una función
+cuya serie de Taylor en $x$ converge a $y$ en un radio mayor que $1$,
+\[
+  y(x+1)=\sum_{k=0}^{\infty}\frac{y^{(k)}(x)}{k!}
+        =\Bigl(\sum_{k=0}^{\infty}\frac{D^{k}}{k!}\Bigr)y(x)
+        \eqqcolon \eul^{D}y(x),
+\]
+de modo que $E=\eul^{D}$ y el ansatz $\lambda^n=\eul^{n\ln\lambda}$ es el
+ansatz exponencial evaluado en los enteros. Esta identidad exige que $y$ sea
+\emph{analítica} (\cref{def:analitica}): la noción central de este tema
+aparece ya en la motivación.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Por qué nos interesa: de la EDO a la recurrencia}\label{sec:por-que}
+% -------------------------------------------------------------------------
+
+Cuando los coeficientes de la EDO dependen de $x$, el ansatz
+$y=\eul^{\lambda x}$ deja de funcionar. La estrategia de este tema consiste
+en proponer una \emph{serie de potencias} $y=\sum a_n(x-x_0)^n$ y traducir la
+ecuación diferencial para $y(x)$ en una ecuación en diferencias ---una
+\emph{relación de recurrencia}--- para la sucesión de coeficientes
+$(a_n)_{n\ge0}$. Cambiamos así un problema continuo por uno discreto
+(\cref{fig:analogia}). Dos diferencias con respecto a la
+\cref{def:diferencias} merecen destacarse desde ahora:
+\begin{enumerate}[label=(\roman*)]
+  \item los coeficientes de la recurrencia \emph{dependen de $n$}; por
+        ejemplo, $y''+y=0$ conduce a $(n+2)(n+1)\,a_{n+2}+a_n=0$;
+  \item si los coeficientes de la EDO no son polinómicos, la recurrencia
+        involucra \emph{todos} los coeficientes anteriores (es de orden no
+        acotado), como veremos en la \cref{sec:recurrencia}.
+\end{enumerate}
+
+\input{figuras/fig_analogia}

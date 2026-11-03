@@ -1,0 +1,62 @@
+% Figura: 1/(1+x^2) — polos complejos ±i y radio de convergencia R = 1
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  % ---------------- (a) Plano complejo: retrato de fase y disco ----------------
+  \begin{axis}[name=fase, oscuro, grid=none, view={0}{90},
+      width=6.3cm, height=6.3cm, axis equal image,
+      colormap name=fase, shader=flat corner,
+      point meta min=-180, point meta max=180,
+      xmin=-2, xmax=2, ymin=-2, ymax=2,
+      xtick={-2,-1,0,1,2}, ytick={-2,-1,0,1,2},
+      samples=\resF, samples y=\resF, domain=-2:2, y domain=-2:2,
+      xlabel={$\Real z$}, ylabel={$\Imag z$},
+      title={(a) Plano complejo: $\arg\dfrac{1}{1+z^{2}}$}]
+    \addplot3[surf, point meta={-atan2(2*x*y,1+x^2-y^2)}] (x, y, 0);
+    % disco de convergencia |z| < 1
+    \addplot3[blanco, line width=1.1pt, domain=0:360, samples=120, samples y=0]
+      ({cos(x)}, {sin(x)}, 0);
+    % intervalo real de convergencia
+    \addplot3[blanco, line width=2.6pt, samples y=0] coordinates {(-1,0,0) (1,0,0)};
+    \addplot3[only marks, mark=*, mark size=1.8pt, blanco, samples y=0]
+      coordinates {(-1,0,0) (1,0,0)};
+    % radio
+    \addplot3[blanco, line width=0.8pt, densely dashed, samples y=0]
+      coordinates {(0,0,0) (0.7071,-0.7071,0)};
+    % polos
+    \addplot3[only marks, mark=x, mark size=4pt, line width=1.5pt, blanco, samples y=0]
+      coordinates {(0,1,0) (0,-1,0)};
+    \node[fill=fondo, fill opacity=0.8, text opacity=1, font=\scriptsize,
+          inner sep=1.5pt, rounded corners=1pt] at (axis cs:0.42,1.36,0) {$+\iu$};
+    \node[fill=fondo, fill opacity=0.8, text opacity=1, font=\scriptsize,
+          inner sep=1.5pt, rounded corners=1pt] at (axis cs:0.42,-1.36,0) {$-\iu$};
+    \node[fill=fondo, fill opacity=0.8, text opacity=1, font=\scriptsize,
+          inner sep=1.5pt, rounded corners=1pt] at (axis cs:1.35,-0.95,0) {$R=1$};
+  \end{axis}
+
+  % ---------------- (b) Recta real: sumas parciales ----------------------------
+  \begin{axis}[at={($(fase.east)+(1.45cm,0)$)}, anchor=west, oscuro,
+      width=7.2cm, height=5.9cm,
+      xmin=-1.6, xmax=1.6, ymin=-0.6, ymax=1.6,
+      xtick={-1.5,-1,-0.5,0,0.5,1,1.5}, ytick={-0.5,0,0.5,1,1.5},
+      xlabel={$x$}, title={(b) Recta real: sumas parciales $S_N$},
+      legend style={at={(0.5,0.03)}, anchor=south, legend columns=2},
+      samples=241, domain=-1.6:1.6]
+    \fill[grisoscuro, opacity=0.55] (axis cs:-1.6,-0.6) rectangle (axis cs:-1,1.6);
+    \fill[grisoscuro, opacity=0.55] (axis cs:1,-0.6) rectangle (axis cs:1.6,1.6);
+    \addplot[c2, restrict y to domain=-5:5] {(1+x^6)/(1+x^2)};
+    \addplot[c3, restrict y to domain=-5:5] {(1-x^12)/(1+x^2)};
+    \addplot[c4, restrict y to domain=-5:5] {(1+x^26)/(1+x^2)};
+    \addplot[blanco, line width=1.6pt] {1/(1+x^2)};
+    \legend{$S_{4}$, $S_{10}$, $S_{24}$, $\frac{1}{1+x^{2}}$}
+  \end{axis}
+\end{tikzpicture}
+\caption{(a) Retrato de fase de $f(z)=1/(1+z^{2})$. Los polos $z=\pm\iu$
+(marcados con $\times$) están a distancia $1$ del origen; el mayor disco
+centrado en $0$ que no los contiene es $\abs{z}<1$, cuya intersección con la
+recta real es el intervalo $(-1,1)$ (trazo grueso). (b) Las sumas parciales
+$S_{2N}(x)=\sum_{n=0}^{N}(-1)^n x^{2n}$ de \eqref{eq:lorentz} se acercan a
+$f$ en $\abs{x}<1$ y se separan bruscamente de ella en $\abs{x}>1$
+(zonas sombreadas), pese a que $f$ es perfectamente regular sobre $\R$.}
+\label{fig:radio}
+\end{figure}

@@ -1,0 +1,50 @@
+% Figura: disco de convergencia garantizado por el teorema de Fuchs
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.15]
+  % coordenadas: x0 = 0.6; ceros de P: zeta1 = 3.3 (real), zeta2,3 = -0.6 ± 1.9 i
+  \def\xo{0.6}
+  \pgfmathsetmacro{\radio}{sqrt((0.6+0.6)^2+1.9^2)}   % = dist(x0, zeta2) ≈ 2.247
+  % disco
+  \fill[cian, opacity=0.13] (\xo,0) circle (\radio);
+  \draw[cian, line width=0.9pt] (\xo,0) circle (\radio);
+  % ejes
+  \draw[eje] (-2.6,0) -- (4.5,0) node[right, etiqgris] {$\Real z$};
+  \draw[eje] (0,-2.75) -- (0,2.85) node[above, etiqgris] {$\Imag z$};
+  % intervalo real de convergencia
+  \draw[ambar, line width=2.4pt] ({\xo-\radio},0) -- ({\xo+\radio},0);
+  \fill[ambar] ({\xo-\radio},0) circle (1.7pt);
+  \fill[ambar] ({\xo+\radio},0) circle (1.7pt);
+  \node[font=\footnotesize, text=ambar, anchor=north] at ({\xo-\radio-0.05},-0.12) {$x_0-R$};
+  \node[font=\footnotesize, text=ambar, anchor=north] at ({\xo+\radio+0.05},-0.12) {$x_0+R$};
+  % radio hasta el cero complejo más cercano
+  \draw[blanco, line width=0.8pt, densely dashed] (\xo,0) -- (-0.6,1.9)
+     node[midway, right=3pt, font=\small] {$R$};
+  % centro
+  \node[punto] at (\xo,0) {};
+  \node[font=\small, anchor=north] at (\xo+0.12,-0.12) {$x_0$};
+  % ceros de P
+  \node[polo] at (3.3,0) {};
+  \node[polo] at (-0.6,1.9) {};
+  \node[polo] at (-0.6,-1.9) {};
+  \node[font=\small, text=rojo, anchor=south] at (3.3,0.14) {$\zeta_1$};
+  \node[font=\small, text=rojo, anchor=east] at (-0.72,1.98) {$\zeta_2$};
+  \node[font=\small, text=rojo, anchor=east] at (-0.72,-1.98) {$\zeta_3=\overline{\zeta_2}$};
+  % rótulo del disco
+  \node[font=\small, text=cian, anchor=west] at (2.15,1.75) {$\abs{z-x_0}<R$};
+  % leyenda
+  \begin{scope}[shift={(5.0,1.6)}]
+    \node[polo] at (0,0) {};
+    \node[etiqgris, anchor=west] at (0.2,0) {ceros de $P$ en $\C$};
+    \draw[ambar, line width=2.4pt] (-0.15,-0.55) -- (0.15,-0.55);
+    \node[etiqgris, anchor=west] at (0.2,-0.55) {convergencia en $\R$};
+  \end{scope}
+\end{tikzpicture}
+\caption{Teorema de Fuchs. El disco de convergencia garantizado está
+centrado en el punto ordinario $x_0$ y llega hasta el cero complejo de $P$
+más próximo, aquí el par conjugado $\zeta_{2,3}$. Aunque el único cero
+\emph{real}, $\zeta_1$, está más lejos, es $\zeta_2$ quien fija
+$R=\abs{\zeta_2-x_0}$ y, con él, el intervalo real $(x_0-R,\,x_0+R)$ en
+el que converge la serie.}
+\label{fig:fuchs}
+\end{figure}

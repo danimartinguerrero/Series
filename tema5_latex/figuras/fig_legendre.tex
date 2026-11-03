@@ -1,0 +1,44 @@
+% Figura: polinomios de Legendre y serie no truncada para l = 1
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.3cm},
+      oscuro, width=0.5\textwidth, height=6.2cm, xmin=-1, xmax=1,
+      xtick={-1,-0.5,0,0.5,1}, xlabel={$x$}]
+    % ---------- (a) P_0 ... P_4 ----------
+    \nextgroupplot[ymin=-1.1, ymax=1.1, ytick={-1,-0.5,0,0.5,1},
+        title={(a) Polinomios $P_\ell$ (series truncadas)},
+        samples=200, domain=-1:1,
+        legend style={at={(0.5,-0.24)}, anchor=north, legend columns=5,
+                      /tikz/every even column/.append style={column sep=3pt}}]
+      \addplot[line width=1.15pt, gris] {1};
+      \addplot[c1] {x};
+      \addplot[c2] {0.5*(3*x^2-1)};
+      \addplot[c3] {0.5*(5*x^3-3*x)};
+      \addplot[c4] {(35*x^4-30*x^2+3)/8};
+      \legend{$P_0$, $P_1$, $P_2$, $P_3$, $P_4$}
+    % ---------- (b) y1 = 1 - x artanh x ----------
+    \nextgroupplot[ymin=-2.6, ymax=1.25, ytick={-2,-1,0,1},
+        title={(b) Serie par para $\ell=1$: no se corta},
+        legend style={at={(0.5,-0.24)}, anchor=north, legend columns=5,
+                      /tikz/every even column/.append style={column sep=3pt}}]
+      \draw[guia] (axis cs:-1,-2.6) -- (axis cs:-1,1.25);
+      \draw[guia] (axis cs:1,-2.6) -- (axis cs:1,1.25);
+      \addplot[c2] table[x=x, y=S1] {datos/legendre_l1_parciales.dat};
+      \addplot[c3] table[x=x, y=S2] {datos/legendre_l1_parciales.dat};
+      \addplot[c4] table[x=x, y=S4] {datos/legendre_l1_parciales.dat};
+      \addplot[c5] table[x=x, y=S8] {datos/legendre_l1_parciales.dat};
+      \addplot[blanco, line width=1.6pt, samples=400, domain=-0.997:0.997]
+        {1-0.5*x*ln((1+x)/(1-x))};
+      \legend{$S_1$, $S_2$, $S_4$, $S_8$, $y_1$}
+  \end{groupplot}
+\end{tikzpicture}
+\caption{(a) Para $\ell\in\N$ la serie de la paridad de $\ell$ se corta y da
+el polinomio de Legendre $P_\ell$, regular en todo $[-1,1]$ (y, de hecho, en
+todo $\R$). (b) Para $\ell=1$, la serie par
+$y_1=1-x\artanh x$ de \eqref{eq:legendre-q1} y sus sumas parciales
+$S_M=1-\sum_{k=1}^{M}x^{2k}/(2k-1)$: la convergencia se degrada al
+acercarse a $x=\pm1$, donde $y_1$ diverge logarítmicamente. El radio $R=1$
+del \cref{teo:fuchs} se alcanza.}
+\label{fig:legendre}
+\end{figure}

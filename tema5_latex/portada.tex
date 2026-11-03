@@ -1,0 +1,64 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Portada oscura: identificación institucional, título, superficie
+% |1/(1+z^2)| coloreada por la fase (los dos polos z = ±i que limitan el
+% radio de convergencia de la serie real) y datos de autoría.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+  \coordinate (O) at (current page.south west);
+  \coordinate (C) at ($(O)+(10.5cm,0)$);
+
+  % Logotipo y cabecera institucional
+  \node[anchor=north, inner sep=0] at ($(C)+(0,27.6cm)$)
+    {\includegraphics[height=1.45cm]{logo_usal_blanco.png}};
+  \draw[grismedio, line width=0.35pt] ($(O)+(3.0cm,25.6cm)$) -- ($(O)+(18.0cm,25.6cm)$);
+  \node[anchor=north, align=center, inner sep=0] at ($(C)+(0,25.15cm)$)
+    {{\color{gris}\scshape\small\textls[140]{\Facultad\ \ ·\ \ \Titulacion}}};
+
+  % Asignatura, tema y título
+  \node[anchor=north, align=center, inner sep=0, text width=16cm] at ($(C)+(0,23.3cm)$)
+    {{\color{cian}\scshape\large\textls[180]{\Asignatura}}\\[6pt]
+     {\color{gris}\scshape\normalsize\textls[140]{\NumTema}}\\[20pt]
+     {\color{blanco}\fontsize{27}{34}\selectfont\bfseries\TituloTema}\\[14pt]
+     {\color{cian}\rule{3.2cm}{0.7pt}}\\[12pt]
+     {\color{texto}\itshape\large\SubtituloTema}};
+
+  % Superficie |f(z)| de f(z) = 1/(1+z^2), coloreada por arg f(z)
+  \node[anchor=center, inner sep=0] at ($(C)+(0,10.9cm)$) {%
+    \begin{tikzpicture}
+      % La fase salta de +180 a -180 grados sobre el eje imaginario |y|>1:
+      % se dibuja la superficie en dos mitades (primero la lejana, x>0) para que el
+      % sombreado interpolado no recorra todo el círculo cromático en el corte.
+      \begin{axis}[superficie, width=15.5cm, height=11.5cm,
+          view={-28}{24}, axis lines=none, clip=false,
+          y domain=-2:2, samples=\resPx, samples y=\resPy,
+          zmin=0, zmax=4.6, point meta min=-180, point meta max=180]
+        \addplot3[surf, z buffer=sort, domain=0.0001:2,
+            point meta={-atan2(2*x*y,1+x^2-y^2)}]
+          {min(1/sqrt((1+x^2-y^2)^2+4*x^2*y^2+0.00005),4.6)};
+        \addplot3[surf, z buffer=sort, domain=-2:-0.0001,
+            point meta={-atan2(2*x*y,1+x^2-y^2)}]
+          {min(1/sqrt((1+x^2-y^2)^2+4*x^2*y^2+0.00005),4.6)};
+      \end{axis}
+    \end{tikzpicture}};
+
+  % Epígrafe: la serie entera y la cota del radio
+  \node[anchor=north, align=center, inner sep=0] at ($(C)+(0,5.5cm)$)
+    {\color{texto}$\displaystyle
+      y(x)=\sum_{n=0}^{\infty}a_n\,(x-x_0)^n,\qquad
+      \frac{1}{1+x^{2}}=\sum_{n=0}^{\infty}(-1)^n x^{2n}\quad(\abs{x}<1)$};
+
+  % Autoría, lugar y curso
+  \draw[grismedio, line width=0.35pt] ($(O)+(3.0cm,4.2cm)$) -- ($(O)+(18.0cm,4.2cm)$);
+  \node[anchor=north west, inner sep=0, align=left] at ($(O)+(3.0cm,3.75cm)$)
+    {{\scshape\small\color{cian}\textls[100]{Autor}}\\[3pt]
+     {\large\color{blanco}\miNombre}};
+  \node[anchor=north, inner sep=0, align=center] at ($(C)+(0,3.75cm)$)
+    {{\scshape\small\color{cian}\textls[100]{Profesorado}}\\[3pt]
+     {\small\color{texto}\miProfesorado}};
+  \node[anchor=north east, inner sep=0, align=right] at ($(O)+(18.0cm,3.75cm)$)
+    {{\scshape\small\color{cian}\textls[100]{\tipotrabajo}}\\[3pt]
+     {\color{gris}\miUbicacion}};
+\end{tikzpicture}
+\end{titlepage}

@@ -1,0 +1,47 @@
+% Figura: delta -> escalón -> rampa (cada integración suaviza)
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[x=0.95cm, y=0.95cm]
+  % ---------- Panel 1: delta ----------
+  \begin{scope}
+    \draw[eje] (-1.7,0) -- (1.9,0) node[right, etiqgris] {$x$};
+    \draw[eje] (0,-0.35) -- (0,2.4);
+    \draw[-{Stealth[length=7pt,width=6pt]}, line width=1.4pt, cian] (0,0) -- (0,1.75);
+    \draw[line width=1.2pt, cian] (-1.6,0) -- (1.75,0);
+    \node[etiq, anchor=west] at (0.15,1.6) {$\delta(x)$};
+    \node[etiqgris] at (0.05,-0.55) {$0$};
+    \node[font=\small, text=gris] at (0.1,-1.25) {singular};
+  \end{scope}
+  \draw[flecha, line width=0.8pt, ambar] (2.25,1) -- node[above, etiqgris] {$\displaystyle\int$} (3.25,1);
+  % ---------- Panel 2: escalón ----------
+  \begin{scope}[xshift=5.2cm]
+    \draw[eje] (-1.7,0) -- (1.9,0) node[right, etiqgris] {$x$};
+    \draw[eje] (0,-0.35) -- (0,2.4);
+    \draw[line width=1.4pt, magenta] (-1.6,0) -- (0,0);
+    \draw[line width=1.4pt, magenta] (0,1.2) -- (1.75,1.2);
+    \draw[guia] (0,0) -- (0,1.2);
+    \fill[fondo] (0,0) circle (2.4pt); \draw[magenta, line width=1pt] (0,0) circle (2.4pt);
+    \fill[magenta] (0,1.2) circle (2.4pt);
+    \node[etiq, anchor=south] at (1.0,1.3) {$\Heav(x)$};
+    \node[etiqgris, anchor=east] at (-0.08,1.2) {$1$};
+    \node[etiqgris] at (0.05,-0.55) {$0$};
+    \node[font=\small, text=gris] at (0.1,-1.25) {acotada, discontinua};
+  \end{scope}
+  \draw[flecha, line width=0.8pt, ambar] (7.45,1) -- node[above, etiqgris] {$\displaystyle\int$} (8.45,1);
+  % ---------- Panel 3: rampa ----------
+  \begin{scope}[xshift=10.4cm]
+    \draw[eje] (-1.7,0) -- (1.9,0) node[right, etiqgris] {$x$};
+    \draw[eje] (0,-0.35) -- (0,2.4);
+    \draw[line width=1.4pt, ambar] (-1.6,0) -- (0,0) -- (1.6,1.6);
+    \node[etiq, anchor=east] at (-0.2,1.55) {$x\,\Heav(x)$};
+    \node[etiqgris] at (0.05,-0.55) {$0$};
+    \node[font=\small, text=gris] at (0.1,-1.25) {continua};
+  \end{scope}
+\end{tikzpicture}
+\caption{Cada integración gana un grado de regularidad: la delta de Dirac
+(singular) se integra en el escalón de Heaviside $\Heav$ (acotado pero
+discontinuo), y éste en la rampa $x\,\Heav(x)$ (continua, con derivada
+discontinua). Por la \eqref{eq:despeje}, la solución $y$ se obtiene
+integrando dos veces una expresión en los coeficientes.}
+\label{fig:regularidad}
+\end{figure}

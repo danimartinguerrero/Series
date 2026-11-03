@@ -1,0 +1,28 @@
+% Figura: esquema del método (continuo -> discreto -> continuo)
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \node[nodocian, align=center, text width=4.1cm, minimum height=1.5cm] (edo) at (0,0)
+    {\textcolor{cian}{\bfseries EDO}\\[3pt] $P\,y''+A\,y'+B\,y=0$\\[2pt]
+     \footnotesize\color{gris} incógnita: la función $y(x)$};
+  \node[nodoambar, align=center, text width=4.6cm, minimum height=1.5cm] (rec) at (8.6,0)
+    {\textcolor{ambar}{\bfseries Recurrencia}\\[3pt] $a_{n+2}=\Phi_n(a_0,\dots,a_{n+1})$\\[2pt]
+     \footnotesize\color{gris} incógnita: la sucesión $(a_n)_{n\ge0}$};
+  \node[nodovioleta, align=center, minimum height=1.1cm, inner xsep=10pt] (sol) at (4.3,-2.9)
+    {\textcolor{violeta}{\bfseries Solución}\quad
+     $y(x)=\sum_{n\ge0}a_n(x-x_0)^n$};
+
+  \draw[flecha, cian] (edo.east) -- (rec.west)
+     node[midway, above=3pt, etiqgris] {ansatz en serie}
+     node[midway, below=3pt, etiqgris] {continuo $\to$ discreto};
+  \draw[flecha, ambar] (rec.south) |- (sol.east)
+     node[pos=0.25, right=4pt, etiqgris, align=left] {resolver\\por inducción};
+  \draw[flecha, violeta] (sol.west) -| (edo.south)
+     node[pos=0.75, left=4pt, etiqgris, align=right] {sumar la serie\\(radio $R>0$)};
+\end{tikzpicture}
+\caption{Estructura del método de series. La ecuación diferencial para
+$y(x)$ se convierte en una ecuación en diferencias para los coeficientes
+$a_n$; resuelta ésta, la serie reconstruye la solución en el disco de
+convergencia.}
+\label{fig:analogia}
+\end{figure}
