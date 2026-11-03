@@ -1,0 +1,114 @@
+% =========================================================================
+\section{Raíces múltiples}\label{sec:multiples}
+% =========================================================================
+
+Si $\lambda_k$ tiene multiplicidad $m_k>1$, la exponencial $\eul^{\lambda_kx}$
+está en $\Ker(D-\lambda_k)^{m_k}$, pero veremos que ese núcleo tiene
+dimensión $m_k$: faltan $m_k-1$ soluciones.
+
+% -------------------------------------------------------------------------
+\subsection{Conjugación por la exponencial}\label{sec:conjugacion}
+% -------------------------------------------------------------------------
+
+\begin{lema}[«Derivada covariante»]\label{lem:covariante}
+Para todo $\lambda\in\C$, todo $m\in\N$ y toda $g\in\mathcal C^{m}(I)$,
+\begin{equation}\label{eq:covariante}
+  (D-\lambda)\bigl(\eul^{\lambda x}g\bigr)=\eul^{\lambda x}g',
+  \qquad
+  (D-\lambda)^{m}\bigl(\eul^{\lambda x}g\bigr)=\eul^{\lambda x}g^{(m)} .
+\end{equation}
+Es decir, $\eul^{-\lambda x}(D-\lambda)\,\eul^{\lambda x}=D$: conjugado por la
+exponencial, $D-\lambda$ actúa como la derivada ordinaria.
+\end{lema}
+
+\begin{proof}
+$(D-\lambda)(\eul^{\lambda x}g)=\lambda\eul^{\lambda x}g+\eul^{\lambda x}g'-\lambda\eul^{\lambda x}g=\eul^{\lambda x}g'$.
+La segunda igualdad se obtiene aplicando la primera $m$ veces (inducción
+sobre $m$).
+\end{proof}
+
+\begin{proposicion}[Núcleo de $(D-\lambda)^{m}$]\label{prop:nucleo}
+Para todo $\lambda\in\C$ y todo $m\ge1$,
+\begin{equation}\label{eq:nucleo}
+  \Ker(D-\lambda)^{m}=\spanop\bigl\{\eul^{\lambda x},\,x\,\eul^{\lambda x},\,\dots,\,x^{m-1}\eul^{\lambda x}\bigr\},
+  \qquad \dim\Ker(D-\lambda)^{m}=m .
+\end{equation}
+\end{proposicion}
+
+\begin{proof}
+Toda función se escribe como $y=\eul^{\lambda x}g$ con $g=\eul^{-\lambda x}y$.
+Por el \cref{lem:covariante},
+\[
+  (D-\lambda)^{m}y=0\iff g^{(m)}=0\iff g(x)=c_0+c_1x+\dots+c_{m-1}x^{m-1}.
+\]
+Las $m$ funciones $x^{j}\eul^{\lambda x}$ son independientes porque
+$\eul^{\lambda x}\neq0$ y los monomios lo son.
+\end{proof}
+
+% -------------------------------------------------------------------------
+\subsection{Solución general}\label{sec:general-multiples}
+% -------------------------------------------------------------------------
+
+\begin{lema}[Independencia]\label{lem:independencia}
+Si $\lambda_1,\dots,\lambda_r\in\C$ son distintas y $P_1,\dots,P_r$ son
+polinomios con $\sum_kP_k(x)\,\eul^{\lambda_kx}\equiv0$ en $I$, entonces
+$P_1=\dots=P_r=0$.
+\end{lema}
+
+\begin{proof}
+Por inducción sobre $r$; el caso $r=1$ es inmediato. Multiplicando por
+$\eul^{-\lambda_rx}$ y derivando $\deg P_r+1$ veces se elimina el último
+término. Como $D\bigl(P\eul^{\mu x}\bigr)=(P'+\mu P)\,\eul^{\mu x}$ y
+$\mu=\lambda_k-\lambda_r\neq0$ para $k<r$, cada derivación transforma
+$P_k\eul^{(\lambda_k-\lambda_r)x}$ en $Q_k\eul^{(\lambda_k-\lambda_r)x}$ con
+$\deg Q_k=\deg P_k$. La hipótesis de inducción da $Q_k=0$, luego $P_k=0$
+para $k<r$, y entonces $P_r\eul^{\lambda_rx}\equiv0$ obliga a $P_r=0$.
+\end{proof}
+
+\begin{teorema}[Base de $\Ker\Lop$ con coeficientes constantes]\label{teo:base}
+Con la factorización \eqref{eq:factorizacion-L}, las $n$ funciones
+$x^{j}\eul^{\lambda_kx}$, $0\le j<m_k$, $1\le k\le r$, forman una base de
+$\Ker\Lop$, y
+\begin{equation}\label{eq:yh-general}
+  y_h(x)=\sum_{k=1}^{r}\bigl(c_{k,0}+c_{k,1}\,x+\dots+c_{k,m_k-1}\,x^{m_k-1}\bigr)\,\eul^{\lambda_kx}.
+\end{equation}
+\end{teorema}
+
+\begin{proof}
+Por la conmutatividad (\cref{prop:factorizacion}) podemos escribir el
+factor $(D-\lambda_k)^{m_k}$ en último lugar, de modo que actúe primero:
+$\Ker(D-\lambda_k)^{m_k}\subseteq\Ker\Lop$. Por la \cref{prop:nucleo} esto
+aporta $m_k$ soluciones, $\sum_km_k=n$ en total, independientes por el
+\cref{lem:independencia}. Como $\dim\Ker\Lop=n$ (\cref{teo:dimension}),
+forman una base.
+\end{proof}
+
+\begin{observacion}[Raíces próximas \cite{TEMARIO}]\label{obs:proximas}
+El factor $x$ aparece de forma natural como límite. Si $\lambda_1\neq\lambda_2$
+son raíces, el cociente
+$\bigl(\eul^{\lambda_2x}-\eul^{\lambda_1x}\bigr)/(\lambda_2-\lambda_1)$ es
+solución; cuando $\lambda_2\to\lambda_1$ tiende a
+$\partial_\lambda\eul^{\lambda x}\big|_{\lambda_1}=x\,\eul^{\lambda_1x}$, que es la
+segunda solución asociada a la raíz doble.
+\end{observacion}
+
+\begin{ejemplo}[$y'''-4y''+5y'-2y=0$ \cite{TEMARIO}]\label{ej:triple}
+$p(\lambda)=\lambda^{3}-4\lambda^{2}+5\lambda-2=(\lambda-1)^{2}(\lambda-2)$: raíz
+$1$ doble y raíz $2$ simple. Por el \cref{teo:base},
+$y=(k_1+k_2x)\,\eul^{x}+k_3\,\eul^{2x}$.
+\end{ejemplo}
+
+\begin{ejemplo}[Vuelta al caso crítico]\label{ej:critico}
+Para $\nu=2$ en el \cref{ej:amortiguado}, $p(\lambda)=(\lambda+\omega)^{2}$ y
+\begin{equation}\label{eq:critico}
+  y=(c_0+c_1x)\,\eul^{-\omega x},
+\end{equation}
+que es el regreso al equilibrio más rápido sin oscilar (\cref{fig:amortiguado}\,(b)).
+\end{ejemplo}
+
+\begin{observacion}[Raíces complejas múltiples]\label{obs:complejas-multiples}
+Combinando el \cref{teo:base} con la \cref{prop:reales}: un par
+$\alpha\pm\iu\beta$ de multiplicidad $m$ aporta las $2m$ soluciones reales
+$x^{j}\eul^{\alpha x}\cos\beta x$ y $x^{j}\eul^{\alpha x}\sin\beta x$,
+$0\le j<m$.
+\end{observacion}

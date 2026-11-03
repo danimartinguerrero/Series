@@ -1,0 +1,16 @@
+# Ficheros auxiliares de LaTeX
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+# Modo de compilación rápida (local)
+rapido.flag

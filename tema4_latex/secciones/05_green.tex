@@ -1,0 +1,200 @@
+% =========================================================================
+\section{Funciones de Green}\label{sec:green}
+% =========================================================================
+
+% -------------------------------------------------------------------------
+\subsection{Idea: descomponer la fuente}\label{sec:idea-green}
+% -------------------------------------------------------------------------
+Por el principio de superposición (\cref{prop:linealidad}), si
+$b=\sum_kb_k$ y $\Lop[y_{p,k}]=b_k$, entonces $y_p=\sum_ky_{p,k}$: el efecto
+de una combinación lineal de fuentes es la superposición del efecto de cada
+una. ¿Cuál es la forma más elemental de trocear una fuente? La respuesta
+son las \emph{fuentes puntuales}. Por la propiedad de filtrado de la delta
+de Dirac,
+\begin{equation}\label{eq:filtrado}
+  b(x)=\int b(\tilde x)\,\delta(x-\tilde x)\,\dif\tilde x .
+\end{equation}
+La fuente se ve así como una fila de picos infinitamente estrechos: en cada
+punto $\tilde x$ hay una fuente puntual $\delta(x-\tilde x)$ de intensidad
+$b(\tilde x)\,\dif\tilde x$, y la integral es la versión continua de la suma
+$\sum_kb_k$ (el índice discreto $k$ pasa a ser la variable continua
+$\tilde x$). Basta, pues, resolver el problema para un impulso unitario
+(\cref{fig:superposicion}).
+
+\input{figuras/fig_superposicion}
+
+% -------------------------------------------------------------------------
+\subsection{Definición y fórmula de la solución}\label{sec:def-green}
+% -------------------------------------------------------------------------
+
+\begin{definicion}[Función de Green]\label{def:green}
+Una \emph{función de Green} del operador $\Lop$ es una función
+$G(x,\tilde x)$, $x,\tilde x\in I$, que cumple
+\begin{equation}\label{eq:green}
+  \Lop_x\,G(x,\tilde x)=\delta(x-\tilde x),
+\end{equation}
+donde el subíndice indica que $\Lop$ deriva respecto de $x$ (el punto donde
+se \emph{observa} el efecto) y $\tilde x$ (el punto donde está la
+\emph{fuente}) actúa como un parámetro. La igualdad se entiende en sentido
+distribucional: $\Lop_xG=0$ para $x\neq\tilde x$, con las condiciones de
+salto en $x=\tilde x$ de la \cref{prop:salto}
+\textup{\cite{STAKGOLD}, \cite[cap.~10]{ARFKEN}}.
+\end{definicion}
+
+\begin{teorema}[Solución como superposición de impulsos]\label{teo:representacion}
+Si $G$ es una función de Green de $\Lop$, entonces
+\begin{equation}\label{eq:representacion}
+  \boxed{\;y_p(x)=\int G(x,\tilde x)\,b(\tilde x)\,\dif\tilde x\;}
+\end{equation}
+es una solución particular de $\Lop[y]=b$.
+\end{teorema}
+
+\begin{proof}
+A la fuente $b(\tilde x)\,\delta(x-\tilde x)$ le corresponde la respuesta
+$b(\tilde x)\,G(x,\tilde x)$; sumando sobre $\tilde x$ y como $\Lop_x$ sólo
+actúa sobre $x$, entra en la integral y sólo afecta a $G$:
+\begin{equation}\label{eq:comprobacion}
+  \Lop_x\,y_p(x)=\int\ubr{\Lop_xG(x,\tilde x)}{\delta(x-\tilde x)}\,b(\tilde x)\,\dif\tilde x=b(x).
+\end{equation}
+Para la función de Green causal, el \cref{teo:green-variacion} reduce este
+cálculo formal al \cref{teo:variacion}, ya demostrado.
+\end{proof}
+
+\begin{observacion}[$G$ depende del operador, no de la fuente]\label{obs:operador}
+$G$ está asociada a $\Lop$ (y a las condiciones de contorno o iniciales que
+se impongan), no a $b$: se calcula una sola vez y sirve para cualquier
+fuente. Físicamente, $G(x,\tilde x)$ es la \emph{respuesta en $x$ a un
+impulso unitario en $\tilde x$}, y la solución es la suma ponderada de todas
+esas respuestas.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{No unicidad, causalidad y condiciones de salto}\label{sec:salto}
+% -------------------------------------------------------------------------
+$G$ no es única: si $h(x;\tilde x)$ cumple $\Lop_xh=0$, también $G+h$
+satisface \eqref{eq:green}. Se fija imponiendo condiciones de contorno o
+iniciales. Una elección habitual es la \emph{causal} o \emph{retardada}:
+\begin{equation}\label{eq:causal}
+  G(x,\tilde x)=0\qquad\text{para } x<\tilde x
+\end{equation}
+(no hay respuesta antes del impulso).
+
+\begin{proposicion}[Condiciones de salto]\label{prop:salto}
+Sea $G$ de clase $\mathcal C^{n}$ en $x\neq\tilde x$ y solución de
+\eqref{eq:green}. Entonces $G,\partial_xG,\dots,\partial_x^{\,n-2}G$ son
+continuas en $x=\tilde x$ y
+\begin{equation}\label{eq:salto}
+  \partial_x^{\,n-1}G\,\Big|_{x=\tilde x^-}^{x=\tilde x^+}=\frac{1}{a_n(\tilde x)} .
+\end{equation}
+\end{proposicion}
+
+\begin{proof}[Justificación]
+La delta sólo puede equilibrarse con la derivada de mayor orden: si
+$\partial_x^{\,n-1}G$ salta en $c$, entonces $\partial_x^{\,n}G$ contiene
+$c\,\delta(x-\tilde x)$, y $a_n\partial_x^{\,n}G$ aporta
+$a_n(\tilde x)\,c\,\delta$. Si alguna derivada de orden $j\le n-2$ saltara,
+$\partial_x^{\,n}G$ contendría $\delta^{(n-1-j)}$, que nada en $\Lop_xG$
+podría compensar. Integrando \eqref{eq:green} en
+$(\tilde x-\varepsilon,\tilde x+\varepsilon)$ y haciendo $\varepsilon\to0$,
+sólo sobrevive $a_n(\tilde x)\,c=1$.
+\end{proof}
+
+\input{figuras/fig_green}
+
+% -------------------------------------------------------------------------
+\subsection{Conexión con la variación de las constantes}\label{sec:conexion}
+% -------------------------------------------------------------------------
+
+\begin{teorema}[Función de Green causal]\label{teo:green-variacion}
+La función de Green causal de $\Lop$ es
+\begin{equation}\label{eq:green-causal}
+  \boxed{\;G(x,\tilde x)=\Heav(x-\tilde x)\;\yv^{\T}(x)\,W^{-1}(\tilde x)\,\en\,\frac{1}{a_n(\tilde x)}\;}
+\end{equation}
+Es decir: para $x>\tilde x$, $G(\cdot,\tilde x)$ es la solución de la
+homogénea con datos $\bigl(0,\dots,0,1/a_n(\tilde x)\bigr)$ en $\tilde x$.
+Además, \eqref{eq:representacion} con $G$ causal y fuente en
+$[x_0,\infty)$ coincide con \eqref{eq:variacion}.
+\end{teorema}
+
+\begin{proof}
+Para $x>\tilde x$, \eqref{eq:green-causal} es combinación lineal de las
+$\hat y_i$, luego $\Lop_xG=0$; para $x<\tilde x$ es nula. En
+$x=\tilde x^{+}$,
+\[
+  \partial_x^{\,j}G\big|_{x=\tilde x^+}
+  =\bigl(\yv^{(j)}(\tilde x)\bigr)^{\T}W^{-1}(\tilde x)\,\en\,\frac{1}{a_n(\tilde x)}
+  =\frac{\delta_{j,n-1}}{a_n(\tilde x)},\qquad j=0,\dots,n-1,
+\]
+porque $\bigl(\yv^{(j)}\bigr)^{\T}$ es la fila $j$ de $W$ y $W W^{-1}=\mathbb 1$.
+Así se cumplen las condiciones de la \cref{prop:salto}. Finalmente,
+introduciendo $\yv^{\T}(x)$, que no depende de $s$, dentro de la integral
+de \eqref{eq:variacion},
+\begin{equation}\label{eq:variacion-green}
+  y_p(x)=\int_{x_0}^{x}\ubr{\yv^{\T}(x)\,W^{-1}(s)\,\en\,\frac{1}{a_n(s)}}{G(x,s)}\;b(s)\,\dif s ,
+\end{equation}
+y el límite superior $x$ expresa la causalidad: sólo contribuyen las fuentes
+con $s<x$.
+\end{proof}
+
+La variación de las constantes \emph{es} el método de Green: son el mismo
+cálculo visto desde dos lados.
+
+\begin{corolario}[Orden $2$]\label{cor:green-n2}
+Para $n=2$,
+\begin{equation}\label{eq:green-n2}
+  G(x,\tilde x)=\Heav(x-\tilde x)\,
+  \frac{\hat y_1(\tilde x)\,\hat y_2(x)-\hat y_1(x)\,\hat y_2(\tilde x)}{a_2(\tilde x)\,w(\tilde x)} .
+\end{equation}
+\end{corolario}
+
+\begin{ejemplo}[Oscilador]\label{ej:green-oscilador}
+Para $y''+\omega^{2}y=\delta(x-\tilde x)$, con $\hat y_1=\cos\omega x$,
+$\hat y_2=\sin\omega x$, $w=\omega$ y $a_2=1$,
+\begin{equation}\label{eq:green-oscilador}
+  G(x,\tilde x)=\Heav(x-\tilde x)\,\frac{\sin\omega(x-\tilde x)}{\omega},
+\end{equation}
+que sustituida en \eqref{eq:representacion} da exactamente
+\eqref{eq:forzado}. $G$ es la respuesta de un oscilador en reposo a un golpe
+unitario en el instante $\tilde x$: a partir de ahí oscila como
+$\sin\omega(x-\tilde x)$.
+\end{ejemplo}
+
+\begin{ejemplo}[Oscilador amortiguado]\label{ej:green-amortiguado}
+Para $y''+2\gamma y'+\omega^{2}y=\delta(x-\tilde x)$ con $0<\gamma<\omega$
+($\gamma=\nu\omega/2$ en la notación del \cref{ej:amortiguado}), la base
+$\hat y_{1,2}=\eul^{-\gamma x}\{\cos\Omega x,\sin\Omega x\}$,
+$\Omega=\sqrt{\omega^{2}-\gamma^{2}}$, tiene $w=\Omega\,\eul^{-2\gamma x}$, y
+\eqref{eq:green-n2} da
+\begin{equation}\label{eq:green-amortiguado}
+  G(x,\tilde x)=\Heav(x-\tilde x)\,\eul^{-\gamma(x-\tilde x)}\,\frac{\sin\Omega(x-\tilde x)}{\Omega} .
+\end{equation}
+\end{ejemplo}
+
+\begin{observacion}[Invariancia por traslación]\label{obs:convolucion}
+Con coeficientes constantes, $G$ depende sólo de $x-\tilde x$:
+$G(x,\tilde x)=g(x-\tilde x)$. Entonces \eqref{eq:representacion} es una
+\emph{convolución}, $y_p=g*b$.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Puente con el Electromagnetismo}\label{sec:poisson}
+% -------------------------------------------------------------------------
+El mismo esquema funciona en tres dimensiones. En electrostática el
+operador es el laplaciano y la fuente, la densidad de carga: la ecuación de
+Poisson es $\nabla^{2}\phi=-\rho/\varepsilon_0$. La función de Green del
+laplaciano en todo el espacio, con $G\to0$ en el infinito, es
+\begin{equation}\label{eq:green-laplaciano}
+  \nabla_{\bm r}^{2}\,G(\bm r,\bm r')=-\delta^{3}(\bm r-\bm r'),
+  \qquad
+  G(\bm r,\bm r')=\frac{1}{4\pi\abs{\bm r-\bm r'}},
+\end{equation}
+y \eqref{eq:representacion}, en tres dimensiones, da
+\begin{equation}\label{eq:coulomb}
+  \phi(\bm r)=\frac1{\varepsilon_0}\int G(\bm r,\bm r')\,\rho(\bm r')\,\dif^{3}r'
+            =\frac{1}{4\pi\varepsilon_0}\int\frac{\rho(\bm r')}{\abs{\bm r-\bm r'}}\,\dif^{3}r' .
+\end{equation}
+Físicamente, $G$ es el potencial de una carga puntual unidad en $\bm r'$, y
+\eqref{eq:coulomb} es la ley de Coulomb: el potencial de una distribución
+es la superposición de los potenciales de las cargas puntuales
+$\dif q=\rho\,\dif^{3}r'$ \cite[§2.3]{GRIFFITHS}. (El signo de
+\eqref{eq:green-laplaciano} es una convención habitual en electrostática.)

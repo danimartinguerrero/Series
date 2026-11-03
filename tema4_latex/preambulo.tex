@@ -1,0 +1,326 @@
+% =========================================================================
+%  Ecuaciones Diferenciales — Tema 4: EDO lineales de orden superior.
+%  Parte I: estructura de las soluciones, coeficientes constantes,
+%  variación de constantes y funciones de Green.
+%
+%  Estilo: artículo matemático sobre fondo oscuro (texto claro en Computer
+%  Modern, como en las láminas de análisis complejo de referencia), con
+%  enunciados numerados por sección, cajas con pestaña de título para
+%  definiciones y teoremas y figuras TikZ/pgfplots adaptadas al fondo negro.
+% =========================================================================
+
+% --- IDIOMA Y CODIFICACIÓN ------------------------------------------------
+% Se compila con LuaLaTeX (memoria dinámica para las superficies 3D);
+% con pdfLaTeX funciona igualmente reduciendo la resolución de esas figuras.
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\else
+  \usepackage{fontspec}   % Latin Modern (Computer Modern OpenType) por defecto
+\fi
+\usepackage[spanish,es-tabla,es-nodecimaldot,es-noshorthands,es-lcroman]{babel}
+
+% --- TIPOGRAFÍA (Latin Modern = Computer Modern vectorial) ----------------
+\usepackage[final]{microtype}
+\linespread{1.06}
+\emergencystretch=2em
+
+% --- MATEMÁTICAS -------------------------------------------------------------
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{bm}
+\usepackage{mathrsfs}
+\usepackage{cancel}
+
+% --- PÁGINA -----------------------------------------------------------------
+\usepackage[a4paper, top=2.9cm, bottom=2.7cm, left=2.7cm, right=2.7cm,
+            headsep=0.9cm, headheight=22pt]{geometry}
+\usepackage{graphicx}
+
+% --- PALETA OSCURA ------------------------------------------------------------
+\usepackage[table]{xcolor}
+\definecolor{fondo}{HTML}{000000}      % fondo de página (negro puro)
+\definecolor{texto}{HTML}{ECECEC}      % texto principal (blanco suave)
+\definecolor{blanco}{HTML}{FFFFFF}
+\definecolor{negro}{HTML}{000000}
+\definecolor{gris}{HTML}{9CA0A8}       % texto secundario, ejes
+\definecolor{grismedio}{HTML}{5B5F67}  % reglas, marcos tenues
+\definecolor{grisoscuro}{HTML}{2E3036} % rejillas, divisiones
+\definecolor{cajafondo}{HTML}{0E1014}  % interior de las cajas
+\definecolor{cian}{HTML}{20B4CE}       % definiciones y acento principal
+\definecolor{cianclaro}{HTML}{7FDBEA}  % enlaces
+\definecolor{violeta}{HTML}{A48BFA}    % teoremas, proposiciones, lemas
+\definecolor{ambar}{HTML}{F4B740}      % resultados clave, receta
+\definecolor{magenta}{HTML}{E5579D}
+\definecolor{verde}{HTML}{4FD68A}
+\definecolor{naranja}{HTML}{FA8F45}
+\definecolor{rojo}{HTML}{F25F5C}
+
+% Página negra y texto claro. Se fija en el preámbulo para que el color
+% «por defecto» (el que restauran flotantes, notas, cabeceras...) sea el claro.
+\pagecolor{fondo}
+\color{texto}
+
+% --- GRÁFICOS -----------------------------------------------------------------
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, positioning, decorations.pathmorphing,
+                decorations.markings, decorations.pathreplacing, patterns,
+                shapes.geometric, shapes.misc, fit, backgrounds, shadings,
+                fadings, intersections}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{colormaps, fillbetween, groupplots}
+
+% --- LISTAS, TABLAS, CABECERAS ----------------------------------------------
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.6em, itemsep=2pt, topsep=4pt,
+                  label={\color{cian}\scriptsize$\blacktriangleright$}}
+\setlist[enumerate]{leftmargin=1.9em, itemsep=2pt, topsep=4pt}
+\arrayrulecolor{grismedio}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\color{gris}\thepage\hfill\scshape Ecuaciones Diferenciales}
+\fancyhead[RO]{\small\color{gris}\scshape Tema 4\,·\,EDO lineales de orden superior\hfill\upshape\thepage}
+\fancyhead[LO,RE]{}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{grisoscuro}\leaders\hrule height \headrulewidth\hfill}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[C]{\small\color{gris}\thepage}}
+
+% --- TÍTULOS DE SECCIÓN -----------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\section}[block]
+  {\normalfont\Large\bfseries\color{blanco}}
+  {\color{cian}\thesection}{0.9em}{}
+  [{\vspace{3pt}\color{grisoscuro}\titlerule[0.5pt]}]
+\titlespacing*{\section}{0pt}{4.2ex plus 1ex minus .4ex}{2.2ex plus .4ex}
+\titleformat{\subsection}[block]
+  {\normalfont\large\bfseries\color{blanco}}
+  {\color{cian}\thesubsection}{0.8em}{}
+\titlespacing*{\subsection}{0pt}{3.2ex plus 1ex minus .4ex}{1.4ex plus .3ex}
+\titleformat{\paragraph}[runin]
+  {\normalfont\bfseries\color{blanco}}{}{0pt}{}[.]
+\titlespacing*{\paragraph}{0pt}{1.6ex plus .5ex}{0.6em}
+% Evita títulos huérfanos al pie de página
+\usepackage{needspace}
+\usepackage{placeins}
+\usepackage{etoolbox}
+\AtBeginDocument{%
+  \pretocmd{\section}{\needspace{9\baselineskip}}{}{}%
+  \pretocmd{\subsection}{\needspace{6\baselineskip}}{}{}}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+
+% --- ÍNDICE -------------------------------------------------------------------
+\usepackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\normalfont\Large\bfseries\color{blanco}}
+\renewcommand{\cftsecfont}{\bfseries\color{blanco}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{cian}}
+\renewcommand{\cftsubsecfont}{\color{texto}}
+\renewcommand{\cftsubsecpagefont}{\color{gris}}
+\renewcommand{\cftsecleader}{\color{grismedio}\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\color{grisoscuro}\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforesecskip}{6pt}
+\renewcommand{\contentsname}{Índice}
+
+% --- ENLACES Y REFERENCIAS CRUZADAS ----------------------------------------
+\usepackage[colorlinks=true, linkcolor=cianclaro, citecolor=ambar,
+            urlcolor=cianclaro, plainpages=false, pdfusetitle=false,
+            pdftitle={Tema 4. EDO lineales de orden superior y funciones de Green},
+            pdfauthor={Daniel Martín Guerrero},
+            pdfsubject={Ecuaciones Diferenciales},
+            bookmarksnumbered=true]{hyperref}
+\usepackage{amsthm}
+\usepackage[spanish,nameinlink]{cleveref}   % tras amsthm y hyperref
+
+% --- BIBLIOGRAFÍA -----------------------------------------------------------
+\usepackage{csquotes}
+\usepackage[backend=biber, style=numeric, sorting=none, giveninits=true,
+            maxbibnames=6, minbibnames=3, doi=false, url=false,
+            isbn=false]{biblatex}
+\addbibresource{referencias.bib}
+\renewcommand*{\bibfont}{\small}
+\setlength{\bibitemsep}{4pt}
+
+% --- PIES DE FIGURA -------------------------------------------------------
+\usepackage[font={small,color=texto}, labelfont={sc,color=cian},
+            labelsep=period, margin=0.4cm, justification=justified,
+            skip=8pt]{caption}
+\usepackage{subcaption}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+% =========================================================================
+%               NOTACIÓN Y MACROS
+% =========================================================================
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\eul}{\mathrm{e}}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\Abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\defeq}{\mathrel{\overset{\mathrm{def}}{=}}}
+\newcommand{\Cinf}{\mathcal{C}^{\infty}}
+\newcommand{\Com}{\mathcal{C}^{\omega}}           % funciones analíticas reales
+\newcommand{\disco}[2]{D(#1,#2)}                  % disco abierto
+\newcommand{\dd}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\ddd}[2]{\frac{\dif^{2} #1}{\dif #2^{2}}}
+\newcommand{\serie}[3][n]{\sum_{#1=#2}^{\infty}#3}
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\senh}{senh}
+\DeclareMathOperator{\artanh}{artanh}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+\DeclareMathOperator{\Arg}{arg}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Ai}{Ai}
+\DeclareMathOperator{\Bi}{Bi}
+\renewcommand{\sin}{\sen}
+\newcommand{\Heav}{\Theta}
+\newcommand{\Lop}{\mathcal{L}}                     % operador diferencial lineal
+\newcommand{\Dop}{D}                               % D = d/dx
+\newcommand{\yv}{\hat{\bm y}}                      % vector (y_1,...,y_n)^T
+\newcommand{\kv}{\bm{k}}
+\newcommand{\bv}{\bm{b}}
+\newcommand{\en}{\bm{e}_n}
+\newcommand{\T}{\mathsf{T}}
+\DeclareMathOperator{\Ker}{ker}
+\DeclareMathOperator{\spanop}{span}
+\newcommand{\nota}[1]{\textcolor{gris}{#1}}        % texto secundario
+\newcommand{\resalta}[1]{\textcolor{blanco}{\bfseries #1}}
+% Llaves horizontales en color tenue
+\newcommand{\ubr}[2]{\underbrace{#1}_{\textcolor{gris}{#2}}}
+
+% =========================================================================
+%        ENTORNOS FORMALES
+% =========================================================================
+\usepackage[most]{tcolorbox}
+
+% Contador común a todos los enunciados (numeración «sección.n»)
+\newcounter{enunciado}[section]
+\renewcommand{\theenunciado}{\thesection.\arabic{enunciado}}
+
+% --- Cajas con pestaña (definiciones, teoremas, resultados) -------------------
+% #1 color del marco, #2 rótulo completo
+\tcbset{
+  caja/.style={enhanced, colback=cajafondo, colupper=texto,
+    colframe=#1, boxrule=0.7pt, arc=2.5pt, outer arc=2.5pt,
+    left=10pt, right=10pt, top=11pt, bottom=8pt,
+    before skip=16pt plus 2pt, after skip=14pt plus 2pt,
+    attach boxed title to top left={yshift*=-\tcboxedtitleheight/2, xshift=10pt},
+    boxed title style={colback=#1, colframe=#1, arc=2pt, outer arc=2pt,
+                       boxrule=0pt, left=5pt, right=5pt, top=1.5pt, bottom=1.5pt},
+    fonttitle=\sffamily\bfseries\small, coltitle=negro},
+}
+% Constructor: \cajaenunciado{nombre}{Rótulo}{color}{estilo cuerpo}
+\makeatletter
+\newcommand{\cajaenunciado}[4]{%
+  \newcounter{#1}%
+  \expandafter\def\csname the#1\endcsname{\theenunciado}%
+  \expandafter\def\csname theH#1\endcsname{#1.\arabic{#1}}%
+  \newtcolorbox{tcb@#1}[1]{caja=#3,
+      title={#2~\theenunciado\ifx\relax##1\relax\else\ \textnormal{\sffamily(##1)}\fi}}%
+  \newenvironment{#1}[1][]%
+    {\par\stepcounter{enunciado}\refstepcounter{#1}%
+     \begin{tcb@#1}{##1}#4\ignorespaces}%
+    {\end{tcb@#1}}%
+}
+\makeatother
+\cajaenunciado{definicion}{Definición}{cian}{\normalfont}
+\cajaenunciado{teorema}{Teorema}{violeta}{\itshape}
+\cajaenunciado{proposicion}{Proposición}{violeta}{\itshape}
+\cajaenunciado{lema}{Lema}{violeta}{\itshape}
+\cajaenunciado{corolario}{Corolario}{violeta}{\itshape}
+\cajaenunciado{resultado}{Resultado}{ambar}{\normalfont}
+
+% Caja de método (receta), sin numerar
+\newtcolorbox{metodo}[1][Método]{caja=ambar, title={#1}}
+
+% --- Enunciados sin caja (ejemplos, observaciones, notación) -----------------
+\newtheoremstyle{ejemplo}{12pt}{10pt}{\normalfont}{}%
+  {\bfseries\color{cian}}{.}{0.6em}%
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\normalfont\color{gris}\ (#3)}}
+\newtheoremstyle{observacion}{10pt}{10pt}{\normalfont}{}%
+  {\itshape\bfseries\color{violeta}}{.}{0.6em}%
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\normalfont\itshape\color{gris}\ (#3)}}
+\theoremstyle{ejemplo}
+\newtheorem{ejemplo}[enunciado]{Ejemplo}
+\newtheorem{notacion}[enunciado]{Notación}
+\theoremstyle{observacion}
+\newtheorem{observacion}[enunciado]{Observación}
+
+% Demostraciones
+\renewcommand{\qedsymbol}{\textcolor{gris}{$\blacksquare$}}
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{\par
+  \pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax
+  \trivlist\item[\hskip\labelsep\itshape\bfseries\color{gris}#1\@addpunct{.}]\ignorespaces
+}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+\newenvironment{esbozo}{\begin{proof}[Esbozo de la demostración]}{\end{proof}}
+
+% Notas al margen del discurso: «idea», recuadro tenue con barra lateral
+\newtcolorbox{idea}[1][Idea]{enhanced, breakable, colback=cajafondo, colupper=texto,
+  frame hidden, borderline west={2pt}{0pt}{cian!80}, arc=0pt,
+  left=10pt, right=8pt, top=6pt, bottom=6pt, before skip=12pt, after skip=12pt,
+  fontupper=\normalfont,
+  before upper={{\sffamily\bfseries\small\color{cian}#1.}\ }}
+
+\crefname{definicion}{definición}{definiciones}
+\Crefname{definicion}{Definición}{Definiciones}
+\crefname{teorema}{teorema}{teoremas}
+\Crefname{teorema}{Teorema}{Teoremas}
+\crefname{proposicion}{proposición}{proposiciones}
+\Crefname{proposicion}{Proposición}{Proposiciones}
+\crefname{lema}{lema}{lemas}
+\Crefname{lema}{Lema}{Lemas}
+\crefname{corolario}{corolario}{corolarios}
+\Crefname{corolario}{Corolario}{Corolarios}
+\crefname{resultado}{resultado}{resultados}
+\Crefname{resultado}{Resultado}{Resultados}
+\crefname{ejemplo}{ejemplo}{ejemplos}
+\Crefname{ejemplo}{Ejemplo}{Ejemplos}
+\crefname{observacion}{observación}{observaciones}
+\Crefname{observacion}{Observación}{Observaciones}
+\crefname{notacion}{notación}{notaciones}
+\Crefname{notacion}{Notación}{Notaciones}
+\crefname{section}{sección}{secciones}
+\Crefname{section}{Sección}{Secciones}
+\crefname{subsection}{apartado}{apartados}
+\Crefname{subsection}{Apartado}{Apartados}
+\crefname{figure}{figura}{figuras}
+\Crefname{figure}{Figura}{Figuras}
+\crefname{table}{tabla}{tablas}
+\Crefname{table}{Tabla}{Tablas}
+\crefname{equation}{ecuación}{ecuaciones}
+\Crefname{equation}{Ecuación}{Ecuaciones}
+\crefformat{equation}{(#2#1#3)}
+\Crefformat{equation}{Ecuación~(#2#1#3)}
+\crefrangeformat{equation}{(#3#1#4)--(#5#2#6)}
+\crefmultiformat{equation}{(#2#1#3)}{ y~(#2#1#3)}{, (#2#1#3)}{ y~(#2#1#3)}
+
+% Modo rápido: si existe el fichero vacío «rapido.flag», las superficies y
+% retratos de fase se generan con baja resolución (compilación en segundos).
+\newif\ifrapido
+\IfFileExists{rapido.flag}{\rapidotrue}{\rapidofalse}
+\ifrapido
+  \def\resPx{24}\def\resPy{34}\def\resF{41}
+\else
+  \def\resPx{85}\def\resPy{131}\def\resF{141}
+\fi
+
+% =========================================================================
+%        ESTILOS GRÁFICOS COMUNES
+% =========================================================================
+\input{figuras/estilos}

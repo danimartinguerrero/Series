@@ -1,0 +1,127 @@
+% =========================================================================
+\section{Variación de las constantes}\label{sec:variacion}
+% =========================================================================
+
+Este método no exige coeficientes constantes: sólo necesita un sistema
+fundamental $\hat y_1,\dots,\hat y_n$ de la homogénea, con
+$y_h=\sum_ik_i\hat y_i$ \cite[cap.~15]{RILEY}, \cite[cap.~IV]{TEMARIO}.
+
+\begin{observacion}[Nota histórica]\label{obs:historia}
+La idea de «promover las constantes a funciones» aparece en Euler, en sus
+estudios de perturbaciones planetarias (hacia 1748--1753), y Johann
+Bernoulli ya la usaba para la ecuación lineal de primer orden. Lagrange la
+sistematizó para ecuaciones lineales de orden $n$ en la década de 1770,
+con las condiciones \eqref{eq:condiciones}; por eso el método se atribuye
+a Euler o a Lagrange según el texto \cite{KLINE}.
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Ansatz y condiciones impuestas}\label{sec:ansatz-variacion}
+% -------------------------------------------------------------------------
+Buscamos una solución particular de la forma
+\begin{equation}\label{eq:ansatz-variacion}
+  y_p(x)=\sum_{i=1}^{n}k_i(x)\,\hat y_i(x).
+\end{equation}
+Al derivar aparecen términos con $k_i'$. Tenemos $n$ funciones incógnita y
+una sola ecuación, de modo que podemos imponer $n-1$ condiciones. Las
+elegimos para que las derivadas de $y_p$ se comporten como si las $k_i$
+fueran constantes:
+\begin{equation}\label{eq:condiciones}
+  \sum_{i=1}^{n}k_i'\,\hat y_i^{(j)}=0,\qquad j=0,1,\dots,n-2 .
+\end{equation}
+
+\begin{lema}\label{lem:derivadas}
+Bajo \eqref{eq:condiciones}, $y_p^{(j)}=\sum_ik_i\,\hat y_i^{(j)}$ para
+$j\le n-1$, y sólo la última derivada arrastra un término nuevo:
+\begin{equation}\label{eq:derivada-n}
+  y_p^{(n)}=\sum_{i}k_i\,\hat y_i^{(n)}+\sum_{i}k_i'\,\hat y_i^{(n-1)} .
+\end{equation}
+\end{lema}
+
+\begin{proof}
+Por inducción: si $y_p^{(j)}=\sum_ik_i\hat y_i^{(j)}$ con $j\le n-1$,
+derivando, $y_p^{(j+1)}=\sum_ik_i\hat y_i^{(j+1)}+\sum_ik_i'\hat y_i^{(j)}$, y el
+último sumatorio es nulo por \eqref{eq:condiciones} mientras $j\le n-2$.
+\end{proof}
+
+Sustituyendo en $\Lop$ y usando $\Lop[\hat y_i]=0$,
+\begin{equation}\label{eq:ultima-condicion}
+  \Lop[y_p]=\sum_i k_i\ubr{\Lop[\hat y_i]}{0}+\,a_n\sum_i k_i'\,\hat y_i^{(n-1)}=b
+  \quad\Longrightarrow\quad
+  \sum_{i}k_i'\,\hat y_i^{(n-1)}=\frac{b}{a_n}.
+\end{equation}
+
+% -------------------------------------------------------------------------
+\subsection{Forma matricial: el wronskiano}\label{sec:matricial}
+% -------------------------------------------------------------------------
+Las $n$ ecuaciones \eqref{eq:condiciones} y \eqref{eq:ultima-condicion}
+forman un sistema lineal para $\kv'=(k_1',\dots,k_n')^{\T}$ cuya matriz es
+la wronskiana \eqref{eq:wronskiana}:
+\begin{equation}\label{eq:sistema}
+  W(x)\,\kv'(x)=\bv(x),\qquad
+  \bv(x)\defeq\frac{b(x)}{a_n(x)}\,\en=\Bigl(0,\dots,0,\frac{b(x)}{a_n(x)}\Bigr)^{\T}.
+\end{equation}
+
+\begin{teorema}[Fórmula de variación de las constantes]\label{teo:variacion}
+Sean $\yv=(\hat y_1,\dots,\hat y_n)^{\T}$ un sistema fundamental y $x_0\in I$.
+Entonces
+\begin{equation}\label{eq:variacion}
+  \boxed{\;y_p(x)=\yv^{\T}(x)\int_{x_0}^{x}W^{-1}(s)\,\en\,\frac{b(s)}{a_n(s)}\,\dif s\;}
+\end{equation}
+es solución de $\Lop[y]=b$ con $y_p^{(j)}(x_0)=0$, $j=0,\dots,n-1$, y la
+solución general es $y=y_h+y_p$.
+\end{teorema}
+
+\begin{proof}
+Por la \cref{prop:wronskiano}, $W(x)$ es invertible para todo $x\in I$, y
+$W^{-1}$ es continua. Así
+$\kv(x)=\int_{x_0}^{x}W^{-1}(s)\,\bv(s)\,\dif s$ es de clase $\mathcal C^{1}$
+y cumple \eqref{eq:sistema}, es decir, \eqref{eq:condiciones} y
+\eqref{eq:ultima-condicion}; por el \cref{lem:derivadas},
+$\Lop[y_p]=b$. Como $\kv(x_0)=\bm 0$, se tiene
+$y_p^{(j)}(x_0)=\sum_ik_i(x_0)\hat y_i^{(j)}(x_0)=0$ para $j\le n-1$. La
+última afirmación es el \cref{teo:estructura}.
+\end{proof}
+
+\begin{observacion}\label{obs:variacion}
+\leavevmode
+\begin{enumerate}[label=(\roman*)]
+  \item Basta la \emph{última columna} de $W^{-1}$, porque $\bv$ sólo
+        tiene no nula la última componente.
+  \item Como $y_p$ arranca «en reposo» en $x_0$, los datos iniciales de
+        $y=y_h+y_p$ los fija únicamente $y_h$:
+        $y^{(j)}(x_0)=y_h^{(j)}(x_0)$.
+  \item Cambiar el límite inferior $x_0$ añade a $\kv$ un vector constante,
+        es decir, una solución homogénea: no altera la solución general.
+\end{enumerate}
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{El caso \texorpdfstring{$n=2$}{n = 2}}\label{sec:n2}
+% -------------------------------------------------------------------------
+Con $w=\hat y_1\hat y_2'-\hat y_2\hat y_1'$,
+\[
+  W^{-1}=\frac1w\begin{pmatrix}\hat y_2' & -\hat y_2\\ -\hat y_1' & \hat y_1\end{pmatrix},
+  \qquad
+  \yv^{\T}(x)\,W^{-1}(s)\,\bm e_2=\frac{\hat y_1(s)\,\hat y_2(x)-\hat y_1(x)\,\hat y_2(s)}{w(s)},
+\]
+y \eqref{eq:variacion} se reduce a
+\begin{equation}\label{eq:variacion-n2}
+  y_p(x)=\int_{x_0}^{x}\frac{\hat y_1(s)\,\hat y_2(x)-\hat y_1(x)\,\hat y_2(s)}{w(s)}\,\frac{b(s)}{a_2(s)}\,\dif s .
+\end{equation}
+
+\begin{ejemplo}[Oscilador forzado, $y''+\omega^{2}y=b(x)$]\label{ej:forzado}
+Con $\hat y_1=\cos\omega x$ y $\hat y_2=\sin\omega x$ se obtiene $w=\omega$, y
+el numerador de \eqref{eq:variacion-n2} es
+$\sin\omega x\cos\omega s-\cos\omega x\sin\omega s=\sin\omega(x-s)$:
+\begin{equation}\label{eq:forzado}
+  y_p(x)=\frac1\omega\int_{x_0}^{x}\sin\omega(x-s)\;b(s)\,\dif s .
+\end{equation}
+Para $b\equiv1$ y $x_0=0$: $y_p=(1-\cos\omega x)/\omega^{2}$. En efecto,
+$y_p''+\omega^{2}y_p=\cos\omega x+1-\cos\omega x=1$.
+\end{ejemplo}
+
+La forma de \eqref{eq:forzado} es reveladora: la solución es una integral
+de la fuente $b(s)$ ponderada por un \emph{núcleo}
+$\frac1\omega\sin\omega(x-s)$ que no depende de $b$. Ese núcleo es una
+\emph{función de Green}.

@@ -1,0 +1,99 @@
+\documentclass[a4paper,11pt,twoside]{article}
+
+% =========================================================================
+%  Ecuaciones Diferenciales — Tema 4: EDO lineales de orden superior.
+%  Parte I: estructura de las soluciones, coeficientes constantes,
+%  variación de constantes y funciones de Green.
+%
+%  Compilación:   latexmk main.tex      (LuaLaTeX + biber)
+%  Imagen de portada: python3 scripts/generar_portada.py   (ya incluida)
+%  Datos de las gráficas: python3 scripts/generar_datos.py  (ya incluidos)
+% =========================================================================
+\input{preambulo}
+
+% =========================================================================
+%                     VARIABLES PARA LA PORTADA
+% =========================================================================
+\newcommand{\Universidad}{Universidad de Salamanca}
+\newcommand{\Facultad}{Facultad de Ciencias}
+\newcommand{\Titulacion}{Grado en Física}
+\newcommand{\Asignatura}{Ecuaciones Diferenciales}
+\newcommand{\NumTema}{Tema 4}
+\newcommand{\TituloTema}{EDO lineales\\de orden superior}
+\newcommand{\SubtituloTema}{Parte I\,·\,Estructura de las soluciones, coeficientes constantes\\y funciones de Green}
+\newcommand{\tipotrabajo}{Apuntes formalizados}
+\newcommand{\miNombre}{Daniel Martín Guerrero}
+\newcommand{\miProfesorado}{\begin{tabular}{@{}c@{}}Pilar García Estévez\\José Beltrán Jiménez\\María Pérez Garrote\end{tabular}}
+\newcommand{\miUbicacion}{Salamanca, curso 2026/2027}
+
+% =========================================================================
+%                                DOCUMENTO
+% =========================================================================
+\begin{document}
+
+% --- PORTADA ----------------------------------------------------------------
+\pagenumbering{alph}
+\input{portada}
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% --- CABECERA DEL ARTÍCULO ------------------------------------------------
+\thispagestyle{plain}
+\begin{center}
+  {\color{gris}\scshape\small\textls[120]{\Asignatura\ \,·\ \,\NumTema}}\par\vspace{10pt}
+  {\color{blanco}\LARGE\bfseries Ecuaciones diferenciales lineales\\[3pt]
+   de orden superior y funciones de Green}\par\vspace{12pt}
+  {\color{cian}\rule{2.8cm}{0.6pt}}\par\vspace{10pt}
+  {\large\color{texto}\miNombre}\par\vspace{2pt}
+  {\small\itshape\color{gris}\Titulacion, \Facultad, \Universidad}\par
+\end{center}
+\vspace{14pt}
+
+\begin{center}
+\begin{minipage}{0.86\textwidth}
+\small
+{\scshape\color{cian}Resumen.}\ \
+Estudiamos la ecuación lineal de orden $n$
+$\Lop[y]=a_n(x)\,y^{(n)}+\dots+a_0(x)\,y=b(x)$. Toda la teoría descansa en la
+linealidad de $\Lop$: de ella se siguen que las soluciones de la homogénea
+forman un espacio vectorial de dimensión $n$ ---lo que demostramos
+identificándolo con el espacio de datos iniciales--- y que la solución
+general es la suma de la homogénea y una particular. Para coeficientes
+constantes construimos una base del núcleo factorizando $\Lop$ como
+polinomio en $D=\dif/\dif x$, incluido el caso de raíces múltiples, que
+resolvemos con un lema de conjugación por la exponencial. Para la
+particular deducimos la fórmula matricial de variación de las constantes
+y mostramos que coincide con el método de la función de Green, la
+respuesta del sistema a un impulso unitario, que permite escribir la
+solución como superposición de respuestas a fuentes puntuales.
+
+\medskip
+{\scshape\color{cian}Palabras clave.}\ \
+operador lineal, sistema fundamental, wronskiano, polinomio
+característico, raíces múltiples, variación de las constantes, función de
+Green, delta de Dirac, causalidad.
+
+\medskip
+{\scshape\color{cian}MSC 2020.}\ \ 34A30, 34A05, 34B27.
+\end{minipage}
+\end{center}
+
+\clearpage
+{\hypersetup{linkcolor=texto}\tableofcontents}
+\clearpage
+
+\input{secciones/01_estructura}
+\input{secciones/02_coef_constantes}
+\input{secciones/03_raices_multiples}
+\input{secciones/04_variacion}
+\input{secciones/05_green}
+\input{secciones/06_resumen}
+
+% =========================================================================
+%                              BIBLIOGRAFÍA
+% =========================================================================
+\FloatBarrier
+\printbibliography[heading=bibnumbered, title={Referencias}]
+
+\end{document}

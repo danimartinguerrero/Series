@@ -1,0 +1,54 @@
+% =========================================================================
+\section{Resumen operativo}\label{sec:resumen}
+% =========================================================================
+
+\begin{metodo}[{Resolución de $\Lop[y]=b$ con coeficientes constantes}]
+\begin{enumerate}[label=\textcolor{ambar}{\bfseries\arabic*.}, leftmargin=1.6em]
+  \item Escribir la ecuación característica $p(\lambda)=0$ y hallar sus
+        raíces con su multiplicidad.
+  \item Cada raíz $\lambda_k$ de multiplicidad $m_k$ aporta
+        $\eul^{\lambda_kx},x\eul^{\lambda_kx},\dots,x^{m_k-1}\eul^{\lambda_kx}$; los
+        pares complejos se sustituyen por sus versiones reales
+        (\cref{tab:base}).
+  \item Para la particular: variación de las constantes (resolver
+        $W\kv'=\bv$) o función de Green (resolver $\Lop_xG=\delta$ con las
+        condiciones adecuadas e integrar contra $b$); ambas son la misma
+        fórmula \eqref{eq:variacion-green}.
+  \item Solución general $y=y_h+y_p$; ajustar las $n$ constantes con los
+        datos.
+\end{enumerate}
+\end{metodo}
+
+\begin{table}[!htb]
+\centering
+\caption{Contribución de cada raíz del polinomio característico a la base
+real de $\Ker\Lop$.}
+\label{tab:base}
+\renewcommand{\arraystretch}{1.5}
+\small
+\begin{tabular}{@{}l l c@{}}
+\toprule
+\textcolor{cian}{\bfseries Raíz} & \textcolor{cian}{\bfseries Soluciones} &
+\textcolor{cian}{\bfseries Número}\\
+\midrule
+$\lambda\in\R$ simple & $\eul^{\lambda x}$ & $1$\\
+$\lambda\in\R$ de multiplicidad $m$ & $x^{j}\eul^{\lambda x}$, \ $0\le j<m$ & $m$\\
+$\alpha\pm\iu\beta$ simples & $\eul^{\alpha x}\cos\beta x$, \ $\eul^{\alpha x}\sin\beta x$ & $2$\\
+$\alpha\pm\iu\beta$ de multiplicidad $m$ & $x^{j}\eul^{\alpha x}\cos\beta x$, \ $x^{j}\eul^{\alpha x}\sin\beta x$, \ $0\le j<m$ & $2m$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{observacion}[Errores típicos]\label{obs:errores}
+\leavevmode
+\begin{enumerate}[label=(\roman*)]
+  \item Olvidar el factor $x^{j}$ en las raíces múltiples, lo que deja menos
+        de $n$ soluciones.
+  \item No dividir por $a_n$ en la última componente de $\bv$.
+  \item Dar $\eul^{(\alpha\pm\iu\beta)x}$ como solución final cuando se pide
+        una solución real.
+  \item Pensar que la variación de las constantes sólo vale con
+        coeficientes constantes: vale siempre que se conozca un sistema
+        fundamental de la homogénea.
+\end{enumerate}
+\end{observacion}
