@@ -39,6 +39,55 @@ Por el teorema fundamental del álgebra,
   \qquad \lambda_k\in\C\ \text{distintas},\qquad \sum_{k=1}^{r}m_k=n .
 \end{equation}
 
+\paragraph{Cálculo simbólico con $D$}
+Para trasladar \eqref{eq:factorizacion-p} al operador hay que poder operar
+con polinomios en $D$ exactamente igual que con polinomios en $\lambda$.
+Los operadores se suman y se multiplican según
+\begin{equation}\label{eq:operaciones}
+  (A+B)\,y\defeq Ay+By,\qquad (AB)\,y\defeq A(By),
+\end{equation}
+es decir, el producto es la composición: primero actúa $B$ y luego $A$ (así,
+$D^{2}y=D(Dy)=y''$). Con coeficientes constantes bastan dos reglas:
+\begin{equation}\label{eq:reglas}
+  D^{i}D^{j}=D^{i+j},\qquad D(c\,y)=c\,Dy\quad(c\ \text{constante}).
+\end{equation}
+
+\begin{ejemplo}[Dos factores]\label{ej:dos-factores}
+Para $a,b\in\C$,
+\[
+  (D-a)(D-b)\,y=(D-a)(y'-by)=y''-by'-ay'+ab\,y=\bigl(D^{2}-(a+b)D+ab\bigr)\,y ,
+\]
+que es $(\lambda-a)(\lambda-b)=\lambda^{2}-(a+b)\lambda+ab$ con $\lambda$
+sustituida por $D$. Como el resultado es simétrico en $a$ y $b$,
+$(D-a)(D-b)=(D-b)(D-a)$.
+\end{ejemplo}
+
+\begin{lema}[Polinomios en $D$]\label{lem:polinomios-D}
+Para $q_1(\lambda)=\sum_ia_i\lambda^{i}$ y $q_2(\lambda)=\sum_jb_j\lambda^{j}$ con
+coeficientes constantes, la sustitución $q(\lambda)\mapsto q(D)$ cumple
+\begin{equation}\label{eq:homomorfismo}
+  (q_1+q_2)(D)=q_1(D)+q_2(D),\qquad (q_1q_2)(D)=q_1(D)\,q_2(D).
+\end{equation}
+Es decir, da igual multiplicar los polinomios y sustituir que sustituir y
+multiplicar los operadores.
+\end{lema}
+
+\begin{proof}
+La suma sólo usa \eqref{eq:operaciones}:
+$(q_1+q_2)(D)\,y=\sum_k(a_k+b_k)D^{k}y=\sum_ka_kD^{k}y+\sum_kb_kD^{k}y$.
+Para el producto, como polinomios $q_1q_2(\lambda)=\sum_{i,j}a_ib_j\lambda^{i+j}$,
+y aplicando $q_1(D)q_2(D)$ a $y$,
+\[
+  q_1(D)\bigl(q_2(D)\,y\bigr)
+  =\sum_ia_i\,D^{i}\Bigl(\sum_jb_j\,D^{j}y\Bigr)
+  =\sum_{i,j}a_ib_j\,D^{i}\bigl(D^{j}y\bigr)
+  =\sum_{i,j}a_ib_j\,D^{i+j}y=(q_1q_2)(D)\,y ,
+\]
+donde la segunda igualdad usa la linealidad de $D^{i}$ y que los $b_j$ son
+constantes, y la tercera, $D^{i}D^{j}=D^{i+j}$. Es el mismo cálculo que
+desarrollar el producto de dos polinomios término a término.
+\end{proof}
+
 \begin{proposicion}[Factorización de $\Lop$]\label{prop:factorizacion}
 Los operadores $D-\lambda_k$ conmutan entre sí y
 \begin{equation}\label{eq:factorizacion-L}
@@ -48,11 +97,22 @@ con los factores en cualquier orden.
 \end{proposicion}
 
 \begin{proof}
-Como $D^{i}D^{j}=D^{i+j}$ y las constantes conmutan con $D$, la aplicación
-$q(\lambda)\mapsto q(D)$ respeta sumas y productos de polinomios con
-coeficientes constantes. Por tanto el producto \eqref{eq:factorizacion-p} se
-traslada a \eqref{eq:factorizacion-L}, y $q_1(D)\,q_2(D)=(q_1q_2)(D)=q_2(D)\,q_1(D)$.
+Aplicando el \cref{lem:polinomios-D} a la identidad polinómica
+\eqref{eq:factorizacion-p} se obtiene \eqref{eq:factorizacion-L}. Y como los
+polinomios conmutan,
+$q_1(D)\,q_2(D)=(q_1q_2)(D)=(q_2q_1)(D)=q_2(D)\,q_1(D)$.
 \end{proof}
+
+\begin{observacion}[Por qué hacen falta coeficientes constantes]\label{obs:no-conmutan}
+Si un coeficiente depende de $x$, la segunda regla de \eqref{eq:reglas}
+falla: $D(x\,y)=y+x\,y'\neq x\,Dy$, de modo que $D\circ x\neq x\circ D$. Por
+ejemplo,
+\[
+  (D-x)\,D\,y=y''-x\,y',\qquad D\,(D-x)\,y=y''-x\,y'-y ,
+\]
+y el orden de los factores importa. La factorización
+\eqref{eq:factorizacion-L} sólo vale con coeficientes constantes.
+\end{observacion}
 
 \begin{corolario}[Raíces simples]\label{cor:simples}
 Si todas las raíces son simples ($r=n$, $m_k=1$), las exponenciales
@@ -63,11 +123,38 @@ $\eul^{\lambda_1x},\dots,\eul^{\lambda_nx}$ forman una base de $\Ker\Lop$, y
 \end{corolario}
 
 \begin{proof}
-Son soluciones por la \cref{prop:autofuncion}. En $x_0=0$, la matriz
-wronskiana es la de Vandermonde $\bigl(\lambda_k^{\,j}\bigr)$, de determinante
-$\prod_{i<k}(\lambda_k-\lambda_i)\neq0$; se concluye por la
-\cref{prop:wronskiano}.
+Son soluciones por la \cref{prop:autofuncion}; falta ver que son
+independientes y, por la \cref{prop:wronskiano}, basta comprobar que
+$w(x_0)\neq0$ en un punto. Tomamos $x_0=0$. Para $y_k=\eul^{\lambda_kx}$ se
+tiene $y_k^{(j)}(x)=\lambda_k^{\,j}\eul^{\lambda_kx}$, luego
+$y_k^{(j)}(0)=\lambda_k^{\,j}$, y la matriz wronskiana en $0$, cuya columna
+$k$ es $\Phi_0(y_k)$, es la \emph{matriz de Vandermonde}
+\begin{equation}\label{eq:vandermonde}
+  W(0)=\begin{pmatrix}
+    1 & 1 & \cdots & 1\\
+    \lambda_1 & \lambda_2 & \cdots & \lambda_n\\
+    \vdots & \vdots & & \vdots\\
+    \lambda_1^{n-1} & \lambda_2^{n-1} & \cdots & \lambda_n^{n-1}
+  \end{pmatrix},
+  \qquad
+  \det W(0)=\prod_{1\le i<k\le n}(\lambda_k-\lambda_i).
+\end{equation}
+Como las raíces son distintas, ningún factor se anula y $w(0)\neq0$. Por
+ejemplo, para $n=2$,
+$\det\begin{psmallmatrix}1&1\\\lambda_1&\lambda_2\end{psmallmatrix}=\lambda_2-\lambda_1\neq0$.
 \end{proof}
+
+\begin{observacion}[El determinante de Vandermonde]\label{obs:vandermonde}
+Visto como polinomio en $\lambda_1,\dots,\lambda_n$, $\det W(0)$ se anula si
+$\lambda_i=\lambda_k$ (dos columnas iguales), luego es divisible por cada
+$\lambda_k-\lambda_i$. Ambos miembros de \eqref{eq:vandermonde} tienen grado
+total $0+1+\dots+(n-1)=\binom n2$, el número de pares $i<k$, de modo que
+coinciden salvo una constante, que vale $1$ comparando el término diagonal
+$\lambda_2\lambda_3^{2}\cdots\lambda_n^{n-1}$. Es aquí donde se usa que las
+raíces sean distintas: con raíces repetidas hay menos de $n$ exponenciales
+y faltan soluciones, las de la forma $x^{j}\eul^{\lambda x}$
+(\cref{sec:multiples}).
+\end{observacion}
 
 % -------------------------------------------------------------------------
 \subsection{Soluciones reales}\label{sec:reales}
