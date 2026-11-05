@@ -190,9 +190,47 @@ $\lambda_1=1$ y $\lambda_2=-\tfrac12$. Por el \cref{cor:simples},
 \end{ejemplo}
 
 \begin{ejemplo}[$y''+2y'+2y=0$ \cite{TEMARIO}]\label{ej:complejas}
-$p(\lambda)=\lambda^{2}+2\lambda+2$ tiene raíces $\lambda=-1\pm\iu$, y por la
-\cref{prop:reales}
-$y(x)=\eul^{-x}\bigl(k_1\cos x+k_2\sin x\bigr)$.
+\leavevmode
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=4pt]
+  \item \emph{Polinomio característico.} Sustituyendo $y^{(k)}\mapsto\lambda^{k}$, es decir,
+        $\Lop=p(D)=D^{2}+2D+2$:
+        \[
+          p(\lambda)=\lambda^{2}+2\lambda+2 .
+        \]
+  \item \emph{Raíces.} El discriminante es negativo:
+        \[
+          \lambda=\frac{-2\pm\sqrt{4-8}}{2}=\frac{-2\pm2\iu}{2}=-1\pm\iu ,
+          \qquad \alpha=-1,\quad \beta=1 ,
+        \]
+        un par conjugado, como garantiza la \cref{prop:reales} por ser reales
+        los coeficientes.
+  \item \emph{Sistema fundamental complejo.} Al ser las raíces distintas
+        (\cref{cor:simples}), $\bigl\{\eul^{(-1+\iu)x},\,\eul^{(-1-\iu)x}\bigr\}$.
+  \item \emph{Paso a soluciones reales.} Por la fórmula de Euler,
+        \[
+          \eul^{(-1+\iu)x}=\eul^{-x}\,\eul^{\iu x}=\eul^{-x}(\cos x+\iu\sin x),
+          \qquad
+          \Real\eul^{\lambda x}=\eul^{-x}\cos x,\quad \Imag\eul^{\lambda x}=\eul^{-x}\sin x ,
+        \]
+        que, por la \cref{prop:reales}, son soluciones y generan el mismo
+        plano que el par complejo.
+  \item \emph{Solución general.}
+        \begin{equation}\label{eq:ej-complejas}
+          y(x)=\eul^{-x}\bigl(k_1\cos x+k_2\sin x\bigr),\qquad k_1,k_2\in\R .
+        \end{equation}
+  \item \emph{Comprobación.} Para $y_1=\eul^{-x}\cos x$:
+        $y_1'=-\eul^{-x}(\cos x+\sin x)$ e $y_1''=2\eul^{-x}\sin x$, luego
+        \[
+          y_1''+2y_1'+2y_1=\eul^{-x}\bigl[2\sin x-2\cos x-2\sin x+2\cos x\bigr]=0 ,
+        \]
+        y del mismo modo con $y_2=\eul^{-x}\sin x$. Son independientes: en
+        $x_0=0$, $(y_1,y_1')=(1,-1)$ e $(y_2,y_2')=(0,1)$, y
+        $w(0)=\det\begin{psmallmatrix}1&0\\-1&1\end{psmallmatrix}=1\neq0$.
+\end{enumerate}
+\emph{Interpretación:} $\alpha=-1$ aporta el factor $\eul^{-x}$, que amortigua
+la amplitud, y $\beta=1$ la oscilación $\cos x$, $\sin x$: es una oscilación
+amortiguada, el caso subamortiguado del \cref{ej:amortiguado} con
+$\gamma=1$ y $\Omega=1$.
 \end{ejemplo}
 
 % -------------------------------------------------------------------------
