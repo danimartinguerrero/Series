@@ -250,16 +250,50 @@ El signo del discriminante $\nu^{2}-4$ decide el comportamiento
         $y=c_1\eul^{\lambda_+x}+c_2\eul^{\lambda_-x}$; decae exponencialmente sin
         oscilar.
   \item $\nu<2$ (\emph{subamortiguado}): raíces complejas conjugadas
-        $\lambda_\pm=-\gamma\pm\iu\Omega$, con $\gamma=\nu\omega/2$ y
-        $\Omega=\omega\sqrt{1-\nu^{2}/4}$. Por la \cref{prop:reales},
-        \begin{equation}\label{eq:subamortiguado}
-          y=\eul^{-\gamma x}\bigl(A\cos\Omega x+B\sin\Omega x\bigr)
-          \qquad\text{(oscilaciones amortiguadas)}.
-        \end{equation}
+        $\lambda_\pm=-\gamma\pm\iu\Omega$ y oscilaciones amortiguadas
+        \eqref{eq:subamortiguado}; se desarrolla más abajo.
   \item $\nu=2$ (\emph{crítico}): raíz doble $\lambda=-\omega$. Sólo se
         obtiene una exponencial, $\eul^{-\omega x}$, y falta una segunda
         solución. Este caso frontera motiva la \cref{sec:multiples}.
 \end{itemize}
+\emph{Desarrollo del caso subamortiguado.}
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=4pt]
+  \item \emph{Raíz de un número negativo.} Si $\nu<2$, entonces $\nu^{2}-4<0$ y
+        \[
+          \sqrt{\nu^{2}-4}=\sqrt{-(4-\nu^{2})}=\iu\sqrt{4-\nu^{2}},
+        \]
+        donde ahora $4-\nu^{2}>0$ y la raíz de la derecha es un real positivo.
+  \item \emph{Sustitución en \eqref{eq:raices-oscilador}.}
+        \[
+          \lambda_\pm=\frac{\omega}{2}\Bigl(-\nu\pm\iu\sqrt{4-\nu^{2}}\Bigr)
+          =\ubr{-\frac{\nu\omega}{2}}{\text{parte real}}\ \pm\ \iu\,
+           \ubr{\frac{\omega}{2}\sqrt{4-\nu^{2}}}{\text{parte imaginaria}} .
+        \]
+  \item \emph{Notación.} Se definen
+        \[
+          \gamma\defeq\frac{\nu\omega}{2},\qquad
+          \Omega\defeq\frac{\omega}{2}\sqrt{4-\nu^{2}}
+                =\omega\sqrt{\frac{4-\nu^{2}}{4}}=\omega\sqrt{1-\frac{\nu^{2}}{4}},
+        \]
+        de modo que $\lambda_\pm=-\gamma\pm\iu\Omega$.
+  \item \emph{Soluciones reales.} Por la \cref{prop:reales} con $\alpha=-\gamma$ y
+        $\beta=\Omega$, el par real es $\eul^{-\gamma x}\cos\Omega x$,
+        $\eul^{-\gamma x}\sin\Omega x$, y
+        \begin{equation}\label{eq:subamortiguado}
+          y=\eul^{-\gamma x}\bigl(A\cos\Omega x+B\sin\Omega x\bigr)
+          \qquad\text{(oscilaciones amortiguadas)}.
+        \end{equation}
+        El \cref{ej:complejas} es el caso $\omega=\sqrt2$, $\nu=\sqrt2$, que da
+        $\gamma=1$ y $\Omega=1$.
+\end{enumerate}
+\emph{Interpretación.} $\gamma$ es la \emph{tasa de decaimiento} y crece con el
+rozamiento $\nu$. $\Omega$ es la \emph{frecuencia de oscilación}: sin rozamiento
+($\nu=0$) vale $\Omega=\omega$, la frecuencia natural, y $\gamma=0$, con lo que
+se recupera la oscilación libre $A\cos\omega x+B\sin\omega x$. Al aumentar
+$\nu$, $\Omega<\omega$: el rozamiento hace oscilar más despacio, y cuando
+$\nu\to2$, $\Omega\to0$ y las oscilaciones desaparecen, que es el paso al caso
+crítico.
+
 Como $\lambda_+\lambda_-=\omega^{2}$, para $\nu<2$ las raíces recorren la
 circunferencia $\abs{\lambda}=\omega$; en $\nu=2$ chocan en $-\omega$ y para
 $\nu>2$ se separan sobre el eje real.
