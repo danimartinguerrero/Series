@@ -93,6 +93,17 @@ iniciales, porque $\Phi_0(\cos)=(1,0)$ y $\Phi_0(\sin)=(0,1)$ son la base
 canónica de $\R^{2}$.
 \end{ejemplo}
 
+\begin{notacion}[Subespacio generado]\label{not:generado}
+Dadas $f_1,\dots,f_k$, denotamos por
+\begin{equation}\label{eq:generado}
+  \gen{f_1,\dots,f_k}\defeq\bigl\{c_1f_1+\dots+c_kf_k:\ c_1,\dots,c_k\in\C\bigr\}
+\end{equation}
+el \emph{subespacio generado} por ellas, el conjunto de sus combinaciones
+lineales (en otros textos, $\operatorname{span}\{f_1,\dots,f_k\}$). Así, si
+$\{\hat y_1,\dots,\hat y_n\}$ es un sistema fundamental,
+$\Ker\Lop=\gen{\hat y_1,\dots,\hat y_n}$.
+\end{notacion}
+
 \input{figuras/fig_isomorfismo}
 
 % -------------------------------------------------------------------------
@@ -177,7 +188,7 @@ solución cualquiera de \eqref{eq:edo}. Entonces toda solución de
 
 \begin{proof}
 Por linealidad, $\Lop[y-y_p]=b-b=0$, luego $y-y_p\in\Ker\Lop$, que es el
-espacio generado por las $\hat y_i$.
+espacio $\gen{\hat y_1,\dots,\hat y_n}$ (\cref{not:generado}).
 \end{proof}
 
 El trabajo se reparte así en dos problemas (\cref{fig:mapa}): hallar

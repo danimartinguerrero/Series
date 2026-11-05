@@ -52,19 +52,43 @@ que permite resolver $(D-\lambda)^{m}y=0$ en la \cref{prop:nucleo}.
 \begin{proposicion}[Núcleo de $(D-\lambda)^{m}$]\label{prop:nucleo}
 Para todo $\lambda\in\C$ y todo $m\ge1$,
 \begin{equation}\label{eq:nucleo}
-  \Ker(D-\lambda)^{m}=\spanop\bigl\{\eul^{\lambda x},\,x\,\eul^{\lambda x},\,\dots,\,x^{m-1}\eul^{\lambda x}\bigr\},
+  \Ker(D-\lambda)^{m}=\gen{\eul^{\lambda x},\,x\,\eul^{\lambda x},\,\dots,\,x^{m-1}\eul^{\lambda x}},
   \qquad \dim\Ker(D-\lambda)^{m}=m .
 \end{equation}
 \end{proposicion}
 
 \begin{proof}
-Toda función se escribe como $y=\eul^{\lambda x}g$ con $g=\eul^{-\lambda x}y$.
-Por el \cref{lem:covariante},
+La demostración cambia de incógnita, resuelve una ecuación elemental para
+la nueva y comprueba la independencia.
+
+\emph{1. Cambio de incógnita.} Como $\eul^{\lambda x}$ no se anula, toda
+función se escribe como $y=\eul^{\lambda x}g$ con $g\defeq\eul^{-\lambda x}y$;
+no es una hipótesis, sino la definición de $g$, y buscar $y$ equivale a
+buscar $g$.
+
+\emph{2. Ecuación para $g$.} Por el \cref{lem:covariante} y dividiendo por
+$\eul^{\lambda x}\neq0$,
 \[
-  (D-\lambda)^{m}y=0\iff g^{(m)}=0\iff g(x)=c_0+c_1x+\dots+c_{m-1}x^{m-1}.
+  (D-\lambda)^{m}y=0\iff\eul^{\lambda x}g^{(m)}=0\iff g^{(m)}=0 .
 \]
-Las $m$ funciones $x^{j}\eul^{\lambda x}$ son independientes porque
-$\eul^{\lambda x}\neq0$ y los monomios lo son.
+Integrando $m$ veces, cada integración añade una constante (para $m=2$:
+$g''=0\Rightarrow g'=c_1\Rightarrow g=c_0+c_1x$), y recíprocamente la
+derivada $m$-ésima de un polinomio de grado $<m$ es nula. Así,
+$g^{(m)}=0$ si y sólo si $g=c_0+c_1x+\dots+c_{m-1}x^{m-1}$.
+
+\emph{3. Vuelta a $y$.} Multiplicando por $\eul^{\lambda x}$,
+\[
+  y=c_0\,\eul^{\lambda x}+c_1\,x\,\eul^{\lambda x}+\dots+c_{m-1}\,x^{m-1}\eul^{\lambda x},
+\]
+es decir, las soluciones son exactamente las combinaciones lineales de
+$x^{j}\eul^{\lambda x}$, $0\le j<m$, que es la igualdad de \eqref{eq:nucleo}.
+
+\emph{4. Independencia.} Si $\sum_{j<m}c_j\,x^{j}\eul^{\lambda x}=0$ para todo
+$x\in I$, dividiendo por $\eul^{\lambda x}$ el polinomio
+$c_0+c_1x+\dots+c_{m-1}x^{m-1}$ se anula en infinitos puntos; como un
+polinomio no nulo tiene a lo sumo tantas raíces como su grado, todos los
+$c_j$ son nulos. Las $m$ funciones forman, pues, una base y
+$\dim\Ker(D-\lambda)^{m}=m$.
 \end{proof}
 
 % -------------------------------------------------------------------------
@@ -121,11 +145,21 @@ $y=(k_1+k_2x)\,\eul^{x}+k_3\,\eul^{2x}$.
 \end{ejemplo}
 
 \begin{ejemplo}[Vuelta al caso crítico]\label{ej:critico}
-Para $\nu=2$ en el \cref{ej:amortiguado}, $p(\lambda)=(\lambda+\omega)^{2}$ y
+Para $\nu=2$ en el \cref{ej:amortiguado}, $p(\lambda)=(\lambda+\omega)^{2}$, es
+decir, $\Lop=(D+\omega)^{2}$, con $\lambda=-\omega$ y $m=2$. La
+\cref{prop:nucleo} da
 \begin{equation}\label{eq:critico}
-  y=(c_0+c_1x)\,\eul^{-\omega x},
+  \Ker(D+\omega)^{2}=\gen{\eul^{-\omega x},\,x\,\eul^{-\omega x}},
+  \qquad y=(c_0+c_1x)\,\eul^{-\omega x}.
 \end{equation}
-que es el regreso al equilibrio más rápido sin oscilar (\cref{fig:amortiguado}\,(b)).
+Comprobación con la segunda solución, aplicando $D+\omega$ dos veces:
+\[
+  (D+\omega)\bigl(x\eul^{-\omega x}\bigr)=\eul^{-\omega x}-\omega x\eul^{-\omega x}+\omega x\eul^{-\omega x}=\eul^{-\omega x},
+  \qquad
+  (D+\omega)\bigl(\eul^{-\omega x}\bigr)=-\omega\eul^{-\omega x}+\omega\eul^{-\omega x}=0 .
+\]
+Es la segunda solución que faltaba en el \cref{ej:amortiguado}, y describe el
+regreso al equilibrio más rápido sin oscilar (\cref{fig:amortiguado}\,(b)).
 \end{ejemplo}
 
 \begin{observacion}[Raíces complejas múltiples]\label{obs:complejas-multiples}
