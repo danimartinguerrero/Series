@@ -181,10 +181,78 @@ $\partial_\lambda\eul^{\lambda x}\big|_{\lambda_1}=x\,\eul^{\lambda_1x}$, que es
 segunda solución asociada a la raíz doble.
 \end{observacion}
 
+Para aplicar el \cref{teo:base} hay que factorizar $p$. Cuando sus
+coeficientes son enteros, el siguiente criterio acota las posibles raíces
+racionales a un número finito de candidatos.
+
+\begin{proposicion}[Criterio de las raíces racionales]\label{prop:raices-racionales}
+Sea $p(\lambda)=a_n\lambda^{n}+\dots+a_1\lambda+a_0$ con coeficientes enteros. Si
+$\lambda=r/s$, con $r,s\in\Z$ primos entre sí, es raíz de $p$, entonces
+\[
+  r\ \text{divide a}\ a_0\qquad\text{y}\qquad s\ \text{divide a}\ a_n .
+\]
+Los candidatos son, pues, las fracciones
+$\pm\,(\text{divisor de }a_0)/(\text{divisor de }a_n)$. En particular, si
+$a_n=1$, toda raíz racional es entera y divide a $a_0$.
+\end{proposicion}
+
+\begin{proof}
+Sustituyendo $\lambda=r/s$ en $p(\lambda)=0$ y multiplicando por $s^{n}$,
+\[
+  a_nr^{n}+a_{n-1}r^{n-1}s+\dots+a_1rs^{n-1}+a_0s^{n}=0 .
+\]
+Todos los términos salvo el último contienen $r$, luego $r$ divide a
+$a_0s^{n}$ y, al no tener factores comunes con $s$, divide a $a_0$.
+Análogamente, todos salvo el primero contienen $s$, luego $s$ divide a
+$a_n$. Si $a_n=1$, necesariamente $s=\pm1$.
+\end{proof}
+
 \begin{ejemplo}[$y'''-4y''+5y'-2y=0$ \cite{TEMARIO}]\label{ej:triple}
-$p(\lambda)=\lambda^{3}-4\lambda^{2}+5\lambda-2=(\lambda-1)^{2}(\lambda-2)$: raíz
-$1$ doble y raíz $2$ simple. Por el \cref{teo:base},
-$y=(k_1+k_2x)\,\eul^{x}+k_3\,\eul^{2x}$.
+\leavevmode
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=4pt]
+  \item \emph{Polinomio característico.} Sustituyendo $y^{(k)}\mapsto\lambda^{k}$,
+        $p(\lambda)=\lambda^{3}-4\lambda^{2}+5\lambda-2$.
+  \item \emph{Una raíz.} Como $a_3=1$, por la \cref{prop:raices-racionales}
+        las raíces racionales son enteras y dividen a $-2$: los candidatos
+        son $\pm1,\pm2$, y $p(1)=1-4+5-2=0$.
+  \item \emph{Factorización por Ruffini.} Dividiendo entre $(\lambda-1)$,
+        \[
+          \begin{array}{r|rrrr}
+             & 1 & -4 & 5 & -2\\
+           1 &   & 1 & -3 & 2\\\hline
+             & 1 & -3 & 2 & 0
+          \end{array}
+          \qquad\Longrightarrow\qquad
+          p(\lambda)=(\lambda-1)(\lambda^{2}-3\lambda+2),
+        \]
+        y el factor cuadrático se resuelve con la fórmula de segundo grado:
+        \[
+          \lambda=\frac{3\pm\sqrt{9-8}}{2}=\frac{3\pm1}{2}\in\{1,2\}
+          \quad\Longrightarrow\quad
+          p(\lambda)=(\lambda-1)^{2}(\lambda-2).
+        \]
+  \item \emph{Raíces y multiplicidades.} $\lambda_1=1$ doble ($m_1=2$) y
+        $\lambda_2=2$ simple ($m_2=1$), con $m_1+m_2=3=n$.
+  \item \emph{Sistema fundamental} (\cref{teo:base}): la raíz doble aporta
+        $\eul^{x}$ y $x\,\eul^{x}$; la simple, $\eul^{2x}$.
+  \item \emph{Solución general.}
+        \begin{equation}\label{eq:ej-triple}
+          y(x)=k_1\eul^{x}+k_2\,x\,\eul^{x}+k_3\eul^{2x}=(k_1+k_2x)\,\eul^{x}+k_3\eul^{2x},
+          \qquad k_1,k_2,k_3\in\R .
+        \end{equation}
+  \item \emph{Comprobaciones.} Para la solución menos evidente, $y=x\eul^{x}$:
+        $y'=(1+x)\eul^{x}$, $y''=(2+x)\eul^{x}$, $y'''=(3+x)\eul^{x}$, y
+        \[
+          y'''-4y''+5y'-2y=\eul^{x}\bigl[(3+x)-4(2+x)+5(1+x)-2x\bigr]=\eul^{x}\,(0+0\cdot x)=0 .
+        \]
+        En $x_0=0$, las columnas $(y,y',y'')$ de $\eul^{x}$, $x\eul^{x}$ y
+        $\eul^{2x}$ son $(1,1,1)$, $(0,1,2)$ y $(1,2,4)$, y
+        \[
+          w(0)=\begin{vmatrix}1&0&1\\1&1&2\\1&2&4\end{vmatrix}
+              =1\cdot(4-4)-0+1\cdot(2-1)=1\neq0 ,
+        \]
+        como ya garantizaba el \cref{lem:independencia}.
+\end{enumerate}
 \end{ejemplo}
 
 \begin{ejemplo}[Vuelta al caso crítico]\label{ej:critico}
