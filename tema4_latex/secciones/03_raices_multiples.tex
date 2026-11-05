@@ -52,9 +52,10 @@ que permite resolver $(D-\lambda)^{m}y=0$ en la \cref{prop:nucleo}.
 \begin{proposicion}[Núcleo de $(D-\lambda)^{m}$]\label{prop:nucleo}
 Para todo $\lambda\in\C$ y todo $m\ge1$,
 \begin{equation}\label{eq:nucleo}
-  \Ker(D-\lambda)^{m}=\gen{\eul^{\lambda x},\,x\,\eul^{\lambda x},\,\dots,\,x^{m-1}\eul^{\lambda x}},
-  \qquad \dim\Ker(D-\lambda)^{m}=m .
+  \Ker(D-\lambda)^{m}=\gen{\eul^{\lambda x},\,x\,\eul^{\lambda x},\,\dots,\,x^{m-1}\eul^{\lambda x}}
+  =\spanop\bigl\{\eul^{\lambda x},\,x\,\eul^{\lambda x},\,\dots,\,x^{m-1}\eul^{\lambda x}\bigr\},
 \end{equation}
+y $\dim\Ker(D-\lambda)^{m}=m$.
 \end{proposicion}
 
 \begin{proof}
@@ -74,7 +75,10 @@ $\eul^{\lambda x}\neq0$,
 Integrando $m$ veces, cada integración añade una constante (para $m=2$:
 $g''=0\Rightarrow g'=c_1\Rightarrow g=c_0+c_1x$), y recíprocamente la
 derivada $m$-ésima de un polinomio de grado $<m$ es nula. Así,
-$g^{(m)}=0$ si y sólo si $g=c_0+c_1x+\dots+c_{m-1}x^{m-1}$.
+\[
+  g^{(m)}=0\iff g\in\gen{1,x,\dots,x^{m-1}}=\C_{m-1}[x],
+  \qquad g=c_0+c_1x+\dots+c_{m-1}x^{m-1}.
+\]
 
 \emph{3. Vuelta a $y$.} Multiplicando por $\eul^{\lambda x}$,
 \[

@@ -94,14 +94,21 @@ canónica de $\R^{2}$.
 \end{ejemplo}
 
 \begin{notacion}[Subespacio generado]\label{not:generado}
-Dadas $f_1,\dots,f_k$, denotamos por
+El \emph{subespacio generado} por $f_1,\dots,f_k$ es el conjunto de sus
+combinaciones lineales, que denotamos indistintamente
 \begin{equation}\label{eq:generado}
-  \gen{f_1,\dots,f_k}\defeq\bigl\{c_1f_1+\dots+c_kf_k:\ c_1,\dots,c_k\in\C\bigr\}
+  \gen{f_1,\dots,f_k}=\spanop\{f_1,\dots,f_k\}
+  =\Bigl\{\,\sum_{i=1}^{k}c_if_i\ \Big|\ c_i\in\C\Bigr\}.
 \end{equation}
-el \emph{subespacio generado} por ellas, el conjunto de sus combinaciones
-lineales (en otros textos, $\operatorname{span}\{f_1,\dots,f_k\}$). Así, si
+Por ejemplo, fijado $n\in\N$, $\{1,x,x^{2},\dots,x^{n}\}$ es un sistema de
+generadores del subespacio $\R_n[x]\subset\R[x]$ de polinomios de
+coeficientes reales y grado $\le n$:
+\[
+  \gen{1,x,x^{2},\dots,x^{n}}=\R_n[x]=\Bigl\{\,\sum_{i=0}^{n}a_ix^{i}\ \Big|\ a_i\in\R\Bigr\}
+\]
+(y $\C_n[x]$ si los coeficientes son complejos). Así, si
 $\{\hat y_1,\dots,\hat y_n\}$ es un sistema fundamental,
-$\Ker\Lop=\gen{\hat y_1,\dots,\hat y_n}$.
+$\Ker\Lop=\gen{\hat y_1,\dots,\hat y_n}=\spanop\{\hat y_1,\dots,\hat y_n\}$.
 \end{notacion}
 
 \input{figuras/fig_isomorfismo}
