@@ -33,12 +33,21 @@ operadores, que actúan de derecha a izquierda: multiplicar por
 $\eul^{\lambda x}$, aplicar $D-\lambda$ y multiplicar por $\eul^{-\lambda x}$.
 Sobre una función $g$,
 \begin{equation}\label{eq:esquema-conjugacion}
-  g\ \xrightarrow{\ \cdot\,\eul^{\lambda x}\ }\ \eul^{\lambda x}g
-   \ \xrightarrow{\ D-\lambda\ }\ \eul^{\lambda x}g'
-   \ \xrightarrow{\ \cdot\,\eul^{-\lambda x}\ }\ g'=Dg ,
+\begin{tikzcd}[column sep=3.6em, row sep=1.2em, ampersand replacement=\&,
+    arrows={|-{Stealth[length=5.5pt,width=5pt]}, line width=0.6pt, draw=gris},
+    labels={font=\footnotesize}]
+  g \arrow[r, "\cdot\,\eul^{\lambda x}" {color=ambar}]
+    \arrow[rrr, start anchor={[yshift=-2pt]south}, end anchor={[yshift=-2pt]south},
+            bend right=19, draw=cian, "D"' {color=cian}]
+  \& \eul^{\lambda x}g \arrow[r, "D-\lambda" {color=violeta}]
+  \& \eul^{\lambda x}g' \arrow[r, "\cdot\,\eul^{-\lambda x}" {color=ambar}]
+  \& g'\mathrlap{\;=Dg}
+\end{tikzcd}
 \end{equation}
-donde el paso central es la primera igualdad de \eqref{eq:covariante}. Como
-el resultado coincide con $Dg$ para toda $g$, ambos operadores son iguales.
+donde el paso central es la primera igualdad de \eqref{eq:covariante}. La
+composición de las tres flechas superiores lleva $g$ a $g'=Dg$ para toda
+$g$, es decir, coincide con la flecha inferior: ambos operadores son
+iguales.
 Se habla de \emph{conjugación} por analogía con las matrices: si $P$ es
 invertible, $P^{-1}AP$ es la misma aplicación lineal $A$ vista en otras
 coordenadas. Aquí $P$ es «multiplicar por $\eul^{\lambda x}$» y $P^{-1}$,
