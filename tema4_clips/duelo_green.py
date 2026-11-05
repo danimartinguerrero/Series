@@ -1,68 +1,117 @@
-"""Duelo en L: δ contra G.
+"""Duelo en L: δ contra G (a distancia).
 
-Clip vertical (~30 s) de combate entre dos monigotes originales que luchan
-con las herramientas del Tema 4: la delta de Dirac (impulso unitario), la
-función de Green causal (respuesta al impulso), la superposición
-y_p = ∫ G b dx̃ y la variación de las constantes (W k' = b). El combate
-termina descubriendo que los dos métodos son el mismo cálculo.
+Clip vertical (~30 s): dos monigotes pequeños, con cabezas δ y G, se baten a
+distancia con armas matemáticas. Cada ataque deja como consecuencia el
+objeto del Tema 4 que representa:
+
+  1. Ráfaga de deltas -> G las para con la espada ∫ y, al clavarla, nace la
+     función de Green causal (onda que sólo avanza hacia delante).
+  2. Serie Σ de e^{λx} -> escudo ∏ (factorización de p(D)) que la parte en
+     las exponenciales e^{λ_k x}.
+  3. Plano complejo: raíces -γ ± iΩ -> rayo amortiguado e^{-γx} cos Ωx.
+  4. Choque de rayos ∫G b dx̃ contra W k' = b: son el mismo cálculo.
 """
 from monigote import *
 from utiles import ajustar
 
-SUELO = -1.4
-XMAX = 4.3
-GAMMA, OMEGA = 0.18, 2.3
-Z_EFECTOS = 3          # efectos por detrás de los personajes (z = 5)
+SUELO = -1.0
+XG, XD = -3.05, 2.85
+K = 0.56                      # escala de los monigotes
+XMAX = 3.6
+Z_FX, Z_ARMAS = 3, 6
 
 
-def g_resp(t):
-    """Perfil de la respuesta causal (función de Green del oscilador amortiguado)."""
+# --- piezas visuales --------------------------------------------------------------------
+def glow(mob, color, ancho=20, opacidad=0.28):
+    h = mob.copy().set_fill(opacity=0).set_stroke(color, width=ancho, opacity=opacidad)
+    return VGroup(h, mob)
+
+
+def glifo(tex, color, alto):
+    g = MathTex(tex, tex_template=PLANTILLA, color=color)
+    g.height = alto
+    g.set_stroke(color, width=1.4)
+    return glow(g, color)
+
+
+def rayo(a, b, color, ancho=1.0):
+    if np.linalg.norm(b - a) < 1e-3:
+        b = a + 1e-3 * RIGHT
+    capas = VGroup(
+        Line(a, b, stroke_width=40 * ancho, color=color, stroke_opacity=0.12),
+        Line(a, b, stroke_width=18 * ancho, color=color, stroke_opacity=0.45),
+        Line(a, b, stroke_width=6 * ancho, color=BLANCO, stroke_opacity=0.95),
+    )
+    for l in capas:
+        l.set_cap_style(CapStyleType.ROUND)
+    capas.set_z_index(Z_FX + 1)
+    return capas
+
+
+def orbe(c, color, r=0.25):
+    o = VGroup(*[Circle(radius=r * f, stroke_width=0, fill_color=col, fill_opacity=op).move_to(c)
+                 for f, col, op in ((2.6, color, 0.10), (1.7, color, 0.28), (1.0, BLANCO, 0.95))])
+    o.set_z_index(Z_FX + 2)
+    return o
+
+
+def g_resp(t, gam=0.22, om=3.0):
     t = np.asarray(t, dtype=float)
-    return np.where(t > 0, np.exp(-GAMMA * t) * np.sin(OMEGA * t), 0.0)
+    return np.where(t > 0, np.exp(-gam * t) * np.sin(om * t), 0.0)
 
 
-def curva_onda(x0, frente, perfil, color, ancho=6, paso=0.02, x_tope=XMAX):
-    """Onda sobre el suelo desde x0 hasta el frente (con halo)."""
-    x1 = min(frente, x_tope)
-    if x1 <= x0 + 0.02:
-        x1 = x0 + 0.02
-    xs = np.arange(x0, x1 + 1e-9, paso)
-    pts = [np.array([x, SUELO + float(perfil(x)), 0.0]) for x in xs]
-    linea = VMobject(stroke_color=color, stroke_width=ancho).set_points_smoothly(pts)
-    halo = linea.copy().set_stroke(width=ancho * 3.2, opacity=0.16)
-    g = VGroup(halo, linea)
-    g.set_z_index(4)
+def curva(xs, ys, color, ancho=6):
+    pts = [np.array([x, y, 0.0]) for x, y in zip(xs, ys)]
+    l = VMobject(stroke_color=color, stroke_width=ancho).set_points_smoothly(pts)
+    g = VGroup(l.copy().set_stroke(width=ancho * 3.2, opacity=0.18), l)
+    g.set_z_index(Z_FX + 1)
     return g
 
 
-def fx(anim_grupo):
-    """Coloca un efecto (destello/partículas) por detrás de los personajes."""
-    anim, grupo = anim_grupo
-    grupo.set_z_index(Z_EFECTOS)
+def disparo(mob, ruta, retraso, duracion, total, rate=rush_into, desvanecer=False):
+    """Proyectil invisible hasta su turno; luego recorre la ruta (función t -> punto)."""
+    fam = mob.get_family()
+    op = [(sm.get_fill_opacity(), sm.get_stroke_opacity()) for sm in fam]
+
+    def visible(m, v):
+        for sm, (fo, so) in zip(m.get_family(), op):
+            sm.set_fill(opacity=fo * v)
+            sm.set_stroke(opacity=so * v)
+
+    visible(mob, 0)
+
+    def f(m, a):
+        t = (a * total - retraso) / duracion
+        if t < 0:
+            visible(m, 0)
+            return
+        t = min(t, 1.0)
+        m.move_to(ruta(rate(t)))
+        visible(m, 0 if (desvanecer and t >= 1.0) else 1)
+
+    return UpdateFromAlphaFunc(mob, f, run_time=total, rate_func=linear)
+
+
+def fx(par):
+    anim, grupo = par
+    grupo.set_z_index(Z_FX + 3)
     return anim, grupo
 
 
 class DueloGreen(MovingCameraScene):
-    # --- utilidades de escena ------------------------------------------------------------
     def sacudir(self, fuerza=0.12, veces=5):
         marco = self.camera.frame
         rng = np.random.default_rng(int(fuerza * 1000) + veces)
-        anims = []
-        for _ in range(veces):
-            d = fuerza * np.array([rng.uniform(-1, 1), rng.uniform(-1, 1), 0])
-            anims.append(marco.animate(run_time=0.035, rate_func=linear).move_to(d))
+        anims = [marco.animate(run_time=0.035, rate_func=linear).move_to(
+            fuerza * np.array([rng.uniform(-1, 1), rng.uniform(-1, 1), 0])) for _ in range(veces)]
         anims.append(marco.animate(run_time=0.05).move_to(ORIGIN))
         return Succession(*anims)
 
-    def rotulo(self, titulo, formula, color, size=44):
-        """Cartel del «golpe» en la franja superior (pestaña + fórmula)."""
+    def rotulo(self, titulo, formula, color, size=48):
         f = ajustar(M(formula, size=size, color=BLANCO), 6.9)
-        c = caja(f, color, titulo=titulo, buff=0.28)
-        c.move_to(UP * 4.2 + LEFT * 0.35)
-        return c
+        return caja(f, color, titulo=titulo, buff=0.28).move_to(UP * 4.15 + LEFT * 0.35)
 
     def cambiar_rotulo(self, nuevo, t_out=0.14, t_in=0.24):
-        """Sustituye el cartel: primero sale el anterior y después entra el nuevo."""
         anims = []
         if getattr(self, "rot_actual", None) is not None:
             anims.append(FadeOut(self.rot_actual, shift=UP * 0.15, run_time=t_out))
@@ -70,269 +119,337 @@ class DueloGreen(MovingCameraScene):
         self.rot_actual = nuevo
         return Succession(*anims)
 
+    def registro(self):
+        marco = RoundedRectangle(corner_radius=0.12, width=7.9, height=3.35, stroke_color=GRISMEDIO,
+                                 stroke_width=2, fill_color=CAJA, fill_opacity=0.9)
+        marco.move_to(np.array([-0.35, -3.25, 0]))
+        et = T(r"\sffamily\bfseries Registro del duelo", size=24, color=FONDO)
+        pest = RoundedRectangle(corner_radius=0.07, width=et.width + 0.3, height=et.height + 0.18,
+                                stroke_width=0, fill_color=GRIS, fill_opacity=1)
+        pest.move_to(marco.get_corner(UL) + RIGHT * (pest.width / 2 + 0.25))
+        et.move_to(pest)
+        self.reg = VGroup(marco, pest, et)
+        self.n_reg = 0
+        return self.reg
+
+    def anotar(self, tex, color):
+        y = -2.1 - 0.72 * self.n_reg
+        punto = Dot(radius=0.07, color=color).move_to(np.array([-3.95, y, 0]))
+        linea = ajustar(T(tex, size=31, color=TEXTO), 7.0)
+        linea.next_to(punto, RIGHT, buff=0.22)
+        self.n_reg += 1
+        e = VGroup(punto, linea)
+        self.reg.add(e)
+        return FadeIn(e, shift=RIGHT * 0.25, run_time=0.4)
+
     def limpiar(self, *grupos):
         for g in grupos:
-            self.remove(g)
             for sm in g.get_family():
                 self.remove(sm)
 
-    # --- guion ---------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------
     def construct(self):
-        # Cabecera y escenario
         cab = cabecera(1, 1, r"Duelo en $\mathcal L$: \ $\delta$ contra $G$")
         cab.remove(cab[1])
         self.add(pie())
-        suelo = Line(LEFT * 4.35 + UP * SUELO, RIGHT * 4.35 + UP * SUELO, stroke_width=3,
-                     color=GRISMEDIO)
-        marcas = VGroup(*[Line(np.array([x, SUELO - 0.07, 0]), np.array([x, SUELO + 0.07, 0]),
+        # cielo estrellado tenue y suelo
+        rng = np.random.default_rng(7)
+        estrellas = VGroup(*[Dot(np.array([rng.uniform(-4.3, 4.3), rng.uniform(-0.8, 3.3), 0]),
+                                 radius=rng.uniform(0.008, 0.022), color=BLANCO)
+                             .set_opacity(rng.uniform(0.15, 0.45)) for _ in range(70)])
+        suelo = Line(LEFT * 4.35 + UP * SUELO, RIGHT * 4.35 + UP * SUELO, stroke_width=3, color=GRISMEDIO)
+        marcas = VGroup(*[Line(np.array([x, SUELO - 0.06, 0]), np.array([x, SUELO + 0.06, 0]),
                                stroke_width=2, color=GRISMEDIO) for x in range(-4, 5)])
-        eje_r = M(r"\mathbb R", size=30, color=GRISMEDIO).next_to(suelo.get_start(), UP, buff=0.12)
+        eje = M(r"\mathbb R", size=28, color=GRISMEDIO).next_to(suelo.get_start(), UP, buff=0.1)
         self.play(FadeIn(cab[0], shift=DOWN * 0.2), Write(cab[1]), GrowFromEdge(cab[2], LEFT),
-                  GrowFromCenter(suelo), run_time=0.9)
-        vs = M(r"\delta\ \ \text{vs}\ \ G", size=120, color=BLANCO).move_to(UP * 1.2 + LEFT * 0.35)
+                  GrowFromCenter(suelo), FadeIn(estrellas, lag_ratio=0.02), run_time=0.9)
+        vs = M(r"\delta\ \ \text{vs}\ \ G", size=120, color=BLANCO).move_to(UP * 1.6 + LEFT * 0.35)
         vs[0][0].set_color(CIAN)
         vs[0][-1].set_color(AMBAR)
-        self.play(FadeIn(marcas, lag_ratio=0.1), FadeIn(eje_r), Write(vs), run_time=0.7)
-        self.wait(0.35)
-        self.play(vs.animate.scale(1.3).set_opacity(0), run_time=0.35, rate_func=rush_into)
+        self.play(FadeIn(marcas, lag_ratio=0.1), FadeIn(eje), Write(vs), run_time=0.6)
+        self.wait(0.25)
+        self.play(vs.animate.scale(1.3).set_opacity(0), run_time=0.3, rate_func=rush_into)
         self.remove(vs)
 
-        # --- 1. Entrada de los luchadores ----------------------------------------------
-        G = Monigote(AMBAR, -2.7, SUELO, mira=1, simbolo="G")
-        D = Monigote(CIAN, 2.2, SUELO, mira=-1, simbolo=r"\delta")
-        Y_AIRE = SUELO + ALTURA_CADERA + 2.5
-        entradas = []
-        for fig in (G, D):
-            fig.pose.update(BRAZOS_ARRIBA)
-            fig.pose["y"] = Y_AIRE
-            fig.actualizar()
-            a, gr = fx(destello(fig.punto("cuello"), fig.color_base, radio=1.6, n_rayos=10,
-                                run_time=0.4))
-            entradas.append((a, gr))
-        self.play(FadeIn(G, scale=0.6), FadeIn(D, scale=0.6), *[e[0] for e in entradas], run_time=0.4)
-        self.limpiar(*[e[1] for e in entradas])
-        self.play(P(G, BRAZOS_ARRIBA, y=SUELO + ALTURA_CADERA, rate_func=rush_into, run_time=0.38),
-                  Succession(Wait(0.1), P(D, BRAZOS_ARRIBA, y=SUELO + ALTURA_CADERA,
-                                          rate_func=rush_into, run_time=0.38)))
-        polvo = [fx(particulas(np.array([f.pose["x"], SUELO, 0]), GRIS, n=14, alcance=1.1, semilla=k))
-                 for k, f in enumerate((G, D))]
-        self.play(PA(G, AGACHADO, SUELO, run_time=0.13), PA(D, AGACHADO, SUELO, run_time=0.13),
-                  *[p[0] for p in polvo], self.sacudir(0.12, 3))
-        placa_g = M(r"G(x,\tilde x)", size=42, color=AMBAR).move_to(np.array([-2.7, SUELO - 0.6, 0]))
-        placa_d = M(r"\delta(x-\tilde x)", size=42, color=CIAN).move_to(np.array([2.2, SUELO - 0.6, 0]))
-        self.play(PA(G, GUARDIA, SUELO, run_time=0.35), PA(D, GUARDIA, SUELO, run_time=0.35),
-                  FadeIn(placa_g, shift=UP * 0.1), FadeIn(placa_d, shift=UP * 0.1))
-        # balanceo en guardia
-        for dy in (-0.09, 0.0):
-            self.play(P(G, y=G.pose["y"] + dy, run_time=0.2), P(D, y=D.pose["y"] + dy, run_time=0.2))
+        # --- luchadores -----------------------------------------------------------------
+        G = Monigote(AMBAR, XG, SUELO, mira=1, simbolo="G", escala=K, grosor=7, tam_cabeza=3.0, **GUARDIA)
+        D = Monigote(CIAN, XD, SUELO, mira=-1, simbolo=r"\delta", escala=K, grosor=7, tam_cabeza=3.2,
+                     **GUARDIA)
+        for f in (G, D):
+            f.pose["y"] = y_apoyado(f, SUELO, **GUARDIA)
+            f.actualizar()
+        aparic = [fx(destello(f.punto("cadera"), f.color_base, radio=1.3, run_time=0.4)) for f in (G, D)]
+        self.play(FadeIn(G, scale=0.5), FadeIn(D, scale=0.5), *[a[0] for a in aparic], run_time=0.45)
+        self.limpiar(*[a[1] for a in aparic])
+        self.play(FadeIn(self.registro(), shift=UP * 0.2), run_time=0.35)
 
-        # --- 2. δ lanza un impulso unitario --------------------------------------------
-        r1 = self.rotulo(r"Impulso unitario", r"\delta(x-\tilde x)", CIAN, size=60)
-        self.play(PA(D, LANZAR_CARGA, SUELO, run_time=0.35), self.cambiar_rotulo(r1))
-        mano = D.punto("mano_d")
-        lanza = delta_flecha(mano + DOWN * 0.7, altura=1.6, color=CIAN)
-        lanza.set_z_index(6)
-        self.play(GrowFromPoint(lanza, mano), run_time=0.3)
-        self.wait(0.35)
-        destino = punto_en_postura(G, ESCUDO, SUELO, "mano_d") + RIGHT * 0.05
-        arco = ArcBetweenPoints(lanza.get_center(), destino, angle=-PI / 5)
-        estela = TracedPath(lambda: lanza.get_center(), dissipating_time=0.3,
-                            stroke_color=CIAN, stroke_width=8, stroke_opacity=0.85)
-        estela.set_z_index(4)
-        self.add(estela)
-        lanza_0 = lanza.copy()
+        # espada integral de G, sujeta a su mano
+        alto_esp = ValueTracker(1.3)
+        esp_base = glifo(r"\int", AMBAR, 1.0)
 
-        def vuelo(m, a):
-            m.become(lanza_0.copy().rotate(PI / 2 * a).move_to(arco.point_from_proportion(a)))
+        def construir_espada():
+            j = G.articulaciones()
+            d = j["mano_d"] - j["codo_d"]
+            d = d / (np.linalg.norm(d) + 1e-9)
+            h = alto_esp.get_value()
+            e = esp_base.copy().set_height(h)
+            e.rotate(np.arctan2(d[1], d[0]) - PI / 2)
+            e.move_to(j["mano_d"] + d * h * 0.42)
+            e.set_z_index(Z_ARMAS)
+            return e
 
-        self.play(PA(D, LANZAR_FIN, SUELO, run_time=0.22, rate_func=rush_from),
-                  UpdateFromAlphaFunc(lanza, vuelo, rate_func=rush_into, run_time=0.55))
+        def punta_espada():
+            j = G.articulaciones()
+            d = j["mano_d"] - j["codo_d"]
+            d = d / (np.linalg.norm(d) + 1e-9)
+            return j["mano_d"] + d * alto_esp.get_value() * 0.9
 
-        # --- 3. G lo atrapa y lo clava: respuesta causal ---------------------------------
-        r2 = self.rotulo(r"Respuesta causal", r"\mathcal L_x\,G(x,\tilde x)=\delta(x-\tilde x)", AMBAR,
-                         size=50)
-        chispa, gr_ch = fx(destello(destino, CIAN, radio=1.1, run_time=0.35))
-        self.play(PA(G, ESCUDO, SUELO, run_time=0.14), chispa, self.cambiar_rotulo(r2))
-        self.limpiar(gr_ch, estela)
-        polvo_g = fx(particulas(np.array([-2.8, SUELO, 0]), GRIS, n=10, alcance=0.8, semilla=4))
-        self.play(PA(G, ESCUDO, SUELO, x=-3.05, run_time=0.3, rate_func=rush_from),
-                  lanza.animate(rate_func=rush_from, run_time=0.3).shift(LEFT * 0.35), polvo_g[0])
-        self.wait(0.45)
-        xt = -2.0
-        arriba = punto_en_postura(G, BRAZOS_ARRIBA, SUELO, "mano_d", x=-2.85)
-        self.play(PA(G, BRAZOS_ARRIBA, SUELO, run_time=0.28, x=-2.85),
-                  lanza.animate(run_time=0.28).rotate(-PI / 2).move_to(arriba + UP * 0.3))
-        self.play(PA(G, GOLPE_SUELO, SUELO, x=-2.85, run_time=0.2, rate_func=rush_into),
-                  lanza.animate(run_time=0.2, rate_func=rush_into)
-                  .rotate(PI).move_to(np.array([xt, SUELO + 0.8, 0])))
-        pico = delta_flecha(np.array([xt, SUELO, 0]), altura=1.7, color=CIAN)
-        golpe, gr_g = fx(destello(np.array([xt, SUELO, 0]), AMBAR, radio=1.8))
-        etq_xt = M(r"\tilde x", size=36, color=CIAN).move_to(np.array([xt, SUELO - 0.5, 0]))
-        self.remove(lanza)
-        self.add(pico)
-        self.play(golpe, self.sacudir(0.16, 5), FadeIn(etq_xt), FadeOut(placa_g), run_time=0.4)
+        # --- 1. Ráfaga de deltas y espada integral --------------------------------------
+        r1 = self.rotulo(r"Ráfaga de impulsos", r"\delta(x-\tilde x)", CIAN, size=62)
+        self.play(PA(D, LANZAR_CARGA, SUELO, run_time=0.3, x=XD), self.cambiar_rotulo(r1))
+        espada = always_redraw(construir_espada)
+        destello_esp, gr_e = fx(destello(punto_en_postura(G, PUNETAZO, SUELO, "mano_d", x=XG),
+                                         AMBAR, radio=0.9, run_time=0.35))
+        self.play(PA(G, PUNETAZO, SUELO, run_time=0.3, x=XG), FadeIn(espada, scale=0.4), destello_esp)
+        self.limpiar(gr_e)
+        # cinco deltas horizontales
+        objetivo = punta_espada() + RIGHT * 0.1
+        origen = punto_en_postura(D, LANZAR_FIN, SUELO, "mano_d", x=XD)
+        proy, anims_p = [], []
+        for k in range(5):
+            dlt = delta_flecha(ORIGIN, altura=0.95, color=CIAN).rotate(PI / 2)
+            dlt.set_z_index(Z_ARMAS)
+            proy.append(dlt)
+            o_k = origen + UP * 0.08 * (k % 2)
+            dest = objetivo + UP * (0.18 * ((k % 3) - 1))
+            anims_p.append(disparo(dlt, lambda t, o=o_k, d=dest: o + (d - o) * t, 0.16 * k, 0.36, 1.2,
+                                   rate=linear, desvanecer=True))
+        self.play(PA(D, LANZAR_FIN, SUELO, run_time=0.25, x=XD), *anims_p,
+                  Succession(*[Succession(Wait(0.16 if k else 0.3),
+                                          P(G, PUNETAZO, ra1=1.6 + 0.35 * (-1) ** k, run_time=0.14))
+                               for k in range(5)]),
+                  run_time=1.2)
+        sp = [fx(destello(objetivo + UP * 0.15 * (k - 1), CIAN, radio=0.55, n_rayos=7, run_time=0.25))
+              for k in range(3)]
+        self.play(*[s[0] for s in sp], self.sacudir(0.05, 2), run_time=0.25)
+        self.limpiar(*[s[1] for s in sp], *proy)
+
+        # G clava la espada: nace la función de Green (respuesta causal)
+        r2 = self.rotulo(r"Respuesta al impulso", r"\mathcal L_x\,G(x,\tilde x)=\delta(x-\tilde x)", AMBAR,
+                         size=52)
+        xt = XG + 0.95
+        self.play(PA(G, BRAZOS_ARRIBA, SUELO, run_time=0.25, x=XG), self.cambiar_rotulo(r2))
+        espada.clear_updaters()
+        clavada = esp_base.copy().set_height(1.3).rotate(PI).move_to(np.array([xt, SUELO + 0.48, 0]))
+        clavada.set_z_index(Z_ARMAS)
+        self.play(PA(G, GOLPE_SUELO, SUELO, run_time=0.2, x=XG, rate_func=rush_into),
+                  Transform(espada, clavada, run_time=0.2, rate_func=rush_into))
+        golpe, gr_g = fx(destello(np.array([xt, SUELO, 0]), AMBAR, radio=1.7))
+        etq = M(r"\tilde x", size=32, color=AMBAR).move_to(np.array([xt, SUELO - 0.38, 0]))
+        self.play(golpe, self.sacudir(0.14, 5), FadeIn(etq), run_time=0.4)
         self.limpiar(gr_g)
+        frente = ValueTracker(xt + 0.03)
+        A_ONDA = 1.0
 
-        # la respuesta viaja sólo hacia delante (causalidad) y derriba a δ
-        frente = ValueTracker(xt)
-        onda = always_redraw(lambda: curva_onda(xt, frente.get_value(),
-                                                lambda x: 1.15 * g_resp(x - xt), AMBAR))
-        r3 = self.rotulo(r"Función de Green",
-                         r"G=\Theta(x-\tilde x)\,e^{-\gamma(x-\tilde x)}\,\frac{\sin\Omega(x-\tilde x)}{\Omega}",
-                         AMBAR, size=44)
+        def onda_g():
+            xs = np.linspace(xt, frente.get_value(), 160)
+            return curva(xs, SUELO + A_ONDA * g_resp(xs - xt), AMBAR, ancho=6)
+
+        onda = always_redraw(onda_g)
         self.add(onda)
-        T_ONDA = 2.0
-        t_imp = (D.pose["x"] - 0.4 - xt) / (XMAX - xt) * T_ONDA
-        self.play(frente.animate(rate_func=linear).set_value(XMAX), self.cambiar_rotulo(r3),
-                  PA(G, GUARDIA, SUELO, run_time=0.45, x=-2.85), FadeOut(pico, run_time=0.5),
-                  Succession(Wait(t_imp),
-                             P(D, AGACHADO, x=2.85, y=SUELO + 2.2, spin=-1.3, run_time=0.38,
-                               rate_func=rush_from),
-                             PA(D, AGACHADO, SUELO, x=2.95, spin=0.0, run_time=0.3,
-                                rate_func=rush_into)),
-                  FadeOut(placa_d, run_time=0.3), run_time=T_ONDA)
-        golpe_d, gr_d = fx(destello(np.array([2.95, SUELO, 0]), CIAN, radio=1.1, run_time=0.3))
-        self.play(golpe_d, self.sacudir(0.1, 3), run_time=0.35)
+        T_O = 1.6
+        t_salto = (XD - 0.9 - xt) / (XMAX - xt) * T_O
+        self.play(frente.animate(rate_func=linear).set_value(XMAX),
+                  Succession(Wait(t_salto),
+                             P(D, AGACHADO, y=SUELO + 1.9, spin=-TAU, run_time=0.5, rate_func=smooth),
+                             PA(D, GUARDIA, SUELO, x=XD, spin=-TAU, run_time=0.22, rate_func=rush_into)),
+                  run_time=T_O)
+        D.pose["spin"] = 0.0
+        D.actualizar()
         onda.clear_updaters()
-        self.limpiar(gr_d)
-        self.play(onda.animate.set_opacity(0), PA(D, GUARDIA, SUELO, x=2.2, run_time=0.45),
-                  run_time=0.5)
-        self.limpiar(onda)
-        self.wait(0.8)
+        aterriza, gr_a = fx(particulas(np.array([XD, SUELO, 0]), CIAN, n=10, alcance=0.8, semilla=3))
+        self.play(onda.animate.set_opacity(0), aterriza, FadeOut(etq),
+                  self.anotar(r"$\delta(x-\tilde x)\ \longrightarrow\ G(x,\tilde x)$: respuesta causal", AMBAR),
+                  run_time=0.45)
+        self.limpiar(onda, gr_a)
+        # G recupera la espada
+        self.play(PA(G, GUARDIA, SUELO, run_time=0.3, x=XG), FadeOut(espada, run_time=0.15))
+        self.remove(espada)
+        espada = always_redraw(construir_espada)
+        self.play(FadeIn(espada, scale=0.5), run_time=0.2)
 
-        # --- 4. δ responde con una lluvia de impulsos ------------------------------------
-        r4 = self.rotulo(r"Lluvia de impulsos",
-                         r"b(x)=\int b(\tilde x)\,\delta(x-\tilde x)\,d\tilde x", CIAN, size=48)
-        DX = 0.3
-        xs_k = np.array([-1.4 + DX * k for k in range(7)])
-        b = lambda s: np.sin(np.pi * (s + 1.55) / 2.1) ** 2
-        base_b = 2.0
-        fuente = VMobject(stroke_color=CIAN, stroke_width=5).set_points_smoothly(
-            [np.array([s, base_b + 0.75 * b(s), 0]) for s in np.linspace(-1.55, 0.55, 60)])
-        fuente_h = fuente.copy().set_stroke(width=16, opacity=0.18)
-        etq_b = M(r"b(\tilde x)", size=36, color=CIAN).next_to(fuente, RIGHT, buff=0.2).shift(DOWN * 0.25)
-        self.play(PA(D, BRAZOS_ARRIBA, SUELO, run_time=0.3), self.cambiar_rotulo(r4),
-                  Create(fuente), FadeIn(fuente_h), FadeIn(etq_b), FadeOut(etq_xt), run_time=0.6)
-        self.wait(0.7)
-        flechas = VGroup()
-        for s in xs_k:
-            fl = delta_flecha(np.array([s, SUELO, 0]), altura=0.4 + 1.2 * b(s), color=CIAN)
-            fl.rotate(PI).move_to(np.array([s, base_b + 0.75 * b(s), 0]), aligned_edge=UP)
-            flechas.add(fl)
-        self.add(flechas)
-        caidas = [Succession(Wait(0.07 * k),
-                             fl.animate(rate_func=rush_into, run_time=0.32)
-                             .move_to(np.array([xs_k[k], SUELO, 0]), aligned_edge=DOWN))
-                  for k, fl in enumerate(flechas)]
-        self.play(*caidas, P(D, LANZAR_FIN, run_time=0.45), run_time=0.82)
-        self.limpiar(flechas)
-        picos = VGroup(*[delta_flecha(np.array([s, SUELO, 0]), altura=0.4 + 1.2 * b(s), color=CIAN)
-                         for s in xs_k])
-        chispas = [fx(destello(np.array([s, SUELO, 0]), CIAN, radio=0.55, n_rayos=6, run_time=0.3))
-                   for s in xs_k]
-        self.add(picos)
-        self.play(*[c[0] for c in chispas], self.sacudir(0.07, 3), run_time=0.3)
-        self.limpiar(*[c[1] for c in chispas])
-        # cada impulso produce su propia respuesta (superposición discreta)
-        tau = ValueTracker(0.0)
-        malla = np.linspace(-1.4, XMAX, 500)
-        S = 1.45 / max(np.sum([b(s) * DX * g_resp(x - s) for s in xs_k]) for x in malla)
-        ondas_k = VGroup(*[
-            always_redraw(lambda s=s, k=k: curva_onda(
-                s, s + tau.get_value(), lambda x, s=s: S * b(s) * DX * g_resp(x - s),
-                PROGRESION[k], ancho=3.5))
-            for k, s in enumerate(xs_k)])
-        self.add(ondas_k)
-        self.play(tau.animate(rate_func=linear).set_value(1.2), FadeOut(picos),
-                  PA(D, GUARDIA, SUELO, run_time=0.4), run_time=0.9)
+        # --- 2. Serie Σ contra escudo ∏ -----------------------------------------------
+        r3 = self.rotulo(r"Serie exponencial", r"e^{\lambda x}=\sum_{n\ge0}\frac{(\lambda x)^n}{n!}", AMBAR,
+                         size=48)
+        sigma = glifo(r"\Sigma", AMBAR, 1.3).move_to(np.array([XG + 1.7, SUELO + 3.65, 0]))
+        sigma.set_z_index(Z_ARMAS)
+        self.play(PA(G, BRAZOS_ARRIBA, SUELO, run_time=0.3, x=XG), self.cambiar_rotulo(r3),
+                  GrowFromCenter(sigma), run_time=0.4)
+        self.play(Rotate(sigma, TAU, run_time=0.45, rate_func=smooth))
+        self.wait(0.5)
+        # escudo ∏ de δ
+        r4 = self.rotulo(r"Factorización", r"\mathcal L=a_n\prod_{k}(D-\lambda_k)^{m_k}", CIAN, size=52)
+        xs_esc = XD - 0.75
+        pi_esc = glifo(r"\prod", CIAN, 1.6).move_to(np.array([xs_esc, SUELO + 0.95, 0]))
+        aura = Circle(radius=1.1, stroke_color=CIAN, stroke_width=3, fill_color=CIAN, fill_opacity=0.08)
+        aura.move_to(pi_esc)
+        pi_esc.set_z_index(Z_ARMAS)
+        aura.set_z_index(Z_ARMAS - 1)
+        terminos = [r"1", r"+\lambda x", r"+\tfrac{(\lambda x)^2}{2!}", r"+\tfrac{(\lambda x)^3}{3!}", r"+\cdots"]
+        impactos = [aura.get_left() + UP * 0.3 * (k - 2) + RIGHT * 0.15 for k in range(5)]
+        proy, anims_p = [], []
+        for k, t in enumerate(terminos):
+            p = glifo(t, AMBAR, 0.5 if k < 2 else 0.78).move_to(sigma.get_center())
+            p.set_z_index(Z_ARMAS)
+            proy.append(p)
+            ruta = ArcBetweenPoints(sigma.get_center(), impactos[k], angle=-PI / 6)
+            anims_p.append(disparo(p, lambda u, r=ruta: r.point_from_proportion(u), 0.17 * k, 0.45, 1.15))
+        self.play(PA(D, ESCUDO, SUELO, run_time=0.3, x=XD), FadeIn(aura, scale=0.6), GrowFromCenter(pi_esc),
+                  PA(G, LANZAR_FIN, SUELO, run_time=0.3, x=XG), self.cambiar_rotulo(r4),
+                  *anims_p, FadeOut(sigma, run_time=0.4), run_time=1.15)
+        sp = [fx(destello(impactos[k], AMBAR, radio=0.5, n_rayos=6, run_time=0.25)) for k in range(5)]
+        self.play(*[s[0] for s in sp], *[FadeOut(p, scale=0.4) for p in proy],
+                  aura.animate.set_stroke(width=6), self.sacudir(0.06, 2), run_time=0.3)
+        self.limpiar(*[s[1] for s in sp])
+        # el escudo parte la serie en las exponenciales e^{λ_k x}
+        trozos = VGroup(*[glifo(t, c, 0.5) for t, c in
+                          ((r"e^{\lambda_1x}", CIAN), (r"e^{\lambda_2x}", VERDE), (r"x\,e^{\lambda_2x}", MAGENTA))])
+        destinos = [np.array([0.3, 2.7, 0]), np.array([-0.9, 1.9, 0]), np.array([0.6, 1.15, 0])]
+        for t in trozos:
+            t.move_to(aura.get_left())
+            t.set_z_index(Z_ARMAS)
+        self.play(*[t.animate(rate_func=rush_from).move_to(d) for t, d in zip(trozos, destinos)],
+                  aura.animate.set_stroke(width=3),
+                  self.anotar(r"$\sum\frac{(\lambda x)^n}{n!}\ \longrightarrow\ e^{\lambda_k x}$: "
+                              r"factorización $\prod(D-\lambda_k)^{m_k}$", CIAN), run_time=0.55)
+        self.wait(0.85)
+        self.play(FadeOut(trozos, shift=UP * 0.2), FadeOut(pi_esc), FadeOut(aura),
+                  PA(D, GUARDIA, SUELO, run_time=0.35, x=XD), PA(G, GUARDIA, SUELO, run_time=0.35, x=XG),
+                  run_time=0.4)
 
-        # --- 5. G integra: superposición y_p = ∫ G b dx~ --------------------------------
-        r5 = self.rotulo(r"Superposición",
-                         r"y_p(x)=\int G(x,\tilde x)\,b(\tilde x)\,d\tilde x", AMBAR, size=52)
-        mano_g = punto_en_postura(G, PUNETAZO, SUELO, "mano_d")
-        integral = M(r"\int", size=170, color=AMBAR).move_to(mano_g + RIGHT * 0.75 + UP * 0.25)
-        integral_h = integral.copy().set_stroke(AMBAR, width=14, opacity=0.25)
-        self.play(PA(G, PUNETAZO, SUELO, run_time=0.25), self.cambiar_rotulo(r5),
-                  FadeIn(integral, scale=0.5), FadeIn(integral_h, scale=0.5), run_time=0.45)
-        for o in ondas_k:
-            o.clear_updaters()
-        frente_y = -1.4 + 1.2
-        yp = lambda x: S * np.sum([b(s) * DX * g_resp(x - s) for s in xs_k])
-        grande = curva_onda(-1.4, frente_y, yp, AMBAR, ancho=7)
-        self.play(integral.animate.move_to(np.array([-0.6, SUELO + 1.0, 0])).scale(0.6).set_opacity(0),
-                  integral_h.animate.move_to(np.array([-0.6, SUELO + 1.0, 0])).scale(0.6).set_opacity(0),
-                  ReplacementTransform(ondas_k, grande), FadeOut(fuente), FadeOut(fuente_h),
-                  FadeOut(etq_b), run_time=0.65)
-        self.limpiar(integral, integral_h)
+        # --- 3. Plano complejo: rayo amortiguado --------------------------------------
+        r5 = self.rotulo(r"Raíces complejas \ $\lambda=-\gamma\pm i\Omega$",
+                         r"y=e^{-\gamma x}\bigl(A\cos\Omega x+B\sen\Omega x\bigr)", VIOLETA, size=48)
+        L = 1.6
+        c_pl = np.array([1.25, 1.85, 0])
+        lado = 2.3
+        r1c, r2c = complex(-0.65, 1.15), complex(-0.65, -1.15)
+        img = imagen_fase(lambda z: 1 / ((z - r1c) * (z - r2c)), (-L, L), (-L, L), res=500, brillo=0.88)
+        img.set(width=lado, height=lado).move_to(c_pl).set_opacity(0.85)
+        plano = NumberPlane(x_range=[-L, L, 0.5], y_range=[-L, L, 0.5], x_length=lado, y_length=lado,
+                            background_line_style=dict(stroke_color=BLANCO, stroke_width=0.8,
+                                                       stroke_opacity=0.18),
+                            axis_config=dict(stroke_color=BLANCO, stroke_width=1.6, stroke_opacity=0.6))
+        plano.move_to(c_pl)
+        marco = Square(side_length=lado, stroke_color=VIOLETA, stroke_width=3).move_to(c_pl)
+        circ = Circle(radius=lado / (2 * L) * abs(r1c), stroke_color=BLANCO, stroke_width=2,
+                      stroke_opacity=0.5).move_to(plano.c2p(0, 0))
+        raices = VGroup(*[orbe(plano.c2p(r.real, r.imag), VIOLETA, r=0.07) for r in (r1c, r2c)])
+        etq_c = M(r"\mathbb C", size=34, color=BLANCO).next_to(marco, UP, buff=0.08).align_to(marco, RIGHT)
+        grupo_pl = Group(img, plano, circ, marco, raices, etq_c)
+        for m in grupo_pl:
+            m.set_z_index(Z_FX)
+        self.play(PA(D, BRAZOS_ARRIBA, SUELO, run_time=0.35, x=XD), self.cambiar_rotulo(r5),
+                  FadeIn(img, scale=0.3), Create(plano), Create(marco), run_time=0.55)
+        self.play(Create(circ), LaggedStart(*[GrowFromCenter(o) for o in raices], lag_ratio=0.3),
+                  FadeIn(etq_c), run_time=0.5)
+        fasor = Arrow(plano.c2p(0, 0), plano.c2p(r1c.real, r1c.imag), buff=0, stroke_width=4, color=BLANCO)
+        fasor.set_z_index(Z_FX + 2)
+        self.play(GrowArrow(fasor), Indicate(raices, color=BLANCO, scale_factor=1.6), run_time=0.45)
+        self.remove(fasor)
+        # rayo: oscilación amortiguada que viaja de δ hacia G
+        mano = punto_en_postura(D, PUNETAZO, SUELO, "mano_d", x=XD)
+        yh = mano[1]
+        x_ini, x_fin = mano[0] - 0.1, punta_espada()[0] + 0.25
+        gam, om, A = 0.42, 5.2, 0.62
+        perfil = lambda s: yh + A * np.exp(-gam * s) * np.cos(om * s)
+        fr = ValueTracker(0.02)
+
+        def rayo_complejo():
+            s = np.linspace(0, fr.get_value(), 220)
+            return curva(x_ini - s, perfil(s), MAGENTA, ancho=6)
+
+        rayo_c = always_redraw(rayo_complejo)
+        env = VGroup(*[DashedVMobject(VMobject(stroke_color=VIOLETA, stroke_width=2).set_points_smoothly(
+            [np.array([x_ini - s, yh + sg * A * np.exp(-gam * s), 0]) for s in np.linspace(0, x_ini - x_fin, 40)]),
+            num_dashes=28) for sg in (1, -1)])
+        env.set_opacity(0.6)
+        self.add(rayo_c)
+        self.play(PA(D, PUNETAZO, SUELO, run_time=0.25, x=XD),
+                  fr.animate(rate_func=linear).set_value(x_ini - x_fin), Create(env), run_time=1.15)
+        rayo_c.clear_updaters()
+        par, gr_p = fx(destello(np.array([x_fin, perfil(x_ini - x_fin), 0]), MAGENTA, radio=0.6,
+                                run_time=0.3))
+        amort = M(r"\text{amortiguado: }\ e^{-\gamma x}\to0", size=30, color=VIOLETA)
+        amort.move_to(np.array([(x_ini + x_fin) / 2, yh - 0.95, 0]))
+        self.play(par, P(G, ESCUDO, run_time=0.2), FadeIn(amort),
+                  self.anotar(r"$\lambda=-\gamma\pm i\Omega\ \longrightarrow\ e^{-\gamma x}\cos\Omega x$: "
+                              r"oscilación amortiguada", VIOLETA), run_time=0.4)
+        self.limpiar(gr_p)
         self.wait(0.9)
+        self.play(FadeOut(rayo_c), FadeOut(env), FadeOut(amort), FadeOut(grupo_pl),
+                  PA(G, GUARDIA, SUELO, run_time=0.3, x=XG), PA(D, GUARDIA, SUELO, run_time=0.3, x=XD),
+                  run_time=0.45)
 
-        # --- 6. δ se protege con la variación de las constantes ------------------------
-        r6 = self.rotulo(r"Variación de constantes", r"W(x)\,\bm k'(x)=\bm b(x)", VIOLETA, size=56)
-        escudo = VGroup(RoundedRectangle(corner_radius=0.12, width=1.05, height=2.6, stroke_color=VIOLETA,
-                                         stroke_width=5, fill_color=CAJA, fill_opacity=0.97),
-                        M(r"W^{-1}", size=64, color=BLANCO))
-        escudo_h = RoundedRectangle(corner_radius=0.14, width=1.3, height=2.85, stroke_width=0,
-                                    fill_color=VIOLETA, fill_opacity=0.2)
-        escudo.move_to(np.array([1.25, SUELO + 1.4, 0]))
-        escudo_h.move_to(escudo)
-        escudo.set_z_index(6)
-        escudo_h.set_z_index(6)
-        borde_esc = escudo[0].get_left()[0]
-        frente2 = ValueTracker(frente_y)
-        self.remove(grande)
-        ola = always_redraw(lambda: curva_onda(-1.4, frente2.get_value(), yp, AMBAR, ancho=7,
-                                               x_tope=borde_esc))
-        self.add(ola)
-        self.play(PA(D, ESCUDO, SUELO, run_time=0.3), self.cambiar_rotulo(r6),
-                  GrowFromCenter(escudo), FadeIn(escudo_h),
-                  frente2.animate(rate_func=linear).set_value(borde_esc), run_time=1.1)
-        # choque
-        choque, gr_c = destello(np.array([borde_esc, SUELO + 1.2, 0]), BLANCO, radio=3.4,
-                                n_rayos=14, run_time=0.6)
-        gr_c.set_z_index(7)
-        flash = Rectangle(width=12, height=20, stroke_width=0, fill_color=BLANCO, fill_opacity=0.0)
-        flash.set_z_index(8)
+        # --- 4. Choque de rayos ------------------------------------------------------------
+        r6 = self.rotulo(r"Choque final", r"\int G\,b\,d\tilde x\quad\text{vs}\quad W\bm k'=\bm b", BLANCO,
+                         size=50)
+        self.play(PA(G, BRAZOS_ARRIBA, SUELO, run_time=0.3, x=XG), alto_esp.animate.set_value(1.55),
+                  PA(D, LANZAR_CARGA, SUELO, run_time=0.3, x=XD), self.cambiar_rotulo(r6), run_time=0.4)
+        self.play(PA(G, PUNETAZO, SUELO, run_time=0.2, x=XG), PA(D, PUNETAZO, SUELO, run_time=0.2, x=XD))
+        a_pt = punta_espada
+        b_pt = lambda: D.punto("mano_d")
+        y_haz = (a_pt()[1] + b_pt()[1]) / 2
+        choque = ValueTracker(-0.05)
+        cpt = lambda: np.array([choque.get_value(), y_haz, 0])
+        haz_g = always_redraw(lambda: rayo(a_pt(), cpt(), AMBAR, 1.15))
+        haz_d = always_redraw(lambda: rayo(b_pt(), cpt(), CIAN, 1.15))
+        bola = always_redraw(lambda: orbe(cpt(), BLANCO, r=0.27 + 0.06 * np.sin(14 * choque.get_value())))
+        lab_g = M(r"\int G(x,\tilde x)\,b(\tilde x)\,d\tilde x", size=38, color=AMBAR)
+        lab_d = M(r"W\,\bm k'=\bm b", size=42, color=CIAN)
+        lab_g.move_to(np.array([-1.45, y_haz + 0.95, 0]))
+        lab_d.move_to(np.array([1.45, y_haz - 0.85, 0]))
+        self.add(haz_g, haz_d, bola)
+        self.play(FadeIn(lab_g), FadeIn(lab_d), self.sacudir(0.05, 4), run_time=0.4)
+        for v in (0.6, -0.5, 0.45, -0.6, 0.3, -0.15, 0.0):
+            self.play(choque.animate(rate_func=smooth).set_value(v), self.sacudir(0.04, 3), run_time=0.32)
+        # explosión
+        for m in (haz_g, haz_d, bola):
+            m.clear_updaters()
+        boom, gr_b = destello(cpt(), BLANCO, radio=4.0, n_rayos=16, run_time=0.65)
+        gr_b.set_z_index(Z_ARMAS + 2)
+        flash = Rectangle(width=12, height=20, stroke_width=0, fill_color=BLANCO, fill_opacity=0)
+        flash.set_z_index(Z_ARMAS + 3)
         self.add(flash)
-        self.play(choque, self.sacudir(0.22, 7),
-                  flash.animate(rate_func=there_and_back, run_time=0.5).set_fill(opacity=0.6),
-                  run_time=0.6)
-        ola.clear_updaters()
-        self.limpiar(gr_c, flash)
+        self.play(boom, self.sacudir(0.24, 7), flash.animate(rate_func=there_and_back).set_fill(opacity=0.65),
+                  FadeOut(haz_g), FadeOut(haz_d), FadeOut(bola), FadeOut(lab_g), FadeOut(lab_d), run_time=0.65)
+        self.limpiar(gr_b, flash)
 
-        # --- 7. Revelación: son el mismo método -------------------------------------------
+        # --- 5. Revelación ---------------------------------------------------------------------
         igual = VGroup(
             T(r"variación de constantes $\;\equiv\;$ método de Green", size=40, color=BLANCO),
             M(r"G(x,\tilde x)=\Theta(x-\tilde x)\,\hat{\bm y}^{\mathsf T}(x)\,W^{-1}(\tilde x)\,"
-              r"\frac{\bm e_n}{a_n(\tilde x)}", size=44, color=BLANCO),
-        ).arrange(DOWN, buff=0.3)
-        ajustar(igual, 6.9)
-        rfin = caja(igual, BLANCO, titulo=r"Son el mismo cálculo", buff=0.3).move_to(UP * 4.0 + LEFT * 0.35)
-        self.play(FadeOut(ola), FadeOut(escudo), FadeOut(escudo_h),
-                  PA(G, REPOSO, SUELO, run_time=0.5, lean=-0.12),
-                  PA(D, REPOSO, SUELO, run_time=0.5, lean=-0.12),
-                  self.cambiar_rotulo(rfin, t_in=0.5), run_time=0.65)
-        self.wait(2.1)
-        self.play(caminar(G, -1.5, SUELO, pasos=2, run_time=0.6),
-                  caminar(D, 1.5, SUELO, pasos=2, run_time=0.6))
-        self.play(PA(G, PUNETAZO, SUELO, run_time=0.25), PA(D, PUNETAZO, SUELO, run_time=0.25))
-        puno = (G.punto("mano_d") + D.punto("mano_d")) / 2
-        toque, gr_t = destello(puno, AMBAR, radio=1.0, n_rayos=8, run_time=0.45)
-        toque2, gr_t2 = destello(puno, CIAN, radio=0.7, n_rayos=8, run_time=0.45)
-        gr_t.set_z_index(6)
-        gr_t2.set_z_index(6)
-        self.play(toque, toque2, self.sacudir(0.06, 3))
-        self.limpiar(gr_t, gr_t2)
-        self.wait(1.0)
-
-        # --- 8. Cierre ---------------------------------------------------------------------
-        fin = VGroup(
-            T(r"\bfseries Funciones de Green", size=60, color=BLANCO),
-            T(r"la respuesta a un impulso, sumada sobre todos los impulsos", size=30, color=GRIS),
-        ).arrange(DOWN, buff=0.25).move_to(DOWN * 3.15 + LEFT * 0.35)
+              r"\frac{\bm e_n}{a_n(\tilde x)}", size=44, color=BLANCO)).arrange(DOWN, buff=0.3)
+        rfin = caja(ajustar(igual, 6.9), BLANCO, titulo=r"Son el mismo cálculo", buff=0.3)
+        rfin.move_to(UP * 3.95 + LEFT * 0.35)
+        halo_c = VGroup(*[Circle(radius=r, stroke_color=c, stroke_width=3, stroke_opacity=o)
+                          .move_to(np.array([0, y_haz, 0])) for r, c, o in ((0.5, AMBAR, 0.8), (0.8, CIAN, 0.5))])
+        self.play(self.cambiar_rotulo(rfin, t_in=0.5), FadeOut(espada),
+                  self.anotar(r"$\int G\,b\,d\tilde x\ \equiv\ W\bm k'=\bm b$: el mismo cálculo", BLANCO),
+                  PA(G, REPOSO, SUELO, run_time=0.5, x=XG), PA(D, REPOSO, SUELO, run_time=0.5, x=XD),
+                  Succession(FadeIn(halo_c, scale=0.3, run_time=0.25),
+                             halo_c.animate(run_time=0.55).scale(2.2).set_opacity(0)),
+                  run_time=0.8)
+        self.limpiar(halo_c)
+        self.wait(2.2)
+        fin = VGroup(T(r"\bfseries Funciones de Green", size=60, color=BLANCO),
+                     T(r"la respuesta a un impulso, sumada sobre todos los impulsos", size=30, color=GRIS)
+                     ).arrange(DOWN, buff=0.25).move_to(DOWN * 2.75 + LEFT * 0.35)
         firma = VGroup(T(r"\textsc{Apuntes formalizados}", size=24, color=CIAN),
-                       T(AUTOR, size=28, color=TEXTO)).arrange(DOWN, buff=0.1)
-        firma.next_to(fin, DOWN, buff=0.45)
-        self.play(FadeIn(fin, shift=UP * 0.2), PA(G, REPOSO, SUELO, run_time=0.4),
-                  PA(D, REPOSO, SUELO, run_time=0.4), run_time=0.7)
-        self.play(FadeIn(firma), run_time=0.5)
-        self.wait(2.6)
+                       T(AUTOR, size=28, color=TEXTO)).arrange(DOWN, buff=0.1).next_to(fin, DOWN, buff=0.45)
+        self.play(FadeOut(self.reg, shift=DOWN * 0.2), run_time=0.4)
+        self.play(FadeIn(fin, shift=UP * 0.2), PA(G, BRAZOS_ARRIBA, SUELO, run_time=0.5, x=XG),
+                  PA(D, BRAZOS_ARRIBA, SUELO, run_time=0.5, x=XD), run_time=0.6)
+        self.play(FadeIn(firma), PA(G, REPOSO, SUELO, run_time=0.5, x=XG),
+                  PA(D, REPOSO, SUELO, run_time=0.5, x=XD), run_time=0.5)
+        self.wait(2.4)

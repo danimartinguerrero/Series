@@ -42,20 +42,22 @@ def _dir(ang, f):
 
 
 class Monigote(VGroup):
-    def __init__(self, color, x, suelo, mira=1, simbolo=None, **postura):
+    def __init__(self, color, x, suelo, mira=1, simbolo=None, escala=1.0, grosor=11,
+                 tam_cabeza=2.45, **postura):
         super().__init__()
         self.simbolo = simbolo
+        self.k = escala
         self.color_base = color
         self.mira = mira
         self.pose = dict(REPOSO)
-        self.pose.update(x=x, y=suelo + ALTURA_CADERA)
+        self.pose.update(x=x, y=suelo + ALTURA_CADERA * escala)
         self.pose.update(postura)
-        self.segs = [Line(ORIGIN, RIGHT, stroke_width=11, color=color) for _ in range(9)]
-        self.halo = [Line(ORIGIN, RIGHT, stroke_width=32, color=color, stroke_opacity=0.16)
+        self.segs = [Line(ORIGIN, RIGHT, stroke_width=grosor, color=color) for _ in range(9)]
+        self.halo = [Line(ORIGIN, RIGHT, stroke_width=grosor * 2.9, color=color, stroke_opacity=0.16)
                      for _ in range(9)]
-        self.cabeza = Circle(radius=CABEZA, stroke_width=10, color=color,
+        self.cabeza = Circle(radius=CABEZA * escala, stroke_width=grosor * 0.9, color=color,
                              fill_color=FONDO, fill_opacity=1)
-        self.halo_cab = Circle(radius=CABEZA + 0.07, stroke_width=0, fill_color=color,
+        self.halo_cab = Circle(radius=CABEZA * escala + 0.07, stroke_width=0, fill_color=color,
                                fill_opacity=0.18)
         self.ojo = Dot(radius=0.055, color=color)
         for l in self.segs + self.halo:
@@ -65,7 +67,7 @@ class Monigote(VGroup):
         else:
             # cabeza = glifo (Computer Modern) con halo; se reconstruye girado en cada fotograma
             self.glifo_base = MathTex(simbolo, color=color, tex_template=PLANTILLA)
-            self.glifo_base.set_height(2.45 * CABEZA)
+            self.glifo_base.set_height(tam_cabeza * CABEZA * escala)
             self.glifo_base.set_stroke(color, width=1.2)
             self.halo_base = self.glifo_base.copy().set_fill(opacity=0).set_stroke(color, width=16,
                                                                                   opacity=0.22)
@@ -79,20 +81,21 @@ class Monigote(VGroup):
 
     # --- cinemática directa ----------------------------------------------------------
     def articulaciones(self):
-        p, f = self.pose, self.mira
+        p, f, k = self.pose, self.mira, self.k
         cadera = np.array([p["x"], p["y"], 0.0])
-        cuello = cadera + TRONCO * np.array([f * np.sin(p["lean"]), np.cos(p["lean"]), 0])
-        cab = cuello + (CABEZA + 0.04) * np.array([f * np.sin(p["lean"]), np.cos(p["lean"]), 0])
-        hombro = cuello - 0.06 * np.array([f * np.sin(p["lean"]), np.cos(p["lean"]), 0])
+        arriba = np.array([f * np.sin(p["lean"]), np.cos(p["lean"]), 0])
+        cuello = cadera + k * TRONCO * arriba
+        cab = cuello + k * (CABEZA + 0.04) * arriba
+        hombro = cuello - k * 0.06 * arriba
         j = dict(cadera=cadera, cuello=cuello, cabeza=cab)
-        j["codo_d"] = hombro + BRAZO * _dir(p["ra1"], f)
-        j["mano_d"] = j["codo_d"] + ANTEBRAZO * _dir(p["ra2"], f)
-        j["codo_i"] = hombro + BRAZO * _dir(p["la1"], f)
-        j["mano_i"] = j["codo_i"] + ANTEBRAZO * _dir(p["la2"], f)
-        j["rodilla_d"] = cadera + MUSLO * _dir(p["rl1"], f)
-        j["pie_d"] = j["rodilla_d"] + PIERNA * _dir(p["rl1"] + p["rl2"], f)
-        j["rodilla_i"] = cadera + MUSLO * _dir(p["ll1"], f)
-        j["pie_i"] = j["rodilla_i"] + PIERNA * _dir(p["ll1"] + p["ll2"], f)
+        j["codo_d"] = hombro + k * BRAZO * _dir(p["ra1"], f)
+        j["mano_d"] = j["codo_d"] + k * ANTEBRAZO * _dir(p["ra2"], f)
+        j["codo_i"] = hombro + k * BRAZO * _dir(p["la1"], f)
+        j["mano_i"] = j["codo_i"] + k * ANTEBRAZO * _dir(p["la2"], f)
+        j["rodilla_d"] = cadera + k * MUSLO * _dir(p["rl1"], f)
+        j["pie_d"] = j["rodilla_d"] + k * PIERNA * _dir(p["rl1"] + p["rl2"], f)
+        j["rodilla_i"] = cadera + k * MUSLO * _dir(p["ll1"], f)
+        j["pie_i"] = j["rodilla_i"] + k * PIERNA * _dir(p["ll1"] + p["ll2"], f)
         j["hombro"] = hombro
         # giro global alrededor de la cadera (volteretas, derribos)
         if abs(p.get("spin", 0.0)) > 1e-9:
@@ -122,7 +125,7 @@ class Monigote(VGroup):
             if abs(self.pose.get("spin", 0.0)) > 1e-9:
                 c, s_ = np.cos(self.pose["spin"]), np.sin(self.pose["spin"])
                 arriba = np.array([c * arriba[0] - s_ * arriba[1], s_ * arriba[0] + c * arriba[1], 0])
-            centro = j["cuello"] + (self.glifo_base.height / 2 + 0.06) * arriba
+            centro = j["cuello"] + (self.glifo_base.height / 2 + 0.06 * self.k) * arriba
             self.cabeza.become(self.glifo_base.copy().rotate(ang).move_to(centro))
             self.halo_cab.become(self.halo_base.copy().rotate(ang).move_to(centro))
             return self

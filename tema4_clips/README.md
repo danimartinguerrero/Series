@@ -1,19 +1,21 @@
 # Tema 4 (Parte I) — Clip «Duelo en 𝓛: δ contra G»
 
-Clip vertical (1080 × 1920, 60 fps, ~29 s) animado con Manim: dos monigotes originales,
-con cabezas δ (cian) y G (ámbar), combaten con las herramientas del tema.
+Clip vertical (1080 × 1920, 60 fps, ~29 s) animado con Manim. Dos monigotes pequeños y
+originales, con cabezas **δ** (cian) y **G** (ámbar), se baten **a distancia** con armas
+matemáticas; cada ataque deja como consecuencia el resultado del tema al que alude, que se
+anota en el «Registro del duelo»:
 
-1. δ lanza un **impulso unitario** δ(x − x̃); G lo atrapa y lo clava en x̃.
-2. Surge la **respuesta causal** G(x, x̃) (nula antes del impulso), que derriba a δ.
-3. δ responde con una **lluvia de impulsos** b(x) = ∫ b(x̃) δ(x − x̃) dx̃.
-4. G suma las respuestas: **superposición** y_p = ∫ G b dx̃.
-5. δ se cubre con la **variación de constantes** (W k′ = b, escudo W⁻¹) y, en el choque,
-   descubren que es el mismo cálculo.
+1. **Ráfaga de impulsos** δ(x − x̃) → G los para con la espada **∫** y, al clavarla, nace la
+   **función de Green causal** (onda que sólo avanza hacia delante; δ la esquiva con una voltereta).
+2. **Serie Σ** de e^{λx} → escudo **∏** (factorización 𝓛 = aₙ∏(D − λ_k)^{m_k}) que la parte en
+   las exponenciales e^{λ_k x}.
+3. **Plano ℂ** con las raíces −γ ± iΩ → **rayo amortiguado** e^{−γx} cos Ωx.
+4. **Choque de rayos** ∫G b dx̃ contra W k′ = b → explosión: variación de constantes ≡ método de Green.
 
 ```bash
-manim render -q h duelo_green.py DueloGreen            # calidad final
+manim render -q h duelo_green.py DueloGreen                 # calidad final
 CLIP_PREVIA=1 manim render -q l duelo_green.py DueloGreen   # vista previa
 ```
 
-`monigote.py` contiene el esqueleto articulado (cinemática directa, posturas interpolables)
-y los efectos (destellos, partículas, impulsos).
+`monigote.py`: esqueleto articulado escalable (cinemática directa, posturas interpolables,
+cabeza con glifo) y efectos (destellos, partículas, impulsos).
