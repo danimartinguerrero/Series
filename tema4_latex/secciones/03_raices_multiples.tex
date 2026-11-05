@@ -106,13 +106,52 @@ $P_1=\dots=P_r=0$.
 \end{lema}
 
 \begin{proof}
-Por inducción sobre $r$; el caso $r=1$ es inmediato. Multiplicando por
-$\eul^{-\lambda_rx}$ y derivando $\deg P_r+1$ veces se elimina el último
-término. Como $D\bigl(P\eul^{\mu x}\bigr)=(P'+\mu P)\,\eul^{\mu x}$ y
-$\mu=\lambda_k-\lambda_r\neq0$ para $k<r$, cada derivación transforma
-$P_k\eul^{(\lambda_k-\lambda_r)x}$ en $Q_k\eul^{(\lambda_k-\lambda_r)x}$ con
-$\deg Q_k=\deg P_k$. La hipótesis de inducción da $Q_k=0$, luego $P_k=0$
-para $k<r$, y entonces $P_r\eul^{\lambda_rx}\equiv0$ obliga a $P_r=0$.
+\emph{Idea:} multiplicar por una exponencial para convertir el último
+término en un polinomio y derivar hasta que desaparezca; así se pasa de $r$
+sumandos a $r-1$ y se aplica inducción sobre $r$.
+
+\emph{Caso base, $r=1$.} Si $P_1\,\eul^{\lambda_1x}\equiv0$, dividiendo por
+$\eul^{\lambda_1x}\neq0$ queda $P_1\equiv0$ en $I$, y un polinomio que se anula
+en infinitos puntos es el nulo.
+
+\emph{Hipótesis de inducción.} El lema es cierto para $r-1$ exponentes
+distintos.
+
+\emph{Paso inductivo.} Partimos de
+\begin{equation}\label{eq:induccion}
+  P_1\,\eul^{\lambda_1x}+\dots+P_{r-1}\,\eul^{\lambda_{r-1}x}+P_r\,\eul^{\lambda_rx}\equiv0 .
+\end{equation}
+Sea $d=\deg P_r$ (si $P_r=0$, el paso 2 se omite).
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=3pt]
+  \item \emph{Multiplicar por $\eul^{-\lambda_rx}$.} Con
+        $\mu_k\defeq\lambda_k-\lambda_r$,
+        \[
+          \sum_{k<r}P_k\,\eul^{\mu_kx}+P_r\equiv0 ,
+        \]
+        y el último término es ahora un polinomio puro.
+  \item \emph{Derivar $d+1$ veces.} La derivada $(d+1)$-ésima de un
+        polinomio de grado $d$ es nula, así que $P_r$ desaparece; y como la
+        función de partida es idénticamente nula, también lo son sus
+        derivadas.
+  \item \emph{Efecto sobre los demás términos.} Por la regla del producto,
+        \[
+          D\bigl(P\,\eul^{\mu x}\bigr)=P'\eul^{\mu x}+\mu P\,\eul^{\mu x}=(P'+\mu P)\,\eul^{\mu x}:
+        \]
+        cada derivación conserva la exponencial y cambia $P$ por $P'+\mu P$.
+        Si $\mu\neq0$ y $P=ax^{e}+\dots$ con $a\neq0$, entonces $\deg P'<e$ y
+        $\mu P$ tiene término principal $\mu a\,x^{e}\neq0$, luego
+        $\deg(P'+\mu P)=e$: un polinomio no nulo nunca se convierte en el nulo.
+        Aquí se usa que las raíces son distintas, $\mu_k\neq0$ para $k<r$ (con
+        $\mu=0$ derivar sí bajaría el grado). Tras las $d+1$ derivaciones,
+        \[
+          \sum_{k<r}Q_k\,\eul^{\mu_kx}\equiv0,\qquad \deg Q_k=\deg P_k .
+        \]
+  \item \emph{Hipótesis de inducción.} Son $r-1$ sumandos con exponentes
+        $\mu_k$ distintos entre sí, porque lo son las $\lambda_k$; luego
+        $Q_k=0$ para todo $k<r$, y por el paso 3 también $P_k=0$.
+  \item \emph{Último sumando.} En \eqref{eq:induccion} sólo queda
+        $P_r\,\eul^{\lambda_rx}\equiv0$, y por el caso base, $P_r=0$.\qedhere
+\end{enumerate}
 \end{proof}
 
 \begin{teorema}[Base de $\Ker\Lop$ con coeficientes constantes]\label{teo:base}
