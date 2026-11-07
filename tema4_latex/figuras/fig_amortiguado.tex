@@ -1,0 +1,48 @@
+% Figura: lugar de las raíces y respuestas del oscilador amortiguado (omega = 1)
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  % ---------------- (a) Raíces en el plano complejo ----------------
+  \begin{axis}[name=raices, oscuro, grid=none, axis equal image,
+      width=6.4cm, height=6.4cm,
+      xmin=-3.0, xmax=0.7, ymin=-1.55, ymax=1.55,
+      xtick={-3,-2,-1,0}, ytick={-1,0,1},
+      xlabel={$\Real\lambda$}, ylabel={$\Imag\lambda$},
+      title={(a) Raíces $\lambda_\pm(\nu)$, $\omega=1$}]
+    \addplot[guia, domain=0:360, samples=100] ({cos(x)},{sin(x)});
+    \draw[gris, line width=0.4pt] (axis cs:-3,0) -- (axis cs:0.7,0);
+    \draw[gris, line width=0.4pt] (axis cs:0,-1.55) -- (axis cs:0,1.55);
+    % 0 <= nu <= 2: arco de la circunferencia unidad (semiplano izquierdo)
+    \addplot[violeta, line width=1.3pt, domain=90:180, samples=60] ({cos(x)},{sin(x)});
+    \addplot[violeta, line width=1.3pt, domain=180:270, samples=60] ({cos(x)},{sin(x)});
+    % nu >= 2: eje real
+    \addplot[naranja, line width=1.3pt] coordinates {(-1,0) (-0.38,0)};
+    \addplot[naranja, line width=1.3pt] coordinates {(-1,0) (-2.62,0)};
+    % ejemplos: nu = 0.5 (sub), 2 (crit), 3 (sobre)
+    \addplot[only marks, mark=*, mark size=2.6pt, cian] coordinates {(-0.25,0.968) (-0.25,-0.968)};
+    \addplot[only marks, mark=*, mark size=2.8pt, verde] coordinates {(-1,0)};
+    \addplot[only marks, mark=*, mark size=2.6pt, magenta] coordinates {(-0.382,0) (-2.618,0)};
+    \node[font=\scriptsize, text=gris, anchor=south] at (axis cs:-1.9,1.05) {$\abs{\lambda}=\omega$};
+    \node[font=\scriptsize, text=verde, anchor=north east] at (axis cs:-1.15,-0.15) {$\nu=2$};
+  \end{axis}
+  % ---------------- (b) Respuestas con y(0)=1, y'(0)=0 ----------------
+  \begin{axis}[at={($(raices.east)+(1.35cm,0)$)}, anchor=west, oscuro,
+      width=8.0cm, height=5.6cm, xmin=0, xmax=14, ymin=-0.8, ymax=1.1,
+      xtick={0,2,...,14}, ytick={-0.5,0,0.5,1}, xlabel={$x$},
+      title={(b) Respuestas con $y(0)=1$, $y'(0)=0$},
+      samples=300, domain=0:14, legend pos=north east]
+    \addplot[c1] {exp(-0.25*x)*(cos(deg(0.968246*x))+0.258199*sin(deg(0.968246*x)))};
+    \addplot[c4] {(1+x)*exp(-x)};
+    \addplot[c2] {(-2.618034*exp(-0.381966*x)+0.381966*exp(-2.618034*x))/(-2.236068)};
+    \legend{$\nu=0{,}5$ (sub), $\nu=2$ (crítico), $\nu=3$ (sobre)}
+  \end{axis}
+\end{tikzpicture}
+\caption{Oscilador amortiguado con $\omega=1$. (a) Al crecer $\nu$ desde
+$0$, las raíces $\lambda_\pm=-\gamma\pm\iu\Omega$ recorren la circunferencia
+$\abs{\lambda}=\omega$ (violeta) hasta chocar en $\lambda=-\omega$ para
+$\nu=2$; después se separan sobre el eje real (naranja). Los puntos marcan
+los tres casos de (b). (b) El régimen crítico,
+$y=(1+x)\,\eul^{-x}$, es el regreso al equilibrio más rápido sin
+oscilar.}
+\label{fig:amortiguado}
+\end{figure}

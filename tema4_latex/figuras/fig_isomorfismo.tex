@@ -1,0 +1,49 @@
+% Figura: el isomorfismo «datos iniciales» y una familia de soluciones
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  % ---------------- (a) Esquema del isomorfismo ----------------
+  \begin{scope}
+    \node[font=\small, text=texto, anchor=west] at (-0.3,3.05) {(a) $\Phi_{x_0}\colon\Ker\Lop\to\R^{n}$};
+    % espacio de soluciones: caja con curvas
+    \draw[cian, line width=0.7pt, rounded corners=6pt, fill=cajafondo] (0,0) rectangle (2.7,2.5);
+    \node[font=\small, text=cian, anchor=north] at (1.35,-0.12) {$\Ker\Lop$};
+    \draw[magenta, line width=0.9pt] plot[domain=0.25:2.45, samples=60, smooth] (\x,{1.25+0.55*sin(deg(2.6*\x))});
+    \draw[ambar, line width=0.9pt] plot[domain=0.25:2.45, samples=60, smooth] (\x,{1.25+0.45*cos(deg(2.6*\x))});
+    \draw[verde, line width=0.9pt] plot[domain=0.25:2.45, samples=60, smooth] (\x,{1.25+0.6*sin(deg(2.6*\x+40))*exp(-0.3*\x)});
+    % R^n: ejes
+    \begin{scope}[shift={(5.4,0.35)}]
+      \draw[eje] (0,0) -- (2.2,0);
+      \draw[eje] (0,0) -- (0,2.1);
+      \draw[eje] (0,0) -- (-0.75,-0.55);
+      \draw[-{Stealth[length=6pt,width=5pt]}, line width=1pt, ambar] (0,0) -- (1.35,1.25);
+      \fill[ambar] (1.35,1.25) circle (1.3pt);
+      \node[font=\small, text=cian, anchor=north] at (0.75,-0.47) {$\R^{n}$};
+      \node[etiqgris, anchor=west, align=left] at (1.42,1.42) {$(y(x_0),\dots,$\\$\ y^{(n-1)}(x_0))$};
+    \end{scope}
+    % flechas
+    \draw[flecha, line width=0.8pt, cian] (2.85,1.7) to[bend left=18]
+      node[above, font=\scriptsize, text=gris] {$\Phi_{x_0}$} (5.15,1.7);
+    \draw[flecha, line width=0.8pt, violeta] (5.15,0.95) to[bend left=18]
+      node[below, font=\scriptsize, text=gris, align=center] {$\Phi_{x_0}^{-1}$} (2.85,0.95);
+    \node[font=\scriptsize, text=gris, align=center] at (4.0,-0.55) {existencia $\Rightarrow$ sobre\\unicidad $\Rightarrow$ inyectiva};
+  \end{scope}
+  % ---------------- (b) Familia de soluciones de y''+y=0 ----------------
+  \begin{axis}[at={(9.9cm,0)}, anchor=south west, oscuro, width=5.75cm, height=4.4cm,
+      xmin=-0.6, xmax=6.6, ymin=-1.75, ymax=1.75, xtick={0,3.1416,6.2832},
+      xticklabels={$0$,$\pi$,$2\pi$}, ytick={-1,0,1}, xlabel={$x$},
+      title={(b) $y''+y=0$: datos en $x_0=0$}, samples=120, domain=-0.6:6.6]
+    \addplot[c1] {cos(deg(x))};
+    \addplot[c2] {sin(deg(x))};
+    \addplot[c3] {cos(deg(x))+sin(deg(x))};
+    \addplot[c4] {-0.5*cos(deg(x))+0.8*sin(deg(x))};
+    \addplot[only marks, mark=*, mark size=1.6pt, blanco] coordinates {(0,1) (0,0) (0,-0.5)};
+  \end{axis}
+\end{tikzpicture}
+\caption{(a) La aplicación $\Phi_{x_0}$ asigna a cada solución de la
+homogénea sus $n$ datos iniciales en $x_0$; el teorema de existencia y
+unicidad la convierte en un isomorfismo, de modo que $\dim\Ker\Lop=n$.
+(b) Soluciones de $y''+y=0$ con datos $(y(0),y'(0))=(1,0)$, $(0,1)$,
+$(1,1)$ y $(-\tfrac12,\tfrac45)$: cada par de datos determina una única curva.}
+\label{fig:isomorfismo}
+\end{figure}

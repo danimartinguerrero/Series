@@ -1,0 +1,206 @@
+% =========================================================================
+\section{Planteamiento y estructura de la solución}\label{sec:estructura}
+% =========================================================================
+
+Todo el tema descansa sobre una sola propiedad: el operador diferencial es
+\emph{lineal}. De ella se siguen tres hechos: que la solución general es
+«homogénea más particular», que las soluciones de la homogénea forman un
+espacio vectorial de dimensión $n$, y que una fuente complicada puede
+descomponerse en impulsos elementales cuyas respuestas se suman
+(\cref{sec:green}).
+
+% -------------------------------------------------------------------------
+\subsection{El operador lineal de orden \texorpdfstring{$n$}{n}}\label{sec:operador}
+% -------------------------------------------------------------------------
+
+\begin{definicion}[EDO lineal de orden $n$]\label{def:lineal}
+Sean $I\subseteq\R$ un intervalo abierto y $a_0,\dots,a_n,b\in\mathcal C(I)$
+con $a_n(x)\neq0$ para todo $x\in I$. Con $D\defeq\dif/\dif x$, el
+\emph{operador diferencial lineal de orden $n$}
+\begin{equation}\label{eq:operador}
+  \Lop\defeq\sum_{j=0}^{n}a_j(x)\,D^{j}\colon\ \mathcal C^{n}(I)\longrightarrow\mathcal C(I)
+\end{equation}
+define la \emph{ecuación diferencial lineal de orden $n$}
+\begin{equation}\label{eq:edo}
+  \Lop[y]\equiv a_n(x)\,y^{(n)}+a_{n-1}(x)\,y^{(n-1)}+\dots+a_1(x)\,y'+a_0(x)\,y=b(x).
+\end{equation}
+Se llama \emph{homogénea} si $b\equiv0$ y \emph{completa} en caso
+contrario; $b$ es la \emph{fuente} o término inhomogéneo.
+\end{definicion}
+
+\begin{proposicion}[Linealidad y superposición]\label{prop:linealidad}
+Para cualesquiera $y_1,y_2\in\mathcal C^{n}(I)$ y $\alpha,\beta\in\C$,
+\[
+  \Lop[\alpha y_1+\beta y_2]=\alpha\,\Lop[y_1]+\beta\,\Lop[y_2].
+\]
+En consecuencia: \textup{(i)} el conjunto de soluciones de la homogénea es
+el núcleo $\Ker\Lop$, un subespacio vectorial; \textup{(ii)} si
+$\Lop[y_k]=b_k$ para $k=1,\dots,m$, entonces
+$\Lop\bigl[\sum_k y_k\bigr]=\sum_k b_k$ (principio de superposición).
+\end{proposicion}
+
+\begin{proof}
+La derivación es lineal y $a_j(x)$ multiplica punto a punto; (i) y (ii)
+son consecuencias inmediatas.
+\end{proof}
+
+% -------------------------------------------------------------------------
+\subsection{El espacio de soluciones tiene dimensión \texorpdfstring{$n$}{n}}\label{sec:dimension}
+% -------------------------------------------------------------------------
+
+\begin{teorema}[Existencia y unicidad; recordatorio]\label{teo:eyu}
+Para cada $x_0\in I$ y cada $(\eta_0,\dots,\eta_{n-1})\in\R^{n}$ existe una
+única $y\in\mathcal C^{n}(I)$ solución de \eqref{eq:edo} con
+$y^{(j)}(x_0)=\eta_j$, $j=0,\dots,n-1$
+\textup{\cite[cap.~3]{CODDINGTON}, \cite[cap.~IV]{TEMARIO}}.
+\end{teorema}
+
+\begin{teorema}[Dimensión del núcleo]\label{teo:dimension}
+$\dim\Ker\Lop=n$. Más precisamente, para cada $x_0\in I$ la aplicación
+«datos iniciales»
+\begin{equation}\label{eq:Phi}
+  \Phi_{x_0}\colon\Ker\Lop\longrightarrow\R^{n},\qquad
+  \Phi_{x_0}(y)=\bigl(y(x_0),\,y'(x_0),\,\dots,\,y^{(n-1)}(x_0)\bigr),
+\end{equation}
+es un isomorfismo de espacios vectoriales.
+\end{teorema}
+
+\begin{proof}
+$\Phi_{x_0}$ es lineal porque la derivación y la evaluación lo son. Aplicando
+el \cref{teo:eyu} con $b\equiv0$: la \emph{existencia} dice que todo vector
+de datos es imagen de alguna solución, luego $\Phi_{x_0}$ es sobreyectiva;
+la \emph{unicidad} dice que esa solución es única, luego $\Phi_{x_0}$ es
+inyectiva. Así $\Ker\Lop\cong\R^{n}$.
+\end{proof}
+
+\begin{observacion}[¿$n$ soluciones o $n$ constantes?]\label{obs:n-constantes}
+Ambas afirmaciones expresan lo mismo. Conviene distinguir tres objetos: el
+conjunto de soluciones $\Ker\Lop$, que es infinito; una \emph{base}
+$\{\hat y_1,\dots,\hat y_n\}$ o \emph{sistema fundamental}, las piezas
+fijas; y las $n$ constantes $c_1,\dots,c_n$, que son las coordenadas de una
+solución concreta en esa base, $y=c_1\hat y_1+\dots+c_n\hat y_n$. Es la misma
+situación que en $\R^{3}$: infinitos vectores, tres vectores de la base y
+tres coordenadas para cada uno. Fijar una solución equivale a dar $n$
+números, sean los datos iniciales o las constantes $c_i$
+(\cref{fig:isomorfismo}).
+\end{observacion}
+
+\begin{ejemplo}\label{ej:oscilador-base}
+Para $y''+y=0$ ($n=2$), $\{\cos x,\sin x\}$ es una base y la solución
+general $y=c_1\cos x+c_2\sin x$ tiene dos constantes. En $x_0=0$,
+$y(0)=c_1$ e $y'(0)=c_2$: aquí las constantes son directamente los datos
+iniciales, porque $\Phi_0(\cos)=(1,0)$ y $\Phi_0(\sin)=(0,1)$ son la base
+canónica de $\R^{2}$.
+\end{ejemplo}
+
+\begin{notacion}[Subespacio generado]\label{not:generado}
+El \emph{subespacio generado} por $f_1,\dots,f_k$ es el conjunto de sus
+combinaciones lineales, que denotamos indistintamente
+\begin{equation}\label{eq:generado}
+  \gen{f_1,\dots,f_k}=\spanop\{f_1,\dots,f_k\}
+  =\Bigl\{\,\sum_{i=1}^{k}c_if_i\ \Big|\ c_i\in\C\Bigr\}.
+\end{equation}
+Por ejemplo, fijado $n\in\N$, $\{1,x,x^{2},\dots,x^{n}\}$ es un sistema de
+generadores del subespacio $\R_n[x]\subset\R[x]$ de polinomios de
+coeficientes reales y grado $\le n$:
+\[
+  \gen{1,x,x^{2},\dots,x^{n}}=\R_n[x]=\Bigl\{\,\sum_{i=0}^{n}a_ix^{i}\ \Big|\ a_i\in\R\Bigr\}
+\]
+(y $\C_n[x]$ si los coeficientes son complejos). Así, si
+$\{\hat y_1,\dots,\hat y_n\}$ es un sistema fundamental,
+$\Ker\Lop=\gen{\hat y_1,\dots,\hat y_n}=\spanop\{\hat y_1,\dots,\hat y_n\}$.
+\end{notacion}
+
+\input{figuras/fig_isomorfismo}
+
+% -------------------------------------------------------------------------
+\subsection{Independencia lineal y wronskiano}\label{sec:wronskiano}
+% -------------------------------------------------------------------------
+No basta con tener $n$ soluciones: deben ser independientes. Por ejemplo,
+$\{\cos x,\,2\cos x\}$ sólo genera una recta de $\Ker\Lop$.
+
+\begin{definicion}[Matriz wronskiana]\label{def:wronskiano}
+Dadas $\hat y_1,\dots,\hat y_n\in\mathcal C^{n-1}(I)$, su \emph{matriz
+wronskiana} y su \emph{wronskiano} son
+\begin{equation}\label{eq:wronskiana}
+  W(x)\defeq
+  \begin{pmatrix}
+    \hat y_1 & \cdots & \hat y_n\\
+    \hat y_1' & \cdots & \hat y_n'\\
+    \vdots & & \vdots\\
+    \hat y_1^{(n-1)} & \cdots & \hat y_n^{(n-1)}
+  \end{pmatrix}\!(x),
+  \qquad w(x)\defeq\det W(x).
+\end{equation}
+\end{definicion}
+
+\begin{proposicion}[Criterio del wronskiano]\label{prop:wronskiano}
+Sean $\hat y_1,\dots,\hat y_n\in\Ker\Lop$. Son equivalentes:
+\begin{enumerate}[label=\textup{(\alph*)}]
+  \item $\{\hat y_1,\dots,\hat y_n\}$ es una base de $\Ker\Lop$;
+  \item $w(x_0)\neq0$ para \emph{algún} $x_0\in I$;
+  \item $w(x)\neq0$ para \emph{todo} $x\in I$.
+\end{enumerate}
+\end{proposicion}
+
+\begin{proof}
+La columna $i$ de $W(x_0)$ es precisamente $\Phi_{x_0}(\hat y_i)$. Como
+$\Phi_{x_0}$ es un isomorfismo (\cref{teo:dimension}) para \emph{cada}
+$x_0\in I$,
+\begin{equation}\label{eq:criterio}
+  \{\hat y_i\}\ \text{base de}\ \Ker\Lop
+  \iff\{\Phi_{x_0}(\hat y_i)\}\ \text{base de}\ \R^{n}
+  \iff w(x_0)\neq0 ,
+\end{equation}
+y la primera condición no depende de $x_0$.
+\end{proof}
+
+\begin{observacion}\label{obs:wronskiano-general}
+Para funciones \emph{arbitrarias}, $w\not\equiv0$ implica independencia
+lineal, pero no al revés: $x^{2}$ y $x\abs{x}$ son independientes en $\R$ y su
+wronskiano es idénticamente nulo. La equivalencia de la
+\cref{prop:wronskiano} usa que las $\hat y_i$ resuelven la misma ecuación
+lineal con $a_n\neq0$.
+\end{observacion}
+
+\begin{ejemplo}[Dos wronskianos \cite{TEMARIO}]\label{ej:wronskianos}
+\leavevmode
+\begin{enumerate}[label=(\roman*)]
+  \item $x^{3}y'''-3x^{2}y''+6x\,y'-6y=0$ en $I=(0,\infty)$ admite las
+        soluciones $x$, $x^{2}$, $x^{3}$, y
+        \[
+          w(x)=\begin{vmatrix}x & x^{2} & x^{3}\\ 1 & 2x & 3x^{2}\\ 0 & 2 & 6x\end{vmatrix}=2x^{3}\neq0 ,
+        \]
+        luego la solución general es $y=k_1x+k_2x^{2}+k_3x^{3}$.
+  \item Para $y''+y=0$, las soluciones $\cos x$, $\sin x$, $\eul^{\iu x}$ son
+        dependientes, $\eul^{\iu x}-\cos x-\iu\sin x=0$ (como debe ser: tres
+        vectores en un espacio de dimensión $2$), y en efecto su wronskiano
+        $3\times3$ es nulo.
+\end{enumerate}
+\end{ejemplo}
+
+% -------------------------------------------------------------------------
+\subsection{Estructura de la solución general}\label{sec:general}
+% -------------------------------------------------------------------------
+
+\begin{teorema}[Homogénea más particular]\label{teo:estructura}
+Sean $\{\hat y_1,\dots,\hat y_n\}$ un sistema fundamental e $y_p$ una
+solución cualquiera de \eqref{eq:edo}. Entonces toda solución de
+\eqref{eq:edo} es de la forma
+\begin{equation}\label{eq:general}
+  y(x)=\ubr{\sum_{i=1}^{n}c_i\,\hat y_i(x)}{y_h\,\in\,\Ker\Lop}+\;y_p(x),
+  \qquad c_1,\dots,c_n\in\R .
+\end{equation}
+\end{teorema}
+
+\begin{proof}
+Por linealidad, $\Lop[y-y_p]=b-b=0$, luego $y-y_p\in\Ker\Lop$, que es el
+espacio $\gen{\hat y_1,\dots,\hat y_n}$ (\cref{not:generado}).
+\end{proof}
+
+El trabajo se reparte así en dos problemas (\cref{fig:mapa}): hallar
+$y_h$, lo que haremos para coeficientes constantes en las
+\cref{sec:constantes,sec:multiples}, y hallar $y_p$, lo que haremos en
+general en las \cref{sec:variacion,sec:green}.
+
+\input{figuras/fig_mapa}

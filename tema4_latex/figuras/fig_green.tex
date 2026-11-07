@@ -1,0 +1,34 @@
+% Figura: función de Green causal para x~ = 2 (continuidad y salto de la derivada)
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{axis}[oscuro, width=0.94\textwidth, height=5.8cm,
+      xmin=0, xmax=16, ymin=-1.15, ymax=1.62, xtick={0,2,...,16},
+      ytick={-1,-0.5,0,0.5,1}, xlabel={$x$},
+      samples=500, domain=0:16, legend pos=north east]
+    \fill[grisoscuro, opacity=0.45] (axis cs:0,-1.15) rectangle (axis cs:2,1.62);
+    \addplot[c1] {x<2 ? 0 : sin(deg(x-2))};
+    \addplot[c2] {x<2 ? 0 : exp(-0.16*(x-2))*sin(deg(0.987117*(x-2)))/0.987117};
+    % pendientes a ambos lados de x~ = 2
+    \draw[ambar, line width=0.9pt, densely dashed] (axis cs:2,0) -- (axis cs:3.05,1.05);
+    \draw[ambar, line width=0.9pt, densely dashed] (axis cs:0.95,0) -- (axis cs:2,0);
+    \addplot[only marks, mark=*, mark size=2pt, ambar, forget plot] coordinates {(2,0)};
+    \legend{$\gamma=0$: $\Heav(x-\tilde x)\sin(x-\tilde x)$,
+            $\gamma=0{,}16$: amortiguada}
+    \node[font=\scriptsize, text=gris, align=center, anchor=south] at (axis cs:1,-1.1)
+      {$G=0$\\(causalidad)};
+    \node[font=\scriptsize, text=ambar, anchor=south] at (axis cs:2.55,1.25)
+      {pendiente $1$};
+    \node[font=\scriptsize, text=ambar, anchor=south] at (axis cs:1.05,0.06)
+      {pendiente $0$};
+    \node[font=\small, text=texto, anchor=north] at (axis cs:2,-0.08) {$\tilde x$};
+  \end{axis}
+\end{tikzpicture}
+\caption{Función de Green causal de $y''+2\gamma y'+y=\delta(x-\tilde x)$ con
+$\tilde x=2$, sin amortiguamiento \eqref{eq:green-oscilador} y con él
+\eqref{eq:green-amortiguado}. $G$ es nula antes del impulso (zona
+sombreada) y continua en $x=\tilde x$, pero su derivada salta de $0$ a
+$1=1/a_2$, como exige la \cref{prop:salto}: el impulso comunica
+«velocidad» instantáneamente, no «posición».}
+\label{fig:green}
+\end{figure}

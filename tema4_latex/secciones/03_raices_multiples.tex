@@ -1,0 +1,290 @@
+% =========================================================================
+\section{Raíces múltiples}\label{sec:multiples}
+% =========================================================================
+
+Si $\lambda_k$ tiene multiplicidad $m_k>1$, la exponencial $\eul^{\lambda_kx}$
+está en $\Ker(D-\lambda_k)^{m_k}$, pero veremos que ese núcleo tiene
+dimensión $m_k$: faltan $m_k-1$ soluciones.
+
+% -------------------------------------------------------------------------
+\subsection{Conjugación por la exponencial}\label{sec:conjugacion}
+% -------------------------------------------------------------------------
+
+\begin{lema}[«Derivada covariante»]\label{lem:covariante}
+Para todo $\lambda\in\C$, todo $m\in\N$ y toda $g\in\mathcal C^{m}(I)$,
+\begin{equation}\label{eq:covariante}
+  (D-\lambda)\bigl(\eul^{\lambda x}g\bigr)=\eul^{\lambda x}g',
+  \qquad
+  (D-\lambda)^{m}\bigl(\eul^{\lambda x}g\bigr)=\eul^{\lambda x}g^{(m)} .
+\end{equation}
+Es decir, $\eul^{-\lambda x}(D-\lambda)\,\eul^{\lambda x}=D$: conjugado por la
+exponencial, $D-\lambda$ actúa como la derivada ordinaria.
+\end{lema}
+
+\begin{proof}
+$(D-\lambda)(\eul^{\lambda x}g)=\lambda\eul^{\lambda x}g+\eul^{\lambda x}g'-\lambda\eul^{\lambda x}g=\eul^{\lambda x}g'$.
+La segunda igualdad se obtiene aplicando la primera $m$ veces (inducción
+sobre $m$).
+\end{proof}
+
+\begin{observacion}[Lectura como igualdad de operadores]\label{obs:conjugacion}
+$\eul^{-\lambda x}(D-\lambda)\,\eul^{\lambda x}$ es la composición de tres
+operadores, que actúan de derecha a izquierda: multiplicar por
+$\eul^{\lambda x}$, aplicar $D-\lambda$ y multiplicar por $\eul^{-\lambda x}$.
+Sobre una función $g$,
+\begin{equation}\label{eq:esquema-conjugacion}
+\begin{tikzcd}[column sep=3.6em, row sep=1.2em, ampersand replacement=\&,
+    arrows={|-{Stealth[length=5.5pt,width=5pt]}, line width=0.6pt, draw=gris},
+    labels={font=\footnotesize}]
+  g \arrow[r, "\cdot\,\eul^{\lambda x}" {color=ambar}]
+    \arrow[rrr, start anchor={[yshift=-2pt]south}, end anchor={[yshift=-2pt]south},
+            bend right=19, draw=cian, "D"' {color=cian}]
+  \& \eul^{\lambda x}g \arrow[r, "D-\lambda" {color=violeta}]
+  \& \eul^{\lambda x}g' \arrow[r, "\cdot\,\eul^{-\lambda x}" {color=ambar}]
+  \& g'\mathrlap{\;=Dg}
+\end{tikzcd}
+\end{equation}
+donde el paso central es la primera igualdad de \eqref{eq:covariante}. La
+composición de las tres flechas superiores lleva $g$ a $g'=Dg$ para toda
+$g$, es decir, coincide con la flecha inferior: ambos operadores son
+iguales.
+Se habla de \emph{conjugación} por analogía con las matrices: si $P$ es
+invertible, $P^{-1}AP$ es la misma aplicación lineal $A$ vista en otras
+coordenadas. Aquí $P$ es «multiplicar por $\eul^{\lambda x}$» y $P^{-1}$,
+«multiplicar por $\eul^{-\lambda x}$»: en esas coordenadas, $D-\lambda$ es
+simplemente $D$. En la práctica, al escribir $y=\eul^{\lambda x}g$, aplicar
+$D-\lambda$ a $y$ equivale a derivar $g$ y volver a multiplicar por la
+exponencial: el factor $\eul^{\lambda x}$ «absorbe» el $-\lambda$. Esto es lo
+que permite resolver $(D-\lambda)^{m}y=0$ en la \cref{prop:nucleo}.
+\end{observacion}
+
+\begin{proposicion}[Núcleo de $(D-\lambda)^{m}$]\label{prop:nucleo}
+Para todo $\lambda\in\C$ y todo $m\ge1$,
+\begin{equation}\label{eq:nucleo}
+  \Ker(D-\lambda)^{m}=\gen{\eul^{\lambda x},\,x\,\eul^{\lambda x},\,\dots,\,x^{m-1}\eul^{\lambda x}}
+  =\spanop\bigl\{\eul^{\lambda x},\,x\,\eul^{\lambda x},\,\dots,\,x^{m-1}\eul^{\lambda x}\bigr\},
+\end{equation}
+y $\dim\Ker(D-\lambda)^{m}=m$.
+\end{proposicion}
+
+\begin{proof}
+La demostración cambia de incógnita, resuelve una ecuación elemental para
+la nueva y comprueba la independencia.
+
+\emph{1. Cambio de incógnita.} Como $\eul^{\lambda x}$ no se anula, toda
+función se escribe como $y=\eul^{\lambda x}g$ con $g\defeq\eul^{-\lambda x}y$;
+no es una hipótesis, sino la definición de $g$, y buscar $y$ equivale a
+buscar $g$.
+
+\emph{2. Ecuación para $g$.} Por el \cref{lem:covariante} y dividiendo por
+$\eul^{\lambda x}\neq0$,
+\[
+  (D-\lambda)^{m}y=0\iff\eul^{\lambda x}g^{(m)}=0\iff g^{(m)}=0 .
+\]
+Integrando $m$ veces, cada integración añade una constante (para $m=2$:
+$g''=0\Rightarrow g'=c_1\Rightarrow g=c_0+c_1x$), y recíprocamente la
+derivada $m$-ésima de un polinomio de grado $<m$ es nula. Así,
+\[
+  g^{(m)}=0\iff g\in\gen{1,x,\dots,x^{m-1}}=\C_{m-1}[x],
+  \qquad g=c_0+c_1x+\dots+c_{m-1}x^{m-1}.
+\]
+
+\emph{3. Vuelta a $y$.} Multiplicando por $\eul^{\lambda x}$,
+\[
+  y=c_0\,\eul^{\lambda x}+c_1\,x\,\eul^{\lambda x}+\dots+c_{m-1}\,x^{m-1}\eul^{\lambda x},
+\]
+es decir, las soluciones son exactamente las combinaciones lineales de
+$x^{j}\eul^{\lambda x}$, $0\le j<m$, que es la igualdad de \eqref{eq:nucleo}.
+
+\emph{4. Independencia.} Si $\sum_{j<m}c_j\,x^{j}\eul^{\lambda x}=0$ para todo
+$x\in I$, dividiendo por $\eul^{\lambda x}$ el polinomio
+$c_0+c_1x+\dots+c_{m-1}x^{m-1}$ se anula en infinitos puntos; como un
+polinomio no nulo tiene a lo sumo tantas raíces como su grado, todos los
+$c_j$ son nulos. Las $m$ funciones forman, pues, una base y
+$\dim\Ker(D-\lambda)^{m}=m$.
+\end{proof}
+
+% -------------------------------------------------------------------------
+\subsection{Solución general}\label{sec:general-multiples}
+% -------------------------------------------------------------------------
+
+\begin{lema}[Independencia]\label{lem:independencia}
+Si $\lambda_1,\dots,\lambda_r\in\C$ son distintas y $P_1,\dots,P_r$ son
+polinomios con $\sum_kP_k(x)\,\eul^{\lambda_kx}\equiv0$ en $I$, entonces
+$P_1=\dots=P_r=0$.
+\end{lema}
+
+\begin{proof}
+\emph{Idea:} multiplicar por una exponencial para convertir el último
+término en un polinomio y derivar hasta que desaparezca; así se pasa de $r$
+sumandos a $r-1$ y se aplica inducción sobre $r$.
+
+\emph{Caso base, $r=1$.} Si $P_1\,\eul^{\lambda_1x}\equiv0$, dividiendo por
+$\eul^{\lambda_1x}\neq0$ queda $P_1\equiv0$ en $I$, y un polinomio que se anula
+en infinitos puntos es el nulo.
+
+\emph{Hipótesis de inducción.} El lema es cierto para $r-1$ exponentes
+distintos.
+
+\emph{Paso inductivo.} Partimos de
+\begin{equation}\label{eq:induccion}
+  P_1\,\eul^{\lambda_1x}+\dots+P_{r-1}\,\eul^{\lambda_{r-1}x}+P_r\,\eul^{\lambda_rx}\equiv0 .
+\end{equation}
+Sea $d=\deg P_r$ (si $P_r=0$, el paso 2 se omite).
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=3pt]
+  \item \emph{Multiplicar por $\eul^{-\lambda_rx}$.} Con
+        $\mu_k\defeq\lambda_k-\lambda_r$,
+        \[
+          \sum_{k<r}P_k\,\eul^{\mu_kx}+P_r\equiv0 ,
+        \]
+        y el último término es ahora un polinomio puro.
+  \item \emph{Derivar $d+1$ veces.} La derivada $(d+1)$-ésima de un
+        polinomio de grado $d$ es nula, así que $P_r$ desaparece; y como la
+        función de partida es idénticamente nula, también lo son sus
+        derivadas.
+  \item \emph{Efecto sobre los demás términos.} Por la regla del producto,
+        \[
+          D\bigl(P\,\eul^{\mu x}\bigr)=P'\eul^{\mu x}+\mu P\,\eul^{\mu x}=(P'+\mu P)\,\eul^{\mu x}:
+        \]
+        cada derivación conserva la exponencial y cambia $P$ por $P'+\mu P$.
+        Si $\mu\neq0$ y $P=ax^{e}+\dots$ con $a\neq0$, entonces $\deg P'<e$ y
+        $\mu P$ tiene término principal $\mu a\,x^{e}\neq0$, luego
+        $\deg(P'+\mu P)=e$: un polinomio no nulo nunca se convierte en el nulo.
+        Aquí se usa que las raíces son distintas, $\mu_k\neq0$ para $k<r$ (con
+        $\mu=0$ derivar sí bajaría el grado). Tras las $d+1$ derivaciones,
+        \[
+          \sum_{k<r}Q_k\,\eul^{\mu_kx}\equiv0,\qquad \deg Q_k=\deg P_k .
+        \]
+  \item \emph{Hipótesis de inducción.} Son $r-1$ sumandos con exponentes
+        $\mu_k$ distintos entre sí, porque lo son las $\lambda_k$; luego
+        $Q_k=0$ para todo $k<r$, y por el paso 3 también $P_k=0$.
+  \item \emph{Último sumando.} En \eqref{eq:induccion} sólo queda
+        $P_r\,\eul^{\lambda_rx}\equiv0$, y por el caso base, $P_r=0$.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{teorema}[Base de $\Ker\Lop$ con coeficientes constantes]\label{teo:base}
+Con la factorización \eqref{eq:factorizacion-L}, las $n$ funciones
+$x^{j}\eul^{\lambda_kx}$, $0\le j<m_k$, $1\le k\le r$, forman una base de
+$\Ker\Lop$, y
+\begin{equation}\label{eq:yh-general}
+  y_h(x)=\sum_{k=1}^{r}\bigl(c_{k,0}+c_{k,1}\,x+\dots+c_{k,m_k-1}\,x^{m_k-1}\bigr)\,\eul^{\lambda_kx}.
+\end{equation}
+\end{teorema}
+
+\begin{proof}
+Por la conmutatividad (\cref{prop:factorizacion}) podemos escribir el
+factor $(D-\lambda_k)^{m_k}$ en último lugar, de modo que actúe primero:
+$\Ker(D-\lambda_k)^{m_k}\subseteq\Ker\Lop$. Por la \cref{prop:nucleo} esto
+aporta $m_k$ soluciones, $\sum_km_k=n$ en total, independientes por el
+\cref{lem:independencia}. Como $\dim\Ker\Lop=n$ (\cref{teo:dimension}),
+forman una base.
+\end{proof}
+
+\begin{observacion}[Raíces próximas \cite{TEMARIO}]\label{obs:proximas}
+El factor $x$ aparece de forma natural como límite. Si $\lambda_1\neq\lambda_2$
+son raíces, el cociente
+$\bigl(\eul^{\lambda_2x}-\eul^{\lambda_1x}\bigr)/(\lambda_2-\lambda_1)$ es
+solución; cuando $\lambda_2\to\lambda_1$ tiende a
+$\partial_\lambda\eul^{\lambda x}\big|_{\lambda_1}=x\,\eul^{\lambda_1x}$, que es la
+segunda solución asociada a la raíz doble.
+\end{observacion}
+
+Para aplicar el \cref{teo:base} hay que factorizar $p$. Cuando sus
+coeficientes son enteros, el siguiente criterio acota las posibles raíces
+racionales a un número finito de candidatos.
+
+\begin{proposicion}[Criterio de las raíces racionales]\label{prop:raices-racionales}
+Sea $p(\lambda)=a_n\lambda^{n}+\dots+a_1\lambda+a_0$ con coeficientes enteros. Si
+$\lambda=r/s$, con $r,s\in\Z$ primos entre sí, es raíz de $p$, entonces
+\[
+  r\ \text{divide a}\ a_0\qquad\text{y}\qquad s\ \text{divide a}\ a_n .
+\]
+Los candidatos son, pues, las fracciones
+$\pm\,(\text{divisor de }a_0)/(\text{divisor de }a_n)$. En particular, si
+$a_n=1$, toda raíz racional es entera y divide a $a_0$.
+\end{proposicion}
+
+\begin{proof}
+Sustituyendo $\lambda=r/s$ en $p(\lambda)=0$ y multiplicando por $s^{n}$,
+\[
+  a_nr^{n}+a_{n-1}r^{n-1}s+\dots+a_1rs^{n-1}+a_0s^{n}=0 .
+\]
+Todos los términos salvo el último contienen $r$, luego $r$ divide a
+$a_0s^{n}$ y, al no tener factores comunes con $s$, divide a $a_0$.
+Análogamente, todos salvo el primero contienen $s$, luego $s$ divide a
+$a_n$. Si $a_n=1$, necesariamente $s=\pm1$.
+\end{proof}
+
+\begin{ejemplo}[$y'''-4y''+5y'-2y=0$ \cite{TEMARIO}]\label{ej:triple}
+\leavevmode
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=4pt]
+  \item \emph{Polinomio característico.} Sustituyendo $y^{(k)}\mapsto\lambda^{k}$,
+        $p(\lambda)=\lambda^{3}-4\lambda^{2}+5\lambda-2$.
+  \item \emph{Una raíz.} Como $a_3=1$, por la \cref{prop:raices-racionales}
+        las raíces racionales son enteras y dividen a $-2$: los candidatos
+        son $\pm1,\pm2$, y $p(1)=1-4+5-2=0$.
+  \item \emph{Factorización por Ruffini.} Dividiendo entre $(\lambda-1)$,
+        \[
+          \begin{array}{r|rrrr}
+             & 1 & -4 & 5 & -2\\
+           1 &   & 1 & -3 & 2\\\hline
+             & 1 & -3 & 2 & 0
+          \end{array}
+          \qquad\Longrightarrow\qquad
+          p(\lambda)=(\lambda-1)(\lambda^{2}-3\lambda+2),
+        \]
+        y el factor cuadrático se resuelve con la fórmula de segundo grado:
+        \[
+          \lambda=\frac{3\pm\sqrt{9-8}}{2}=\frac{3\pm1}{2}\in\{1,2\}
+          \quad\Longrightarrow\quad
+          p(\lambda)=(\lambda-1)^{2}(\lambda-2).
+        \]
+  \item \emph{Raíces y multiplicidades.} $\lambda_1=1$ doble ($m_1=2$) y
+        $\lambda_2=2$ simple ($m_2=1$), con $m_1+m_2=3=n$.
+  \item \emph{Sistema fundamental} (\cref{teo:base}): la raíz doble aporta
+        $\eul^{x}$ y $x\,\eul^{x}$; la simple, $\eul^{2x}$.
+  \item \emph{Solución general.}
+        \begin{equation}\label{eq:ej-triple}
+          y(x)=k_1\eul^{x}+k_2\,x\,\eul^{x}+k_3\eul^{2x}=(k_1+k_2x)\,\eul^{x}+k_3\eul^{2x},
+          \qquad k_1,k_2,k_3\in\R .
+        \end{equation}
+  \item \emph{Comprobaciones.} Para la solución menos evidente, $y=x\eul^{x}$:
+        $y'=(1+x)\eul^{x}$, $y''=(2+x)\eul^{x}$, $y'''=(3+x)\eul^{x}$, y
+        \[
+          y'''-4y''+5y'-2y=\eul^{x}\bigl[(3+x)-4(2+x)+5(1+x)-2x\bigr]=\eul^{x}\,(0+0\cdot x)=0 .
+        \]
+        En $x_0=0$, las columnas $(y,y',y'')$ de $\eul^{x}$, $x\eul^{x}$ y
+        $\eul^{2x}$ son $(1,1,1)$, $(0,1,2)$ y $(1,2,4)$, y
+        \[
+          w(0)=\begin{vmatrix}1&0&1\\1&1&2\\1&2&4\end{vmatrix}
+              =1\cdot(4-4)-0+1\cdot(2-1)=1\neq0 ,
+        \]
+        como ya garantizaba el \cref{lem:independencia}.
+\end{enumerate}
+\end{ejemplo}
+
+\begin{ejemplo}[Vuelta al caso crítico]\label{ej:critico}
+Para $\nu=2$ en el \cref{ej:amortiguado}, $p(\lambda)=(\lambda+\omega)^{2}$, es
+decir, $\Lop=(D+\omega)^{2}$, con $\lambda=-\omega$ y $m=2$. La
+\cref{prop:nucleo} da
+\begin{equation}\label{eq:critico}
+  \Ker(D+\omega)^{2}=\gen{\eul^{-\omega x},\,x\,\eul^{-\omega x}},
+  \qquad y=(c_0+c_1x)\,\eul^{-\omega x}.
+\end{equation}
+Comprobación con la segunda solución, aplicando $D+\omega$ dos veces:
+\[
+  (D+\omega)\bigl(x\eul^{-\omega x}\bigr)=\eul^{-\omega x}-\omega x\eul^{-\omega x}+\omega x\eul^{-\omega x}=\eul^{-\omega x},
+  \qquad
+  (D+\omega)\bigl(\eul^{-\omega x}\bigr)=-\omega\eul^{-\omega x}+\omega\eul^{-\omega x}=0 .
+\]
+Es la segunda solución que faltaba en el \cref{ej:amortiguado}, y describe el
+regreso al equilibrio más rápido sin oscilar (\cref{fig:amortiguado}\,(b)).
+\end{ejemplo}
+
+\begin{observacion}[Raíces complejas múltiples]\label{obs:complejas-multiples}
+Combinando el \cref{teo:base} con la \cref{prop:reales}: un par
+$\alpha\pm\iu\beta$ de multiplicidad $m$ aporta las $2m$ soluciones reales
+$x^{j}\eul^{\alpha x}\cos\beta x$ y $x^{j}\eul^{\alpha x}\sin\beta x$,
+$0\le j<m$.
+\end{observacion}

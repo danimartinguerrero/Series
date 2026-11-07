@@ -1,0 +1,46 @@
+% Figura: fuente troceada en impulsos y superposición de respuestas
+% (datos: scripts/generar_datos.py; operador y''+2*0.16 y'+y)
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{groupplot}[group style={group size=1 by 2, vertical sep=1.45cm},
+      oscuro, width=0.94\textwidth, xmin=0, xmax=20, xtick={0,2,...,20}]
+    % ---------- (a) fuente e impulsos ----------
+    \nextgroupplot[height=4.0cm, ymin=-0.05, ymax=1.2, ytick={0,0.5,1},
+        title={(a) Fuente $b(\tilde x)$ troceada en $K=8$ impulsos de anchura $\Delta\tilde x=0{,}7$}]
+      \addplot[blanco, line width=1.3pt] table[x=x, y=b] {datos/superposicion.dat};
+      \foreach \k/\s/\c in {1/0.35/cm1,2/1.05/cm2,3/1.75/cm3,4/2.45/cm4,
+                            5/3.15/cm5,6/3.85/cm6,7/4.55/cm7,8/5.25/cm8}{
+        \edef\temp{\noexpand\draw[-{Stealth[length=4pt,width=4pt]}, line width=1.3pt, \c]
+          (axis cs:\s,0) -- (axis cs:\s,{sin(deg(pi*\s/5.6))^2});}
+        \temp}
+      \node[font=\scriptsize, text=gris, anchor=west] at (axis cs:6.4,0.75)
+        {impulsos $b(\tilde x_k)\,\Delta\tilde x\;\delta(x-\tilde x_k)$};
+    % ---------- (b) respuestas y superposición ----------
+    \nextgroupplot[height=5.4cm, ymin=-0.85, ymax=1.5, ytick={-0.5,0,0.5,1},
+        xlabel={$x$},
+        title={(b) Respuestas $b(\tilde x_k)\,G(x,\tilde x_k)\,\Delta\tilde x$ y su suma},
+        legend style={at={(0.985,0.96)}, anchor=north east}]
+      \addplot[line width=0.8pt, cm1, forget plot] table[x=x, y=r1] {datos/superposicion.dat};
+      \addplot[line width=0.8pt, cm2, forget plot] table[x=x, y=r2] {datos/superposicion.dat};
+      \addplot[line width=0.8pt, cm3, forget plot] table[x=x, y=r3] {datos/superposicion.dat};
+      \addplot[line width=0.8pt, cm4, forget plot] table[x=x, y=r4] {datos/superposicion.dat};
+      \addplot[line width=0.8pt, cm5, forget plot] table[x=x, y=r5] {datos/superposicion.dat};
+      \addplot[line width=0.8pt, cm6, forget plot] table[x=x, y=r6] {datos/superposicion.dat};
+      \addplot[line width=0.8pt, cm7, forget plot] table[x=x, y=r7] {datos/superposicion.dat};
+      \addplot[line width=0.8pt, cm8, forget plot] table[x=x, y=r8] {datos/superposicion.dat};
+      \addplot[ambar, line width=1.2pt, densely dashed] table[x=x, y=suma] {datos/superposicion.dat};
+      \addplot[blanco, line width=1.6pt] table[x=x, y=yp] {datos/superposicion.dat};
+      \legend{suma de las $8$ respuestas, $y_p=\int G\,b\,\dif\tilde x$}
+  \end{groupplot}
+\end{tikzpicture}
+\caption{La función de Green como respuesta a impulsos, para
+$y''+2\gamma y'+y=b$ con $\gamma=0{,}16$. (a) La fuente
+$b(\tilde x)=\sin^{2}(\pi\tilde x/5{,}6)$ se aproxima por $8$ impulsos
+(flechas). (b) Cada impulso produce una respuesta proporcional a
+$G(x,\tilde x_k)$ \eqref{eq:green-amortiguado}, nula antes de $\tilde x_k$
+(causalidad); su suma (trazo discontinuo) aproxima la solución
+$y_p=\int G\,b\,\dif\tilde x$ (trazo continuo), a la que tiende cuando
+$\Delta\tilde x\to0$.}
+\label{fig:superposicion}
+\end{figure}

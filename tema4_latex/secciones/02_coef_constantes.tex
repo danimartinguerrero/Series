@@ -1,0 +1,302 @@
+% =========================================================================
+\section{Homogénea con coeficientes constantes}\label{sec:constantes}
+% =========================================================================
+
+Supongamos que $a_0,\dots,a_n\in\R$ son constantes, con $a_n\neq0$. Entonces
+$\Lop$ es un \emph{polinomio en el operador} $D$:
+\begin{equation}\label{eq:pD}
+  \Lop=p(D),\qquad p(\lambda)\defeq a_n\lambda^{n}+a_{n-1}\lambda^{n-1}+\dots+a_1\lambda+a_0 ,
+\end{equation}
+donde $p$ es el \emph{polinomio característico}. Trabajamos con funciones
+de valores complejos y extraemos al final las soluciones reales
+\cite[cap.~IV]{TEMARIO}, \cite{ELSGOLTZ}, \cite[cap.~4]{BOYCE}.
+
+% -------------------------------------------------------------------------
+\subsection{El ansatz exponencial}\label{sec:ansatz}
+% -------------------------------------------------------------------------
+
+\begin{proposicion}[La exponencial es autofunción de $D$]\label{prop:autofuncion}
+Para todo $\lambda\in\C$,
+\begin{equation}\label{eq:autofuncion}
+  \Lop\bigl[\eul^{\lambda x}\bigr]=p(\lambda)\,\eul^{\lambda x}.
+\end{equation}
+En consecuencia, $\eul^{\lambda x}\in\Ker\Lop$ si y sólo si $\lambda$ es raíz de
+la \emph{ecuación característica} $p(\lambda)=0$.
+\end{proposicion}
+
+\begin{proof}
+$D^{j}\eul^{\lambda x}=\lambda^{j}\eul^{\lambda x}$, luego
+$\Lop[\eul^{\lambda x}]=\sum_j a_j\lambda^{j}\eul^{\lambda x}=p(\lambda)\eul^{\lambda x}$,
+y $\eul^{\lambda x}\neq0$.
+\end{proof}
+
+% -------------------------------------------------------------------------
+\subsection{Factorización del operador}\label{sec:factorizacion}
+% -------------------------------------------------------------------------
+Por el teorema fundamental del álgebra,
+\begin{equation}\label{eq:factorizacion-p}
+  p(\lambda)=a_n\prod_{k=1}^{r}(\lambda-\lambda_k)^{m_k},
+  \qquad \lambda_k\in\C\ \text{distintas},\qquad \sum_{k=1}^{r}m_k=n .
+\end{equation}
+
+\paragraph{Cálculo simbólico con $D$}
+Para trasladar \eqref{eq:factorizacion-p} al operador hay que poder operar
+con polinomios en $D$ exactamente igual que con polinomios en $\lambda$.
+Los operadores se suman y se multiplican según
+\begin{equation}\label{eq:operaciones}
+  (A+B)\,y\defeq Ay+By,\qquad (AB)\,y\defeq A(By),
+\end{equation}
+es decir, el producto es la composición: primero actúa $B$ y luego $A$ (así,
+$D^{2}y=D(Dy)=y''$). Con coeficientes constantes bastan dos reglas:
+\begin{equation}\label{eq:reglas}
+  D^{i}D^{j}=D^{i+j},\qquad D(c\,y)=c\,Dy\quad(c\ \text{constante}).
+\end{equation}
+
+\begin{ejemplo}[Dos factores]\label{ej:dos-factores}
+Para $a,b\in\C$,
+\[
+  (D-a)(D-b)\,y=(D-a)(y'-by)=y''-by'-ay'+ab\,y=\bigl(D^{2}-(a+b)D+ab\bigr)\,y ,
+\]
+que es $(\lambda-a)(\lambda-b)=\lambda^{2}-(a+b)\lambda+ab$ con $\lambda$
+sustituida por $D$. Como el resultado es simétrico en $a$ y $b$,
+$(D-a)(D-b)=(D-b)(D-a)$.
+\end{ejemplo}
+
+\begin{lema}[Polinomios en $D$]\label{lem:polinomios-D}
+Para $q_1(\lambda)=\sum_ia_i\lambda^{i}$ y $q_2(\lambda)=\sum_jb_j\lambda^{j}$ con
+coeficientes constantes, la sustitución $q(\lambda)\mapsto q(D)$ cumple
+\begin{equation}\label{eq:homomorfismo}
+  (q_1+q_2)(D)=q_1(D)+q_2(D),\qquad (q_1q_2)(D)=q_1(D)\,q_2(D).
+\end{equation}
+Es decir, da igual multiplicar los polinomios y sustituir que sustituir y
+multiplicar los operadores.
+\end{lema}
+
+\begin{proof}
+La suma sólo usa \eqref{eq:operaciones}:
+$(q_1+q_2)(D)\,y=\sum_k(a_k+b_k)D^{k}y=\sum_ka_kD^{k}y+\sum_kb_kD^{k}y$.
+Para el producto, como polinomios $q_1q_2(\lambda)=\sum_{i,j}a_ib_j\lambda^{i+j}$,
+y aplicando $q_1(D)q_2(D)$ a $y$,
+\[
+  q_1(D)\bigl(q_2(D)\,y\bigr)
+  =\sum_ia_i\,D^{i}\Bigl(\sum_jb_j\,D^{j}y\Bigr)
+  =\sum_{i,j}a_ib_j\,D^{i}\bigl(D^{j}y\bigr)
+  =\sum_{i,j}a_ib_j\,D^{i+j}y=(q_1q_2)(D)\,y ,
+\]
+donde la segunda igualdad usa la linealidad de $D^{i}$ y que los $b_j$ son
+constantes, y la tercera, $D^{i}D^{j}=D^{i+j}$. Es el mismo cálculo que
+desarrollar el producto de dos polinomios término a término.
+\end{proof}
+
+\begin{proposicion}[Factorización de $\Lop$]\label{prop:factorizacion}
+Los operadores $D-\lambda_k$ conmutan entre sí y
+\begin{equation}\label{eq:factorizacion-L}
+  \Lop=a_n\,(D-\lambda_1)^{m_1}(D-\lambda_2)^{m_2}\cdots(D-\lambda_r)^{m_r},
+\end{equation}
+con los factores en cualquier orden.
+\end{proposicion}
+
+\begin{proof}
+Aplicando el \cref{lem:polinomios-D} a la identidad polinómica
+\eqref{eq:factorizacion-p} se obtiene \eqref{eq:factorizacion-L}. Y como los
+polinomios conmutan,
+$q_1(D)\,q_2(D)=(q_1q_2)(D)=(q_2q_1)(D)=q_2(D)\,q_1(D)$.
+\end{proof}
+
+\begin{observacion}[Por qué hacen falta coeficientes constantes]\label{obs:no-conmutan}
+Si un coeficiente depende de $x$, la segunda regla de \eqref{eq:reglas}
+falla: $D(x\,y)=y+x\,y'\neq x\,Dy$, de modo que $D\circ x\neq x\circ D$. Por
+ejemplo,
+\[
+  (D-x)\,D\,y=y''-x\,y',\qquad D\,(D-x)\,y=y''-x\,y'-y ,
+\]
+y el orden de los factores importa. La factorización
+\eqref{eq:factorizacion-L} sólo vale con coeficientes constantes.
+\end{observacion}
+
+\begin{corolario}[Raíces simples]\label{cor:simples}
+Si todas las raíces son simples ($r=n$, $m_k=1$), las exponenciales
+$\eul^{\lambda_1x},\dots,\eul^{\lambda_nx}$ forman una base de $\Ker\Lop$, y
+\begin{equation}\label{eq:simples}
+  y_h(x)=c_1\eul^{\lambda_1x}+c_2\eul^{\lambda_2x}+\dots+c_n\eul^{\lambda_nx}.
+\end{equation}
+\end{corolario}
+
+\begin{proof}
+Son soluciones por la \cref{prop:autofuncion}; falta ver que son
+independientes y, por la \cref{prop:wronskiano}, basta comprobar que
+$w(x_0)\neq0$ en un punto. Tomamos $x_0=0$. Para $y_k=\eul^{\lambda_kx}$ se
+tiene $y_k^{(j)}(x)=\lambda_k^{\,j}\eul^{\lambda_kx}$, luego
+$y_k^{(j)}(0)=\lambda_k^{\,j}$, y la matriz wronskiana en $0$, cuya columna
+$k$ es $\Phi_0(y_k)$, es la \emph{matriz de Vandermonde}
+\begin{equation}\label{eq:vandermonde}
+  W(0)=\begin{pmatrix}
+    1 & 1 & \cdots & 1\\
+    \lambda_1 & \lambda_2 & \cdots & \lambda_n\\
+    \vdots & \vdots & & \vdots\\
+    \lambda_1^{n-1} & \lambda_2^{n-1} & \cdots & \lambda_n^{n-1}
+  \end{pmatrix},
+  \qquad
+  \det W(0)=\prod_{1\le i<k\le n}(\lambda_k-\lambda_i).
+\end{equation}
+Como las raíces son distintas, ningún factor se anula y $w(0)\neq0$. Por
+ejemplo, para $n=2$,
+$\det\begin{psmallmatrix}1&1\\\lambda_1&\lambda_2\end{psmallmatrix}=\lambda_2-\lambda_1\neq0$.
+\end{proof}
+
+\begin{observacion}[El determinante de Vandermonde]\label{obs:vandermonde}
+Visto como polinomio en $\lambda_1,\dots,\lambda_n$, $\det W(0)$ se anula si
+$\lambda_i=\lambda_k$ (dos columnas iguales), luego es divisible por cada
+$\lambda_k-\lambda_i$. Ambos miembros de \eqref{eq:vandermonde} tienen grado
+total $0+1+\dots+(n-1)=\binom n2$, el número de pares $i<k$, de modo que
+coinciden salvo una constante, que vale $1$ comparando el término diagonal
+$\lambda_2\lambda_3^{2}\cdots\lambda_n^{n-1}$. Es aquí donde se usa que las
+raíces sean distintas: con raíces repetidas hay menos de $n$ exponenciales
+y faltan soluciones, las de la forma $x^{j}\eul^{\lambda x}$
+(\cref{sec:multiples}).
+\end{observacion}
+
+% -------------------------------------------------------------------------
+\subsection{Soluciones reales}\label{sec:reales}
+% -------------------------------------------------------------------------
+
+\begin{proposicion}[Raíces complejas conjugadas]\label{prop:reales}
+Si los $a_j$ son reales y $\lambda=\alpha+\iu\beta$, $\beta\neq0$, es raíz de
+$p$, también lo es $\bar\lambda$, con la misma multiplicidad, y el par
+$\{\eul^{\lambda x},\eul^{\bar\lambda x}\}$ puede sustituirse por el par
+real
+\begin{equation}\label{eq:reales}
+  \Real\eul^{\lambda x}=\eul^{\alpha x}\cos\beta x,\qquad
+  \Imag\eul^{\lambda x}=\eul^{\alpha x}\sin\beta x ,
+\end{equation}
+que genera el mismo subespacio.
+\end{proposicion}
+
+\begin{proof}
+Como $p$ tiene coeficientes reales, $p(\bar\lambda)=\overline{p(\lambda)}=0$.
+Al ser $\Lop$ real, $\Lop[\Real y]=\Real\Lop[y]$ e igual con la parte
+imaginaria, luego \eqref{eq:reales} son soluciones. Por último,
+$\eul^{\lambda x}=\eul^{\alpha x}(\cos\beta x+\iu\sin\beta x)$ y
+$\eul^{\bar\lambda x}=\eul^{\alpha x}(\cos\beta x-\iu\sin\beta x)$, de
+modo que ambos pares generan el mismo plano.
+\end{proof}
+
+\begin{ejemplo}[$2y''-y'-y=0$]\label{ej:simple}
+$p(\lambda)=2\lambda^{2}-\lambda-1=(2\lambda+1)(\lambda-1)$, de raíces
+$\lambda_1=1$ y $\lambda_2=-\tfrac12$. Por el \cref{cor:simples},
+\begin{equation}\label{eq:ej-simple}
+  y(x)=c_1\,\eul^{x}+c_2\,\eul^{-x/2}.
+\end{equation}
+\end{ejemplo}
+
+\begin{ejemplo}[$y''+2y'+2y=0$ \cite{TEMARIO}]\label{ej:complejas}
+\leavevmode
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=4pt]
+  \item \emph{Polinomio característico.} Sustituyendo $y^{(k)}\mapsto\lambda^{k}$, es decir,
+        $\Lop=p(D)=D^{2}+2D+2$:
+        \[
+          p(\lambda)=\lambda^{2}+2\lambda+2 .
+        \]
+  \item \emph{Raíces.} El discriminante es negativo:
+        \[
+          \lambda=\frac{-2\pm\sqrt{4-8}}{2}=\frac{-2\pm2\iu}{2}=-1\pm\iu ,
+          \qquad \alpha=-1,\quad \beta=1 ,
+        \]
+        un par conjugado, como garantiza la \cref{prop:reales} por ser reales
+        los coeficientes.
+  \item \emph{Sistema fundamental complejo.} Al ser las raíces distintas
+        (\cref{cor:simples}), $\bigl\{\eul^{(-1+\iu)x},\,\eul^{(-1-\iu)x}\bigr\}$.
+  \item \emph{Paso a soluciones reales.} Por la fórmula de Euler,
+        \[
+          \eul^{(-1+\iu)x}=\eul^{-x}\,\eul^{\iu x}=\eul^{-x}(\cos x+\iu\sin x),
+          \qquad
+          \Real\eul^{\lambda x}=\eul^{-x}\cos x,\quad \Imag\eul^{\lambda x}=\eul^{-x}\sin x ,
+        \]
+        que, por la \cref{prop:reales}, son soluciones y generan el mismo
+        plano que el par complejo.
+  \item \emph{Solución general.}
+        \begin{equation}\label{eq:ej-complejas}
+          y(x)=\eul^{-x}\bigl(k_1\cos x+k_2\sin x\bigr),\qquad k_1,k_2\in\R .
+        \end{equation}
+  \item \emph{Comprobación.} Para $y_1=\eul^{-x}\cos x$:
+        $y_1'=-\eul^{-x}(\cos x+\sin x)$ e $y_1''=2\eul^{-x}\sin x$, luego
+        \[
+          y_1''+2y_1'+2y_1=\eul^{-x}\bigl[2\sin x-2\cos x-2\sin x+2\cos x\bigr]=0 ,
+        \]
+        y del mismo modo con $y_2=\eul^{-x}\sin x$. Son independientes: en
+        $x_0=0$, $(y_1,y_1')=(1,-1)$ e $(y_2,y_2')=(0,1)$, y
+        $w(0)=\det\begin{psmallmatrix}1&0\\-1&1\end{psmallmatrix}=1\neq0$.
+\end{enumerate}
+\emph{Interpretación:} $\alpha=-1$ aporta el factor $\eul^{-x}$, que amortigua
+la amplitud, y $\beta=1$ la oscilación $\cos x$, $\sin x$: es una oscilación
+amortiguada, el caso subamortiguado del \cref{ej:amortiguado} con
+$\gamma=1$ y $\Omega=1$.
+\end{ejemplo}
+
+% -------------------------------------------------------------------------
+\subsection{El oscilador amortiguado}\label{sec:amortiguado}
+% -------------------------------------------------------------------------
+
+\begin{ejemplo}[$y''+\nu\omega\,y'+\omega^{2}y=0$, con $\nu\ge0$, $\omega>0$]\label{ej:amortiguado}
+La ecuación característica $\lambda^{2}+\nu\omega\lambda+\omega^{2}=0$ da
+\begin{equation}\label{eq:raices-oscilador}
+  \lambda_\pm=\frac{-\nu\omega\pm\sqrt{\nu^{2}\omega^{2}-4\omega^{2}}}{2}
+             =\frac{\omega}{2}\Bigl(-\nu\pm\sqrt{\nu^{2}-4}\Bigr).
+\end{equation}
+El signo del discriminante $\nu^{2}-4$ decide el comportamiento
+(\cref{fig:amortiguado}):
+\begin{itemize}
+  \item $\nu>2$ (\emph{sobreamortiguado}): dos raíces reales negativas y
+        $y=c_1\eul^{\lambda_+x}+c_2\eul^{\lambda_-x}$; decae exponencialmente sin
+        oscilar.
+  \item $\nu<2$ (\emph{subamortiguado}): raíces complejas conjugadas
+        $\lambda_\pm=-\gamma\pm\iu\Omega$ y oscilaciones amortiguadas
+        \eqref{eq:subamortiguado}; se desarrolla más abajo.
+  \item $\nu=2$ (\emph{crítico}): raíz doble $\lambda=-\omega$. Sólo se
+        obtiene una exponencial, $\eul^{-\omega x}$, y falta una segunda
+        solución. Este caso frontera motiva la \cref{sec:multiples}.
+\end{itemize}
+\emph{Desarrollo del caso subamortiguado.}
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=4pt]
+  \item \emph{Raíz de un número negativo.} Si $\nu<2$, entonces $\nu^{2}-4<0$ y
+        \[
+          \sqrt{\nu^{2}-4}=\sqrt{-(4-\nu^{2})}=\iu\sqrt{4-\nu^{2}},
+        \]
+        donde ahora $4-\nu^{2}>0$ y la raíz de la derecha es un real positivo.
+  \item \emph{Sustitución en \eqref{eq:raices-oscilador}.}
+        \[
+          \lambda_\pm=\frac{\omega}{2}\Bigl(-\nu\pm\iu\sqrt{4-\nu^{2}}\Bigr)
+          =\ubr{-\frac{\nu\omega}{2}}{\text{parte real}}\ \pm\ \iu\,
+           \ubr{\frac{\omega}{2}\sqrt{4-\nu^{2}}}{\text{parte imaginaria}} .
+        \]
+  \item \emph{Notación.} Se definen
+        \[
+          \gamma\defeq\frac{\nu\omega}{2},\qquad
+          \Omega\defeq\frac{\omega}{2}\sqrt{4-\nu^{2}}
+                =\omega\sqrt{\frac{4-\nu^{2}}{4}}=\omega\sqrt{1-\frac{\nu^{2}}{4}},
+        \]
+        de modo que $\lambda_\pm=-\gamma\pm\iu\Omega$.
+  \item \emph{Soluciones reales.} Por la \cref{prop:reales} con $\alpha=-\gamma$ y
+        $\beta=\Omega$, el par real es $\eul^{-\gamma x}\cos\Omega x$,
+        $\eul^{-\gamma x}\sin\Omega x$, y
+        \begin{equation}\label{eq:subamortiguado}
+          y=\eul^{-\gamma x}\bigl(A\cos\Omega x+B\sin\Omega x\bigr)
+          \qquad\text{(oscilaciones amortiguadas)}.
+        \end{equation}
+        El \cref{ej:complejas} es el caso $\omega=\sqrt2$, $\nu=\sqrt2$, que da
+        $\gamma=1$ y $\Omega=1$.
+\end{enumerate}
+\emph{Interpretación.} $\gamma$ es la \emph{tasa de decaimiento} y crece con el
+rozamiento $\nu$. $\Omega$ es la \emph{frecuencia de oscilación}: sin rozamiento
+($\nu=0$) vale $\Omega=\omega$, la frecuencia natural, y $\gamma=0$, con lo que
+se recupera la oscilación libre $A\cos\omega x+B\sin\omega x$. Al aumentar
+$\nu$, $\Omega<\omega$: el rozamiento hace oscilar más despacio, y cuando
+$\nu\to2$, $\Omega\to0$ y las oscilaciones desaparecen, que es el paso al caso
+crítico.
+
+Como $\lambda_+\lambda_-=\omega^{2}$, para $\nu<2$ las raíces recorren la
+circunferencia $\abs{\lambda}=\omega$; en $\nu=2$ chocan en $-\omega$ y para
+$\nu>2$ se separan sobre el eje real.
+\end{ejemplo}
+
+\input{figuras/fig_amortiguado}

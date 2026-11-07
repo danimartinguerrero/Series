@@ -1,0 +1,88 @@
+% =========================================================================
+%  Estilos gráficos comunes (TikZ / pgfplots) para fondo negro
+% =========================================================================
+
+% --- Mapa de colores «arcoíris» para coloreado por fase (dominio complejo) ---
+% Recorre el círculo cromático completo: el color codifica arg f(z) en (-pi,pi].
+\pgfplotsset{colormap={fase}{
+  rgb255=(255,40,60) rgb255=(255,150,20) rgb255=(250,230,40)
+  rgb255=(60,220,90) rgb255=(30,200,230) rgb255=(60,90,255)
+  rgb255=(190,60,240) rgb255=(255,40,60)}}
+
+% --- Estilos TikZ generales ------------------------------------------------
+\tikzset{
+  >=Stealth,
+  every picture/.append style={line cap=round, line join=round},
+  eje/.style={-{Stealth[length=5pt,width=4pt]}, line width=0.6pt, gris},
+  ejeclaro/.style={-{Stealth[length=5pt,width=4pt]}, line width=0.7pt, texto},
+  fino/.style={line width=0.4pt, grismedio},
+  guia/.style={densely dashed, line width=0.45pt, grismedio},
+  punteado/.style={densely dotted, line width=0.6pt, gris},
+  etiq/.style={font=\small, text=texto},
+  etiqgris/.style={font=\footnotesize, text=gris},
+  polo/.style={cross out, draw=rojo, line width=1.1pt, minimum size=6pt, inner sep=0pt},
+  punto/.style={circle, fill=blanco, inner sep=0pt, minimum size=4pt},
+  puntocian/.style={circle, fill=cian, inner sep=0pt, minimum size=4.5pt},
+  orienta/.style={decoration={markings, mark=at position #1 with
+     {\arrow{Stealth[length=6pt,width=5pt]}}}, postaction={decorate}},
+  orienta/.default=0.55,
+  nodo/.style={draw=grismedio, fill=cajafondo, rounded corners=2pt,
+     line width=0.5pt, inner xsep=6pt, inner ysep=4pt, font=\small, text=texto},
+  nodocian/.style={nodo, draw=cian},
+  nodoambar/.style={nodo, draw=ambar},
+  nodovioleta/.style={nodo, draw=violeta},
+  flecha/.style={-{Stealth[length=5pt,width=4.5pt]}, line width=0.6pt, gris},
+}
+
+% --- Estilo base de ejes pgfplots en oscuro ----------------------------------
+\pgfplotsset{
+  oscuro/.style={
+    axis background/.style={fill=fondo},
+    tick label style={font=\scriptsize, text=gris},
+    label style={font=\small, text=texto},
+    title style={font=\small, text=texto},
+    axis line style={grismedio, line width=0.5pt},
+    every tick/.style={grismedio},
+    major tick length=3pt,
+    grid=major, grid style={grisoscuro, line width=0.35pt},
+    legend style={font=\scriptsize, draw=grisoscuro, fill=cajafondo,
+                  text=texto, rounded corners=1.5pt, inner sep=3pt,
+                  row sep=1pt},
+    legend cell align=left,
+    /pgf/number format/use comma,
+    /pgf/number format/1000 sep={},
+    unbounded coords=jump,
+  },
+  % Ejes cruzados por el origen (estilo «pizarra»)
+  cruz/.style={oscuro, axis lines=middle, grid=none,
+    axis line style={gris, line width=0.6pt,
+      -{Stealth[length=5pt,width=4pt]}},
+    xlabel style={anchor=west, font=\small},
+    ylabel style={anchor=south, font=\small},
+  },
+  superficie/.style={
+    tick label style={font=\scriptsize, text=gris},
+    label style={font=\small, text=texto},
+    axis line style={grismedio}, every tick/.style={grismedio},
+    grid=none, colormap name=fase, shader=interp,
+    /pgf/number format/use comma,
+  },
+  % Curvas
+  c1/.style={line width=1.15pt, cian},
+  c2/.style={line width=1.15pt, magenta},
+  c3/.style={line width=1.15pt, ambar},
+  c4/.style={line width=1.15pt, verde},
+  c5/.style={line width=1.15pt, violeta},
+  c6/.style={line width=1.15pt, naranja},
+}
+
+
+% Escala progresiva para familias de curvas (azul -> violeta)
+\definecolor{cm1}{RGB}{60,90,255}
+\definecolor{cm2}{RGB}{45,145,240}
+\definecolor{cm3}{RGB}{30,200,230}
+\definecolor{cm4}{RGB}{60,220,90}
+\definecolor{cm5}{RGB}{250,230,40}
+\definecolor{cm6}{RGB}{255,150,20}
+\definecolor{cm7}{RGB}{255,40,60}
+\definecolor{cm8}{RGB}{190,60,240}

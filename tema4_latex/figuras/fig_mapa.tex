@@ -1,0 +1,25 @@
+% Figura: mapa del tema (y = y_h + y_p)
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \node[nodocian, align=center, text width=3.6cm] (eq) at (0,0)
+    {$\Lop[y]=b$\\[1pt]\footnotesize\color{gris} lineal, orden $n$};
+  \node[nodoambar, align=left, text width=5.3cm] (yh) at (6.2,1.05)
+    {\textcolor{ambar}{\bfseries $y_h\in\Ker\Lop$}\ \ \footnotesize\color{gris}($\dim=n$)\\[2pt]
+     \footnotesize coef.\ constantes: $p(\lambda)=0$ (\S\ref{sec:constantes}),\\
+     \footnotesize raíces múltiples (\S\ref{sec:multiples})};
+  \node[nodovioleta, align=left, text width=5.3cm] (yp) at (6.2,-1.05)
+    {\textcolor{violeta}{\bfseries $y_p$ particular}\\[2pt]
+     \footnotesize variación de constantes (\S\ref{sec:variacion})\\
+     \footnotesize $\Longleftrightarrow$ función de Green (\S\ref{sec:green})};
+  \node[nodo, draw=blanco, align=center, text width=2.9cm] (y) at (11.6,0)
+    {$y=y_h+y_p$\\[1pt]\footnotesize\color{gris} $n$ constantes libres};
+  \draw[flecha, cian] (eq.east) -- ++(0.45,0) |- (yh.west);
+  \draw[flecha, cian] (eq.east) -- ++(0.45,0) |- (yp.west);
+  \draw[flecha, ambar] (yh.east) -| ($(y.north)+(-0.3,0)$);
+  \draw[flecha, violeta] (yp.east) -| ($(y.south)+(-0.3,0)$);
+\end{tikzpicture}
+\caption{Estructura del tema: por la linealidad, el problema se separa en
+hallar el núcleo de $\Lop$ y una solución particular.}
+\label{fig:mapa}
+\end{figure}
