@@ -144,23 +144,71 @@ Sean $\hat y_1,\dots,\hat y_n\in\Ker\Lop$. Son equivalentes:
 \end{proposicion}
 
 \begin{proof}
-La columna $i$ de $W(x_0)$ es precisamente $\Phi_{x_0}(\hat y_i)$. Como
-$\Phi_{x_0}$ es un isomorfismo (\cref{teo:dimension}) para \emph{cada}
-$x_0\in I$,
-\begin{equation}\label{eq:criterio}
-  \{\hat y_i\}\ \text{base de}\ \Ker\Lop
-  \iff\{\Phi_{x_0}(\hat y_i)\}\ \text{base de}\ \R^{n}
-  \iff w(x_0)\neq0 ,
+\emph{Lectura matricial de $W(x_0)$.} La columna $i$ de $W(x_0)$ es
+precisamente $\Phi_{x_0}(\hat y_i)$. Multiplicar $W(x_0)$ por un vector
+$\bm c=(c_1,\dots,c_n)^{\T}\in\R^{n}$ es combinar sus columnas, y por la
+linealidad de $\Phi_{x_0}$,
+\begin{equation}\label{eq:Wc}
+  W(x_0)\,\bm c
+  =\begin{pmatrix}
+     \sum_i c_i\,\hat y_i(x_0)\\ \vdots\\ \sum_i c_i\,\hat y_i^{(n-1)}(x_0)
+   \end{pmatrix}
+  =\sum_{i=1}^{n}c_i\,\Phi_{x_0}(\hat y_i)
+  =\Phi_{x_0}(y),\qquad y\defeq\sum_{i=1}^{n}c_i\,\hat y_i\in\Ker\Lop .
 \end{equation}
-y la primera condición no depende de $x_0$.
+Así, resolver $W(x_0)\,\bm c=\bm 0$ es buscar combinaciones de las $\hat y_i$
+con datos iniciales nulos en $x_0$.
+
+\emph{(a)$\Rightarrow$(c).} Supongamos $w(x_0)=0$ para algún $x_0\in I$.
+Entonces existe $\bm c\neq\bm 0$ con $W(x_0)\,\bm c=\bm 0$ y, por
+\eqref{eq:Wc}, $y=\sum_ic_i\hat y_i$ cumple
+$y(x_0)=y'(x_0)=\dots=y^{(n-1)}(x_0)=0$. La función nula también resuelve
+$\Lop[y]=0$ con esos datos en $x_0$; por la \emph{unicidad} del
+\cref{teo:eyu} (inyectividad de $\Phi_{x_0}$), $y\equiv0$ en $I$. Es una
+combinación lineal nula con $\bm c\neq\bm 0$, lo que contradice que
+$\{\hat y_i\}$ sea base.
+
+\emph{(c)$\Rightarrow$(b).} Inmediato.
+
+\emph{(b)$\Rightarrow$(a).} Si $\sum_ic_i\hat y_i\equiv0$ en $I$, también se
+anulan en $I$ sus derivadas hasta orden $n-1$, en particular en $x_0$; por
+\eqref{eq:Wc}, $W(x_0)\,\bm c=\bm 0$ y, como $W(x_0)$ es invertible,
+$\bm c=\bm 0$. Las $\hat y_i$ son, pues, $n$ vectores independientes de
+$\Ker\Lop$, que tiene dimensión $n$ (\cref{teo:dimension}): forman una base.
 \end{proof}
 
-\begin{observacion}\label{obs:wronskiano-general}
+\begin{idea}[Papel de la unicidad]
+Antes de usar la unicidad, en (a)$\Rightarrow$(c) sólo se sabe algo
+\emph{en el punto} $x_0$: $y$ y sus $n-1$ primeras derivadas se anulan
+allí. Eso no basta, porque $x^{3}$ se anula en $0$ junto con sus dos primeras derivadas sin
+ser la función nula, y la independencia lineal es una afirmación sobre
+\emph{todo} $I$. La unicidad del problema de valores iniciales es la que
+propaga el anulamiento de $x_0$ a todo el intervalo, y sólo está disponible
+porque las $\hat y_i$ resuelven una misma ecuación lineal con $a_n\neq0$.
+La implicación (b)$\Rightarrow$(a), en cambio, vale para funciones
+cualesquiera de $\mathcal C^{n-1}(I)$.
+\end{idea}
+
+\begin{observacion}[El recíproco falla sin ecuación]\label{obs:wronskiano-general}
 Para funciones \emph{arbitrarias}, $w\not\equiv0$ implica independencia
-lineal, pero no al revés: $x^{2}$ y $x\abs{x}$ son independientes en $\R$ y su
-wronskiano es idénticamente nulo. La equivalencia de la
-\cref{prop:wronskiano} usa que las $\hat y_i$ resuelven la misma ecuación
-lineal con $a_n\neq0$.
+lineal (el argumento de (b)$\Rightarrow$(a) no usa la ecuación), pero no al
+revés. Sean $f(x)=x^{2}$ y $g(x)=x\abs{x}$ en $\R$.
+\begin{enumerate}[label=(\roman*)]
+  \item \emph{Son independientes.} Si $\alpha f+\beta g\equiv0$, evaluando
+        en $x=1$ y $x=-1$ se obtiene $\alpha+\beta=0$ y $\alpha-\beta=0$, luego
+        $\alpha=\beta=0$.
+  \item \emph{Su wronskiano es nulo.} $g\in\mathcal C^{1}(\R)$ con
+        $g'(x)=2\abs{x}$, así que
+        $w(x)=x^{2}\cdot2\abs{x}-x\abs{x}\cdot2x=0$ para todo $x\in\R$.
+  \item \emph{Dónde falla la demostración.} Con $\bm c=(1,-1)^{\T}$,
+        \[
+          y=f-g=\begin{cases}0, & x\ge0,\\ 2x^{2}, & x<0,\end{cases}
+        \]
+        tiene $y(0)=y'(0)=0$, pero $y\not\equiv0$. No hay unicidad que lo
+        impida: $f$ y $g$ no resuelven ninguna ecuación
+        $y''+p(x)\,y'+q(x)\,y=0$ con $p,q\in\mathcal C(\R)$, pues entonces la
+        \cref{prop:wronskiano} exigiría $w\neq0$ en todo $\R$.
+\end{enumerate}
 \end{observacion}
 
 \begin{ejemplo}[Dos wronskianos \cite{TEMARIO}]\label{ej:wronskianos}
@@ -178,6 +226,101 @@ lineal con $a_n\neq0$.
         $3\times3$ es nulo.
 \end{enumerate}
 \end{ejemplo}
+
+La dicotomía de la \cref{prop:wronskiano} («$w$ no se anula nunca o es
+idénticamente nulo») admite una versión cuantitativa: el wronskiano de $n$
+soluciones satisface una EDO lineal de primer orden. Necesitamos derivar un
+determinante.
+
+\begin{lema}[Derivada de un determinante]\label{lem:derivada-det}
+Sea $A(x)=\bigl(a_{kl}(x)\bigr)$ una matriz $n\times n$ de funciones
+derivables en $I$. Entonces $\det A$ es derivable y
+\begin{equation}\label{eq:derivada-det}
+  (\det A)'=\sum_{k=1}^{n}\det A_k ,
+\end{equation}
+donde $A_k$ se obtiene sustituyendo la fila $k$ de $A$ por su derivada.
+\end{lema}
+
+\begin{proof}
+Por la fórmula de Leibniz,
+$\det A=\sum_{\sigma\in S_n}\operatorname{sgn}\sigma\,\prod_{k=1}^{n}a_{k\sigma(k)}$,
+una suma finita de productos de funciones derivables. Por la regla del
+producto,
+\[
+  (\det A)'=\sum_{\sigma\in S_n}\operatorname{sgn}\sigma\sum_{k=1}^{n}
+  a_{1\sigma(1)}\cdots a_{k\sigma(k)}'\cdots a_{n\sigma(n)}
+  =\sum_{k=1}^{n}\ubr{\sum_{\sigma\in S_n}\operatorname{sgn}\sigma\,
+  a_{1\sigma(1)}\cdots a_{k\sigma(k)}'\cdots a_{n\sigma(n)}}{\det A_k},
+\]
+donde se ha intercambiado el orden de los dos sumatorios finitos.
+\end{proof}
+
+\begin{teorema}[Fórmula de Abel--Liouville]\label{teo:abel}
+Sean $\hat y_1,\dots,\hat y_n\in\Ker\Lop$ y $x_0\in I$. Para todo $x\in I$,
+\begin{equation}\label{eq:abel}
+  \boxed{\;w(x)=w(x_0)\,\exp\!\Bigl(-\int_{x_0}^{x}\frac{a_{n-1}(s)}{a_n(s)}\,\dif s\Bigr)\;}
+\end{equation}
+En particular, $w$ o es idénticamente nulo en $I$ o no se anula en ningún
+punto de $I$.
+\end{teorema}
+
+\begin{proof}
+Numeramos las filas de $W$ por el orden de derivación $j=0,\dots,n-1$; la
+fila $j$ es $\bigl(\hat y_1^{(j)},\dots,\hat y_n^{(j)}\bigr)$. Como
+$\hat y_i\in\mathcal C^{n}(I)$, todas las entradas de $W$ son de clase
+$\mathcal C^{1}$, y por el \cref{lem:derivada-det}
+$w'=\sum_{j=0}^{n-1}\det W_j$, donde $W_j$ tiene la fila $j$ sustituida por
+$\bigl(\hat y_1^{(j+1)},\dots,\hat y_n^{(j+1)}\bigr)$.
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=3pt]
+  \item \emph{Filas $j\le n-2$.} La fila nueva coincide con la fila $j+1$
+        de $W$; $W_j$ tiene dos filas iguales y $\det W_j=0$.
+  \item \emph{Fila $j=n-1$.} Sobrevive un único término:
+        \[
+          w'=\det W_{n-1}=
+          \begin{vmatrix}
+            \hat y_1 & \cdots & \hat y_n\\
+            \vdots & & \vdots\\
+            \hat y_1^{(n-2)} & \cdots & \hat y_n^{(n-2)}\\
+            \hat y_1^{(n)} & \cdots & \hat y_n^{(n)}
+          \end{vmatrix}.
+        \]
+  \item \emph{Uso de la ecuación.} Como $\Lop[\hat y_i]=0$ y $a_n\neq0$,
+        $\hat y_i^{(n)}=-\sum_{l=0}^{n-1}\frac{a_l}{a_n}\,\hat y_i^{(l)}$: la
+        última fila de $W_{n-1}$ es la combinación
+        $-\sum_{l}\frac{a_l}{a_n}\cdot(\text{fila }l\text{ de }W)$. Por la
+        linealidad del determinante en esa fila, $\det W_{n-1}$ es
+        $-\sum_l\frac{a_l}{a_n}$ por el determinante de $W$ con la última fila
+        sustituida por la fila $l$. Para $l\le n-2$ hay dos filas iguales y
+        el sumando es nulo; para $l=n-1$ se recupera $W$. Así
+        \begin{equation}\label{eq:abel-edo}
+          w'(x)=-\frac{a_{n-1}(x)}{a_n(x)}\,w(x).
+        \end{equation}
+  \item \emph{Integración.} Sea
+        $P(x)\defeq\int_{x_0}^{x}a_{n-1}(s)/a_n(s)\,\dif s$, de clase
+        $\mathcal C^{1}$ con $P'=a_{n-1}/a_n$. Por \eqref{eq:abel-edo},
+        $\bigl(w\,\eul^{P}\bigr)'=\bigl(w'+P'w\bigr)\eul^{P}=0$, luego
+        $w\,\eul^{P}$ es constante en el intervalo $I$ e igual a su valor en
+        $x_0$, que es $w(x_0)$ porque $P(x_0)=0$. Esto es \eqref{eq:abel}.
+        La última afirmación se sigue de que la exponencial no se anula.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{observacion}\label{obs:abel}
+\leavevmode
+\begin{enumerate}[label=(\roman*)]
+  \item El \cref{teo:abel} da otra prueba de (b)$\Rightarrow$(c) en la
+        \cref{prop:wronskiano}. La equivalencia con (a) sigue necesitando la
+        unicidad.
+  \item \emph{Comprobación} en el \cref{ej:wronskianos}\,(i):
+        $a_{2}/a_{3}=-3x^{2}/x^{3}=-3/x$, luego
+        $w(x)=w(x_0)\exp\int_{x_0}^{x}\frac{3}{s}\,\dif s=w(x_0)\,(x/x_0)^{3}$,
+        que con $w(x_0)=2x_0^{3}$ da $w(x)=2x^{3}$. Para $y''+y=0$
+        ($a_1=0$), el wronskiano es constante:
+        $w=\cos^{2}x+\sin^{2}x=1$.
+  \item Con coeficientes constantes,
+        $w(x)=w(x_0)\,\eul^{-(a_{n-1}/a_n)(x-x_0)}$.
+\end{enumerate}
+\end{observacion}
 
 % -------------------------------------------------------------------------
 \subsection{Estructura de la solución general}\label{sec:general}
