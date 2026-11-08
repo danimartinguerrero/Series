@@ -1,0 +1,53 @@
+% Preámbulo común del carrusel y de la historia (estilo de los apuntes)
+\usepackage{fontspec}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{microtype}
+\usepackage{amsmath, amssymb, mathtools, bm}
+\usepackage{xcolor}
+\definecolor{fondo}{HTML}{000000}
+\definecolor{texto}{HTML}{ECECEC}
+\definecolor{blanco}{HTML}{FFFFFF}
+\definecolor{negro}{HTML}{000000}
+\definecolor{gris}{HTML}{9CA0A8}
+\definecolor{grismedio}{HTML}{5B5F67}
+\definecolor{grisoscuro}{HTML}{2E3036}
+\definecolor{cajafondo}{HTML}{0E1014}
+\definecolor{cian}{HTML}{20B4CE}
+\definecolor{cianclaro}{HTML}{7FDBEA}
+\definecolor{violeta}{HTML}{A48BFA}
+\definecolor{ambar}{HTML}{F4B740}
+\definecolor{magenta}{HTML}{E5579D}
+\definecolor{verde}{HTML}{4FD68A}
+\definecolor{naranja}{HTML}{FA8F45}
+\definecolor{rojo}{HTML}{F25F5C}
+\pagecolor{fondo}\color{texto}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{fillbetween}
+\input{../tema4_latex/figuras/estilos}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\DeclareMathOperator{\sen}{sen}
+\renewcommand{\sin}{\sen}
+\newcommand{\Lop}{\mathcal{L}}
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\eul}{\mathrm{e}}
+\newcommand{\T}{\mathsf{T}}
+\newcommand{\yv}{\hat{\bm y}}
+\newcommand{\ubr}[2]{\underbrace{#1}_{\textcolor{gris}{#2}}}
+\newcommand{\R}{\mathbb{R}}
+
+% Caja con pestaña, en el estilo de los apuntes
+\tikzset{caja/.style={draw=#1, fill=cajafondo, rounded corners=2.5pt,
+    line width=0.7pt, inner xsep=8pt, inner ysep=7pt, text width=8.6cm,
+    align=flush center, text=texto},
+  pestana/.style={fill=#1, rounded corners=2pt, inner xsep=5pt, inner ysep=1.6pt,
+    font=\sffamily\bfseries\scriptsize, text=negro},
+  chip/.style={draw=#1, fill=cajafondo, rounded corners=2.5pt, line width=0.7pt,
+    inner xsep=6pt, inner ysep=6pt, minimum width=4.3cm, minimum height=1.05cm,
+    align=flush center, text=texto}}
+

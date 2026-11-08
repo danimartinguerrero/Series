@@ -1,0 +1,53 @@
+% =========================================================================
+%  Historia de Instagram (9:16, 1080x1920 px) con lo esencial del Tema 4.
+%  Zonas seguras: se deja libre ~2,5 cm arriba y abajo (interfaz de la app).
+%  Compilación: latexmk historia.tex ; PNG: ./exportar.sh
+% =========================================================================
+\documentclass[11pt]{article}
+\usepackage[paperwidth=108mm, paperheight=192mm, margin=0pt]{geometry}
+\input{comun}
+
+\begin{document}
+\noindent\begin{tikzpicture}
+  \useasboundingbox (0,0) rectangle (10.8,19.2);
+  % Halo tenue detrás de la cascada
+  \fill[cian, opacity=0.05] (5.4,10.9) ellipse (5.2 and 2.2);
+
+  % --- Cabecera y título ---------------------------------------------------
+  \node[anchor=north, inner sep=0] at (5.4,16.75)
+    {\color{gris}\scshape\scriptsize\textls[160]{Ecuaciones Diferenciales\ ·\ Tema 4}};
+  \node[anchor=north, align=flush center, text width=10cm, inner sep=0] at (5.4,16.15)
+    {{\color{blanco}\fontsize{28}{32}\selectfont\bfseries EDO lineales\\de orden superior}\\[2pt]
+     {\color{cian}\rule{2.6cm}{0.6pt}}\\[1pt]
+     {\color{texto}\itshape\small de la linealidad a la función de Green}};
+
+  % --- Cascada de respuestas a impulsos ------------------------------------
+  \node[inner sep=0] at (5.4,10.9)
+    {\includegraphics[width=10.8cm]{../tema4_latex/figuras/portada_superficie.png}};
+
+  % --- Línea de tiempo: cuatro ideas ---------------------------------------
+  \draw[grismedio, line width=0.6pt] (1.25,8.35) -- (1.25,5.5);
+  \foreach \y/\c/\num/\nombre/\formula in {
+      8.35/cian/01/Linealidad/{$\dim\ker\Lop=n,\quad y=y_h+y_p$},
+      7.4/violeta/02/Wronskiano/{$w(x)=w(x_0)\,\eul^{-\int_{x_0}^{x}a_{n-1}/a_n}$},
+      6.45/ambar/03/Variación/{$W\bm k'=(b/a_n)\,\bm e_n$},
+      5.5/magenta/04/Green/{$\Lop_xG=\delta(x-\tilde x)$}}{
+    \fill[fondo] (1.25,\y) circle (0.2);
+    \draw[\c, line width=0.9pt] (1.25,\y) circle (0.2);
+    \fill[\c] (1.25,\y) circle (0.08);
+    \node[anchor=west, inner sep=0] at (1.75,\y+0.2)
+      {\color{\c}\sffamily\bfseries\scriptsize\textls[80]{\num\ \ \MakeUppercase{\nombre}}};
+    \node[anchor=west, inner sep=0] at (1.75,\y-0.3) {\small\formula};
+  }
+
+  % --- Fórmula final -----------------------------------------------------------
+  \node[caja=ambar, text width=8.9cm] (f) at (5.4,3.45)
+    {$\displaystyle y(x)=\ubr{\sum_{i=1}^{n}c_i\,\hat y_i(x)}{\text{datos}}
+      +\ubr{\int_{x_0}^{x}G(x,s)\,b(s)\,\dif s}{\text{fuente}}$};
+  \node[pestana=ambar, anchor=west] at ($(f.north west)+(0.3,0)$) {En una línea};
+
+  % --- Pie ----------------------------------------------------------------------
+  \node[anchor=south, inner sep=0] at (5.4,1.2)
+    {\color{grismedio}\itshape\scriptsize apuntes formalizados · Grado en Física};
+\end{tikzpicture}
+\end{document}
