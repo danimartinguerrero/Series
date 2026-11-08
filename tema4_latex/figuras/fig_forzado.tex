@@ -1,0 +1,80 @@
+% Figura: oscilador con fuerza constante, y'' + omega^2 y = 1 (omega = 3/2)
+% (a) masa-muelle vertical: posición natural, nuevo equilibrio y fuerzas;
+% (b) soluciones para tres pares de datos iniciales.
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  % ---------------- (a) Diagrama físico ----------------
+  \begin{scope}[shift={(0,0)}]
+    \node[font=\small, text=texto, anchor=south] at (0.3,0.35) {(a) Masa $m=1$, muelle $k=\omega^{2}$};
+    % techo
+    \fill[grisoscuro] (-1.1,0) rectangle (1.1,0.18);
+    \draw[gris, line width=0.6pt] (-1.1,0) -- (1.1,0);
+    \foreach \x in {-1.0,-0.75,...,1.0} \draw[grismedio, line width=0.4pt] (\x,0.18) -- (\x+0.15,0.33);
+    % niveles de referencia
+    \draw[guia] (-2.45,-2.0) -- (1.55,-2.0);
+    \draw[guia, ambar] (-2.45,-2.9) -- (1.55,-2.9);
+    % masa fantasma en la posición natural
+    \draw[grismedio, densely dashed, rounded corners=1.5pt, line width=0.5pt]
+      (-0.4,-1.7) rectangle (0.4,-2.3);
+    % muelle y masa en una posición desplazada
+    \draw[cian, line width=0.8pt, decorate,
+          decoration={coil, aspect=0.45, segment length=4.2pt, amplitude=5pt,
+                      pre length=6pt, post length=6pt}] (0,0) -- (0,-3.2);
+    \fill[cajafondo] (-0.4,-3.2) rectangle (0.4,-3.8);
+    \draw[blanco, rounded corners=1.5pt, line width=0.7pt] (-0.4,-3.2) rectangle (0.4,-3.8);
+    \node[font=\footnotesize, text=texto] at (0,-3.5) {$m$};
+    % fuerzas sobre la masa
+    \draw[flecha, cian, line width=0.9pt] (-0.62,-3.5) -- (-0.62,-2.55);
+    \node[font=\footnotesize, text=cian, anchor=east] at (-0.68,-3.3) {$-\omega^{2}y$};
+    \draw[flecha, ambar, line width=0.9pt] (0,-3.8) -- (0,-4.55);
+    \node[font=\footnotesize, text=ambar, anchor=west] at (0.08,-4.3) {$b\equiv1$};
+    % eje y (hacia abajo)
+    \draw[eje] (1.55,-1.3) -- (1.55,-4.7) node[anchor=north, font=\small, text=texto] {$y$};
+    \foreach \yy in {-2.0,-2.9,-3.5} \draw[gris, line width=0.5pt] (1.47,\yy) -- (1.63,\yy);
+    \node[font=\footnotesize, text=gris, anchor=west] at (1.68,-2.0) {$0$};
+    \node[font=\footnotesize, text=ambar, anchor=west] at (1.68,-2.9) {$1/\omega^{2}$};
+    \node[font=\footnotesize, text=texto, anchor=west] at (1.68,-3.5) {$y(x)$};
+    % rótulos de los niveles
+    \node[font=\scriptsize, text=gris, anchor=south west, inner sep=1.5pt] at (-2.45,-2.0) {sin estirar};
+    \node[font=\scriptsize, text=ambar, anchor=south west, inner sep=1.5pt] at (-2.45,-2.9) {equilibrio};
+    % ecuación de Newton
+    \node[font=\footnotesize, text=texto, anchor=north] at (0.3,-5.05)
+      {$y''=-\omega^{2}y+b$};
+  \end{scope}
+  % ---------------- (b) Soluciones ----------------
+  \begin{axis}[at={(3.25cm,-5.2cm)}, anchor=south west, oscuro,
+      width=8.6cm, height=6.2cm,
+      xmin=0, xmax=8.37758, ymin=-0.48, ymax=1.78,
+      xtick={0,2.09440,4.18879,6.28319,8.37758},
+      xticklabels={$0$,$T/2$,$T$,$3T/2$,$2T$},
+      ytick={0,0.44444,0.88889},
+      yticklabels={$0$,$1/\omega^{2}$,$2/\omega^{2}$},
+      xlabel={$x$}, title={(b) $y''+\omega^{2}y=1$, \ $\omega=3/2$, \ $T=2\pi/\omega$},
+      samples=300, domain=0:8.37758,
+      legend style={at={(0.985,0.975)}, anchor=north east}, legend columns=4]
+    \addplot[ambar, densely dashed, line width=0.9pt, forget plot] {0.44444};
+    \addlegendimage{empty legend}
+    \addplot[c1] {0.44444*(1-cos(deg(1.5*x)))};
+    \addplot[c2] {0.44444+0.35556*cos(deg(1.5*x))};
+    \addplot[c4] {0.44444*(1-cos(deg(1.5*x)))+0.66667*sin(deg(1.5*x))};
+    \addplot[only marks, mark=*, mark size=1.8pt, blanco, forget plot]
+      coordinates {(0,0) (0,0.8)};
+    \legend{{$(\eta_0,\eta_1)$:}, {$(0,0)$}, {$(0{,}8,0)$}, {$(0,1)$}}
+  \end{axis}
+\end{tikzpicture}
+\caption{Oscilador con fuerza constante, $y''+\omega^{2}y=1$
+(\cref{ej:forzado}). (a) Interpretación mecánica con $m=1$ y $k=\omega^{2}$:
+sobre la masa actúan la fuerza recuperadora del muelle, $-\omega^{2}y$, y
+la fuerza constante $b\equiv1$ (por ejemplo, el peso). Se equilibran en
+$y=1/\omega^{2}$, que pasa a ser la nueva posición de equilibrio.
+(b) Soluciones
+$y=\frac{1}{\omega^{2}}+\bigl(\eta_0-\frac{1}{\omega^{2}}\bigr)\cos\omega x+\frac{\eta_1}{\omega}\sin\omega x$
+para tres pares de datos iniciales $(\eta_0,\eta_1)=(y(0),y'(0))$. Todas oscilan alrededor de
+$1/\omega^{2}$ (trazo discontinuo) con el mismo periodo $T=2\pi/\omega$ que
+el oscilador libre; sólo cambia la amplitud,
+$A=\sqrt{(\eta_0-1/\omega^{2})^{2}+(\eta_1/\omega)^{2}}$. La curva que parte
+del reposo, $(1-\cos\omega x)/\omega^{2}$, es la $y_p$ de la fórmula de
+variación de las constantes y oscila entre $0$ y $2/\omega^{2}$.}
+\label{fig:forzado}
+\end{figure}

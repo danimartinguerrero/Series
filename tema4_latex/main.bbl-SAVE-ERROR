@@ -1,0 +1,299 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{CODDINGTON}{book}{}
+      \name{author}{1}{}{%
+        {{hash=e8867c884d75d990c4e4407b71254420}{%
+           family={Coddington},
+           familyi={C\bibinitperiod},
+           given={Earl\bibnamedelima A.},
+           giveni={E\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York}%
+      }
+      \list{publisher}{1}{%
+        {Dover}%
+      }
+      \strng{namehash}{e8867c884d75d990c4e4407b71254420}
+      \strng{fullhash}{e8867c884d75d990c4e4407b71254420}
+      \strng{bibnamehash}{e8867c884d75d990c4e4407b71254420}
+      \strng{authorbibnamehash}{e8867c884d75d990c4e4407b71254420}
+      \strng{authornamehash}{e8867c884d75d990c4e4407b71254420}
+      \strng{authorfullhash}{e8867c884d75d990c4e4407b71254420}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{An Introduction to Ordinary Differential Equations}
+      \field{year}{1989}
+    \endentry
+    \entry{TEMARIO}{book}{}
+      \name{author}{1}{}{%
+        {{hash=cb729313715ea4fb2e30e25d9ead18ef}{%
+           family={{Área de Física Teórica}},
+           familyi={Á\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Salamanca}%
+      }
+      \list{publisher}{1}{%
+        {Universidad de Salamanca}%
+      }
+      \strng{namehash}{cb729313715ea4fb2e30e25d9ead18ef}
+      \strng{fullhash}{cb729313715ea4fb2e30e25d9ead18ef}
+      \strng{bibnamehash}{cb729313715ea4fb2e30e25d9ead18ef}
+      \strng{authorbibnamehash}{cb729313715ea4fb2e30e25d9ead18ef}
+      \strng{authornamehash}{cb729313715ea4fb2e30e25d9ead18ef}
+      \strng{authorfullhash}{cb729313715ea4fb2e30e25d9ead18ef}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Curso 2022-23. Profesorado: P.~García Estévez, J.~Beltrán Jiménez y M.~Pérez Garrote. Cap.~IV: «Ecuaciones diferenciales ordinarias lineales de orden superior», pp.~133--162}
+      \field{subtitle}{2.º curso del Grado en Física. Teoría y ejercicios resueltos}
+      \field{title}{Ecuaciones diferenciales}
+      \field{year}{2023}
+    \endentry
+    \entry{ELSGOLTZ}{book}{}
+      \name{author}{1}{}{%
+        {{hash=28d81ad40712dc14014ceb860864cc1e}{%
+           family={Elsgoltz},
+           familyi={E\bibinitperiod},
+           given={Lev},
+           giveni={L\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Madrid}%
+      }
+      \list{publisher}{1}{%
+        {Rubiños-1860}%
+      }
+      \strng{namehash}{28d81ad40712dc14014ceb860864cc1e}
+      \strng{fullhash}{28d81ad40712dc14014ceb860864cc1e}
+      \strng{bibnamehash}{28d81ad40712dc14014ceb860864cc1e}
+      \strng{authorbibnamehash}{28d81ad40712dc14014ceb860864cc1e}
+      \strng{authornamehash}{28d81ad40712dc14014ceb860864cc1e}
+      \strng{authorfullhash}{28d81ad40712dc14014ceb860864cc1e}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{4}
+      \field{title}{Ecuaciones diferenciales y cálculo variacional}
+    \endentry
+    \entry{BOYCE}{book}{}
+      \name{author}{3}{}{%
+        {{hash=cd2f3f46a13671d5a3c84ea92508961b}{%
+           family={Boyce},
+           familyi={B\bibinitperiod},
+           given={William\bibnamedelima E.},
+           giveni={W\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=1e7ccc9b6cddf4e828a034954daaa860}{%
+           family={DiPrima},
+           familyi={D\bibinitperiod},
+           given={Richard\bibnamedelima C.},
+           giveni={R\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=1e95eeb69006bce8937d0c2a5eb87296}{%
+           family={Meade},
+           familyi={M\bibinitperiod},
+           given={Douglas\bibnamedelima B.},
+           giveni={D\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{b324e48f0c4c936ae245e0cb508bf6e0}
+      \strng{fullhash}{b324e48f0c4c936ae245e0cb508bf6e0}
+      \strng{bibnamehash}{b324e48f0c4c936ae245e0cb508bf6e0}
+      \strng{authorbibnamehash}{b324e48f0c4c936ae245e0cb508bf6e0}
+      \strng{authornamehash}{b324e48f0c4c936ae245e0cb508bf6e0}
+      \strng{authorfullhash}{b324e48f0c4c936ae245e0cb508bf6e0}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{11}
+      \field{title}{Elementary Differential Equations and Boundary Value Problems}
+      \field{year}{2017}
+    \endentry
+    \entry{RILEY}{book}{}
+      \name{author}{3}{}{%
+        {{hash=6d8d36f6807e2ccc1c3c109f437b7773}{%
+           family={Riley},
+           familyi={R\bibinitperiod},
+           given={Kenneth\bibnamedelima F.},
+           giveni={K\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=e3a0fd8fc4f09ed7da18dee8125ec6e3}{%
+           family={Hobson},
+           familyi={H\bibinitperiod},
+           given={Michael\bibnamedelima P.},
+           giveni={M\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=fd019d933979ad165fb7fbe5209d464d}{%
+           family={Bence},
+           familyi={B\bibinitperiod},
+           given={Stephen\bibnamedelima J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Cambridge}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{79e740bb400f036f90d6db2c54d69e3b}
+      \strng{fullhash}{79e740bb400f036f90d6db2c54d69e3b}
+      \strng{bibnamehash}{79e740bb400f036f90d6db2c54d69e3b}
+      \strng{authorbibnamehash}{79e740bb400f036f90d6db2c54d69e3b}
+      \strng{authornamehash}{79e740bb400f036f90d6db2c54d69e3b}
+      \strng{authorfullhash}{79e740bb400f036f90d6db2c54d69e3b}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{3}
+      \field{title}{Mathematical Methods for Physics and Engineering}
+      \field{year}{2006}
+    \endentry
+    \entry{KLINE}{book}{}
+      \name{author}{1}{}{%
+        {{hash=a81af2a738afc3d2f337824eae839fce}{%
+           family={Kline},
+           familyi={K\bibinitperiod},
+           given={Morris},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{a81af2a738afc3d2f337824eae839fce}
+      \strng{fullhash}{a81af2a738afc3d2f337824eae839fce}
+      \strng{bibnamehash}{a81af2a738afc3d2f337824eae839fce}
+      \strng{authorbibnamehash}{a81af2a738afc3d2f337824eae839fce}
+      \strng{authornamehash}{a81af2a738afc3d2f337824eae839fce}
+      \strng{authorfullhash}{a81af2a738afc3d2f337824eae839fce}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Mathematical Thought from Ancient to Modern Times}
+      \field{year}{1972}
+    \endentry
+    \entry{STAKGOLD}{book}{}
+      \name{author}{2}{}{%
+        {{hash=fb1829e921e454404c2b6133c17de1c7}{%
+           family={Stakgold},
+           familyi={S\bibinitperiod},
+           given={Ivar},
+           giveni={I\bibinitperiod}}}%
+        {{hash=7c1bdeffd7b820436a1b4fa0f74702ad}{%
+           family={Holst},
+           familyi={H\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Hoboken}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{bb92d7feb264d6e87f387d8e4a930c4f}
+      \strng{fullhash}{bb92d7feb264d6e87f387d8e4a930c4f}
+      \strng{bibnamehash}{bb92d7feb264d6e87f387d8e4a930c4f}
+      \strng{authorbibnamehash}{bb92d7feb264d6e87f387d8e4a930c4f}
+      \strng{authornamehash}{bb92d7feb264d6e87f387d8e4a930c4f}
+      \strng{authorfullhash}{bb92d7feb264d6e87f387d8e4a930c4f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{3}
+      \field{title}{Green's Functions and Boundary Value Problems}
+      \field{year}{2011}
+    \endentry
+    \entry{ARFKEN}{book}{}
+      \name{author}{3}{}{%
+        {{hash=4963c826992d0abdfc79cc7edb5bef92}{%
+           family={Arfken},
+           familyi={A\bibinitperiod},
+           given={George\bibnamedelima B.},
+           giveni={G\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=e17048c80ef9b0e17796f8b23e67a6d4}{%
+           family={Weber},
+           familyi={W\bibinitperiod},
+           given={Hans\bibnamedelima J.},
+           giveni={H\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=9ffd422c12e4df2735265da88845497b}{%
+           family={Harris},
+           familyi={H\bibinitperiod},
+           given={Frank\bibnamedelima E.},
+           giveni={F\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Academic Press}%
+      }
+      \strng{namehash}{73395921483465fe8d9c21a5471d0b1b}
+      \strng{fullhash}{73395921483465fe8d9c21a5471d0b1b}
+      \strng{bibnamehash}{73395921483465fe8d9c21a5471d0b1b}
+      \strng{authorbibnamehash}{73395921483465fe8d9c21a5471d0b1b}
+      \strng{authornamehash}{73395921483465fe8d9c21a5471d0b1b}
+      \strng{authorfullhash}{73395921483465fe8d9c21a5471d0b1b}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{7}
+      \field{title}{Mathematical Methods for Physicists}
+      \field{year}{2013}
+    \endentry
+    \entry{GRIFFITHS}{book}{}
+      \name{author}{1}{}{%
+        {{hash=a00328547222c4a2a201442ee59dccfd}{%
+           family={Griffiths},
+           familyi={G\bibinitperiod},
+           given={David\bibnamedelima J.},
+           giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{a00328547222c4a2a201442ee59dccfd}
+      \strng{fullhash}{a00328547222c4a2a201442ee59dccfd}
+      \strng{bibnamehash}{a00328547222c4a2a201442ee59dccfd}
+      \strng{authorbibnamehash}{a00328547222c4a2a201442ee59dccfd}
+      \strng{authornamehash}{a00328547222c4a2a201442ee59dccfd}
+      \strng{authorfullhash}{a00328547222c4a2a201442ee59dccfd}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{4}
+      \field{title}{Introduction to Electrodynamics}
+      \field{year}{2017}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
