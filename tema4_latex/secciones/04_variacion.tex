@@ -275,6 +275,52 @@ enunciado.
 \end{enumerate}
 \end{proof}
 
+\begin{idea}[Repaso: regla de Cramer]
+Sea $A=(\bm u_1\,|\,\cdots\,|\,\bm u_n)\in\R^{n\times n}$, de columnas
+$\bm u_j$, con $\det A\neq0$, y sea $A[i\leftarrow\bm v]$ la matriz $A$ con
+la columna $i$ sustituida por $\bm v$. La solución de $A\bm x=\bm v$ es
+\[
+  x_i=\frac{\det A[i\leftarrow\bm v]}{\det A},\qquad i=1,\dots,n .
+\]
+\emph{Demostración.} Si se coloca en la posición $i$ una columna de la
+propia $A$,
+\[
+  \det A[i\leftarrow\bm u_j]=\delta_{ij}\,\det A ,
+\]
+porque para $j=i$ no cambia nada y para $j\neq i$ la columna $\bm u_j$
+aparece dos veces. El sistema dice $\bm v=\sum_jx_j\,\bm u_j$; por la
+linealidad del determinante en la columna $i$, la delta selecciona un único
+sumando:
+\[
+  \det A[i\leftarrow\bm v]=\sum_{j=1}^{n}x_j\,\det A[i\leftarrow\bm u_j]
+  =\sum_{j=1}^{n}x_j\,\delta_{ij}\,\det A=x_i\,\det A .
+\]
+\emph{Con cofactores.} Sea $C_{ki}$ el cofactor de la entrada $(k,i)$ de $A$.
+Desarrollando $\det A[i\leftarrow\bm u_j]$ por la columna $i$, cuyas
+entradas son $A_{kj}$ y cuyos cofactores son los de $A$,
+\[
+  \sum_{k=1}^{n}A_{kj}\,C_{ki}=\delta_{ij}\,\det A
+  \quad\Longleftrightarrow\quad
+  \operatorname{adj}(A)\,A=\det A\cdot I,\qquad (\operatorname{adj}A)_{ik}\defeq C_{ki}.
+\]
+Para $j=i$ es el desarrollo de Laplace; para $j\neq i$, un desarrollo con
+los cofactores de otra columna, que da $0$. Así
+$A^{-1}=\operatorname{adj}A/\det A$ y
+$x_i=\frac{1}{\det A}\sum_kC_{ki}\,v_k$, que es $\det A[i\leftarrow\bm v]$
+desarrollado por su columna $i$.
+
+\emph{Aplicación a \eqref{eq:sistema}.} Con $A=W$, $\bm x=\kv'$ y
+$\bm v=\bv=\frac{b}{a_n}\,\en$, sólo $v_n=b/a_n$ es no nula y sobrevive el
+término $k=n$:
+\[
+  k_i'=\frac{1}{w}\,C_{ni}\,\frac{b}{a_n}
+  =\frac{(-1)^{n+i}M_{ni}}{w}\,\frac{b}{a_n},
+\]
+con $M_{ni}$ el menor que resulta de suprimir la fila $n$ y la columna $i$
+de $W$. En particular, $(W^{-1})_{in}=C_{ni}/w$ es la última columna de
+$W^{-1}$.
+\end{idea}
+
 \begin{observacion}\label{obs:variacion}
 \leavevmode
 \begin{enumerate}[label=(\roman*), itemsep=4pt]
@@ -285,21 +331,14 @@ enunciado.
           \kv'=W^{-1}\bv=\frac{b}{a_n}\,W^{-1}\en
           =\frac{b}{a_n}\,\bigl(\text{columna $n$ de }W^{-1}\bigr).
         \]
-        No hay que invertir $W$ entera. La regla de Cramer da esa columna
-        directamente: en el sistema $W\kv'=\bv$,
-        $k_i'=\det\bigl(W\text{ con la columna $i$ sustituida por }\bv\bigr)/w$,
-        y por la linealidad del determinante en esa columna se puede sacar
-        el factor $b/a_n$:
+        No hay que invertir $W$ entera: por la regla de Cramer (recuadro
+        anterior),
         \begin{equation}\label{eq:cramer}
-          k_i'=\frac{w_i}{w}\,\frac{b}{a_n},\qquad i=1,\dots,n,
+          k_i'=\frac{w_i}{w}\,\frac{b}{a_n},\qquad
+          w_i\defeq\det W[i\leftarrow\en]=(-1)^{n+i}M_{ni},\qquad i=1,\dots,n,
         \end{equation}
-        donde $w_i$ es el determinante de $W$ con la columna $i$ sustituida
-        por $\en$. La columna $i$ de esa matriz tiene un único elemento no nulo, el
-        $1$ de la fila $n$. Desarrollando el determinante por ella,
-        $w_i=(-1)^{n+i}M_{ni}$, donde $M_{ni}$ es el menor que resulta de
-        suprimir la fila $n$ y la columna $i$ de $W$. Basta, pues, calcular
-        $n$ determinantes de orden $n-1$. Para $n=2$ se recupera
-        $w_1=-\hat y_2$ y $w_2=\hat y_1$ (\cref{sec:n2}).
+        y basta calcular $n$ determinantes de orden $n-1$. Para $n=2$ se
+        recupera $w_1=-\hat y_2$ y $w_2=\hat y_1$ (\cref{sec:n2}).
   \item \emph{Problemas de valores iniciales.} Para resolver $\Lop[y]=b$ con
         $y^{(j)}(x_0)=\eta_j$, $j=0,\dots,n-1$, se escribe
         $y=\sum_ic_i\hat y_i+y_p$, con $y_p$ dada por \eqref{eq:variacion}
