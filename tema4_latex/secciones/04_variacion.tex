@@ -183,20 +183,20 @@ enunciado.
         derivada en un intervalo difieren en una constante, de modo que las
         soluciones del paso 2 son exactamente
         \[
-          \kv(x)=\bm c+\bm K(x),\qquad \bm c=\kv(x_0)\in\R^{n}\ \text{constante}.
+          \kv(x)=\bm\gamma+\bm K(x),\qquad \bm\gamma=\kv(x_0)\in\R^{n}\ \text{constante}.
         \]
-        \emph{Elección $\bm c=\bm 0$.} Con un $\bm c$ cualquiera, el ansatz
+        \emph{Elección $\bm\gamma=\bm 0$.} Con un $\bm\gamma$ cualquiera, el ansatz
         da
         \[
-          y_p=\yv^{\T}(\bm c+\bm K)
-          =\ubr{\sum_{i=1}^{n}c_i\,\hat y_i}{\in\,\Ker\Lop}+\;\yv^{\T}\bm K .
+          y_p=\yv^{\T}(\bm\gamma+\bm K)
+          =\ubr{\sum_{i=1}^{n}\gamma_i\,\hat y_i}{\in\,\Ker\Lop}+\;\yv^{\T}\bm K .
         \]
-        Los $c_i$ son \emph{números}, no funciones de $x$, y el primer
+        Los $\gamma_i$ son \emph{números}, no funciones de $x$, y el primer
         sumando es una combinación lineal con coeficientes constantes de
         soluciones de la homogénea:
-        $\Lop\bigl[\sum_ic_i\hat y_i\bigr]=\sum_ic_i\,\Lop[\hat y_i]=0$. Tiene
+        $\Lop\bigl[\sum_i\gamma_i\hat y_i\bigr]=\sum_i\gamma_i\,\Lop[\hat y_i]=0$. Tiene
         la misma forma que $y_h$, y en $y=y_h+y_p$ se funde con las
-        constantes arbitrarias de $y_h$. Elegir $\bm c=\bm 0$ no pierde,
+        constantes arbitrarias de $y_h$. Elegir $\bm\gamma=\bm 0$ no pierde,
         pues, ninguna solución: tomamos $\kv=\bm K$.
   \item \emph{Sustituir en el ansatz.} En notación vectorial,
         \eqref{eq:ansatz-variacion} es el producto escalar
@@ -223,27 +223,55 @@ enunciado.
                 \eqref{eq:condiciones}): $y_p\in\mathcal C^{n}(I)$ y sus
                 derivadas vienen dadas por \eqref{eq:derivadas-j} y
                 \eqref{eq:derivada-n}.
-          \item Vale entonces la cuenta que precede a
-                \eqref{eq:ultima-condicion}, y con la última fila,
+          \item Vale entonces la sustitución en $\Lop$ del
+                \cref{sec:ansatz-variacion} (la cuenta sin numerar que
+                precede a \eqref{eq:ultima-condicion}), y con la última fila,
                 \[
                   \Lop[y_p]=a_n\sum_{i=1}^{n}k_i'\,\hat y_i^{(n-1)}
                   =a_n\cdot\frac{b}{a_n}=b .
                 \]
         \end{itemize}
-  \item \emph{$y_p$ arranca en reposo: $y_p^{(j)}(x_0)=0$.} Por
-        \eqref{eq:derivadas-j}, $y_p^{(j)}(x)=\sum_ik_i(x)\,\hat y_i^{(j)}(x)$
-        para $j\le n-1$. Evaluando en $x_0$, donde
-        $\kv(x_0)=\bm K(x_0)=\bm 0$ (integral sobre $[x_0,x_0]$),
+  \item \emph{$y_p$ arranca en reposo: $y_p^{(j)}(x_0)=0$.} Es decir, los
+        $n$ datos iniciales de $y_p$ en $x_0$ (los del \cref{teo:eyu}) son
+        nulos. Se combinan dos hechos.
+        \begin{itemize}
+          \item \emph{Fórmula de las derivadas.} Como el
+                \cref{lem:derivadas} es aplicable (paso 5), para
+                $j\le n-1$ vale \eqref{eq:derivadas-j}:
+                $y_p^{(j)}(x)=\sum_ik_i(x)\,\hat y_i^{(j)}(x)$.
+          \item \emph{Valor de $\kv$ en $x_0$.} Hemos tomado $\kv=\bm K$, y
+                $\bm K(x_0)$ es una integral sobre $[x_0,x_0]$:
+                $k_1(x_0)=\dots=k_n(x_0)=0$.
+        \end{itemize}
+        Evaluando la fórmula en $x=x_0$, cada sumando lleva un factor nulo:
         \[
           y_p^{(j)}(x_0)=\sum_{i=1}^{n}\ubr{k_i(x_0)}{0}\,\hat y_i^{(j)}(x_0)=0,
           \qquad j=0,\dots,n-1 .
         \]
-        Aquí se usa la elección $\bm c=\bm 0$: con otro $\bm c$, los datos
-        de $y_p$ en $x_0$ serían $W(x_0)\,\bm c$ por \eqref{eq:Wc}.
-  \item \emph{Solución general.} El paso 5 proporciona una solución
-        particular. El \cref{teo:estructura}, aplicado a esta $y_p$ y al
-        sistema fundamental $\{\hat y_i\}$, dice que toda solución de
-        $\Lop[y]=b$ es $y=\sum_ic_i\hat y_i+y_p=y_h+y_p$.\qedhere
+        \emph{Papel de la elección $\bm\gamma=\bm 0$.} Con un $\bm\gamma$
+        cualquiera sería $\kv(x_0)=\bm\gamma$ y, escribiendo los $n$ datos
+        en columna como en \eqref{eq:Wc},
+        \[
+          \begin{pmatrix}y_p(x_0)\\ \vdots\\ y_p^{(n-1)}(x_0)\end{pmatrix}
+          =\begin{pmatrix}\sum_i\gamma_i\,\hat y_i(x_0)\\ \vdots\\ \sum_i\gamma_i\,\hat y_i^{(n-1)}(x_0)\end{pmatrix}
+          =W(x_0)\,\bm\gamma .
+        \]
+        Como $W(x_0)$ es invertible, estos datos son nulos si y sólo si
+        $\bm\gamma=\bm 0$: es la \emph{única} elección con la que $y_p$
+        arranca en reposo. Su utilidad es que en $y=y_h+y_p$ los datos
+        iniciales los aporta sólo $y_h$, $y^{(j)}(x_0)=y_h^{(j)}(x_0)$: la
+        parte homogénea se ocupa de los datos y la particular, de la fuente.
+  \item \emph{Solución general.} El \cref{teo:estructura} necesita un
+        sistema fundamental y \emph{una} solución particular cualquiera; el
+        paso 5 acaba de probar que \eqref{eq:variacion} lo es. Aplicado a
+        esta $y_p$ y a $\{\hat y_i\}$, toda solución de $\Lop[y]=b$ es
+        \[
+          y=\ubr{\sum_{i=1}^{n}c_i\,\hat y_i}{y_h}+\;y_p,\qquad c_1,\dots,c_n\ \text{constantes arbitrarias},
+        \]
+        porque $\Lop[y-y_p]=b-b=0$ y, por tanto, $y-y_p\in\Ker\Lop$. Las
+        $c_i$ son las constantes libres de $y_h$, y no deben confundirse
+        con la constante de integración $\bm\gamma$ del paso 3, que ya se
+        fijó en $\bm 0$.\qedhere
 \end{enumerate}
 \end{proof}
 
