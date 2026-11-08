@@ -398,15 +398,96 @@ y \eqref{eq:variacion} se reduce a
   y_p(x)=\int_{x_0}^{x}\frac{\hat y_1(s)\,\hat y_2(x)-\hat y_1(x)\,\hat y_2(s)}{w(s)}\,\frac{b(s)}{a_2(s)}\,\dif s .
 \end{equation}
 
-\begin{ejemplo}[Oscilador forzado, $y''+\omega^{2}y=b(x)$]\label{ej:forzado}
-Con $\hat y_1=\cos\omega x$ y $\hat y_2=\sin\omega x$ se obtiene $w=\omega$, y
-el numerador de \eqref{eq:variacion-n2} es
-$\sin\omega x\cos\omega s-\cos\omega x\sin\omega s=\sin\omega(x-s)$:
-\begin{equation}\label{eq:forzado}
-  y_p(x)=\frac1\omega\int_{x_0}^{x}\sin\omega(x-s)\;b(s)\,\dif s .
-\end{equation}
-Para $b\equiv1$ y $x_0=0$: $y_p=(1-\cos\omega x)/\omega^{2}$. En efecto,
-$y_p''+\omega^{2}y_p=\cos\omega x+1-\cos\omega x=1$.
+\begin{ejemplo}[Oscilador forzado, $y''+\omega^{2}y=b(x)$, con $\omega>0$]\label{ej:forzado}
+Resolvemos el problema completo, empezando por la homogénea. Aquí $n=2$,
+$a_2=1$, $a_1=0$ y $a_0=\omega^{2}$.
+\begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=4pt]
+  \item \emph{Homogénea.} El polinomio característico es
+        $p(\lambda)=\lambda^{2}+\omega^{2}=(\lambda-\iu\omega)(\lambda+\iu\omega)$,
+        con raíces simples $\lambda_\pm=\pm\iu\omega$. Por el
+        \cref{cor:simples}, $\{\eul^{\iu\omega x},\eul^{-\iu\omega x}\}$ es una
+        base compleja de $\Ker\Lop$, y por la \cref{prop:reales} (con
+        $\alpha=0$, $\beta=\omega$) se sustituye por la base real
+        \[
+          \hat y_1=\Real\eul^{\iu\omega x}=\cos\omega x,\qquad
+          \hat y_2=\Imag\eul^{\iu\omega x}=\sin\omega x,\qquad
+          y_h=c_1\cos\omega x+c_2\sin\omega x .
+        \]
+  \item \emph{Wronskiano.}
+        \[
+          W(x)=\begin{pmatrix}\cos\omega x & \sin\omega x\\ -\omega\sin\omega x & \omega\cos\omega x\end{pmatrix},
+          \qquad
+          w=\omega\cos^{2}\omega x+\omega\sin^{2}\omega x=\omega\neq0 ,
+        \]
+        así que $\{\hat y_1,\hat y_2\}$ es un sistema fundamental
+        (\cref{prop:wronskiano}). Que $w$ sea constante es lo que predice
+        Abel--Liouville (\cref{teo:abel}), porque $a_1=0$.
+  \item \emph{Sistema para $\kv'$.} Con $a_2=1$, \eqref{eq:sistema} es
+        \[
+          \begin{pmatrix}\cos\omega x & \sin\omega x\\ -\omega\sin\omega x & \omega\cos\omega x\end{pmatrix}
+          \begin{pmatrix}k_1'\\ k_2'\end{pmatrix}
+          =\begin{pmatrix}0\\ b\end{pmatrix}
+          \quad\Longleftrightarrow\quad
+          \begin{cases}
+            k_1'\cos\omega x+k_2'\sin\omega x=0,\\
+            -\omega k_1'\sin\omega x+\omega k_2'\cos\omega x=b .
+          \end{cases}
+        \]
+        La primera ecuación es la condición \eqref{eq:condiciones} y la
+        segunda, \eqref{eq:ultima-condicion}.
+  \item \emph{Cramer.} Sustituyendo la columna $i$ por $(0,b)^{\T}$ y
+        dividiendo por $w=\omega$,
+        \[
+          k_1'=\frac1\omega\begin{vmatrix}0 & \sin\omega x\\ b & \omega\cos\omega x\end{vmatrix}
+              =-\frac{b(x)\sin\omega x}{\omega},
+          \qquad
+          k_2'=\frac1\omega\begin{vmatrix}\cos\omega x & 0\\ -\omega\sin\omega x & b\end{vmatrix}
+              =\frac{b(x)\cos\omega x}{\omega}.
+        \]
+  \item \emph{Integrar} desde $x_0$, con $\bm\gamma=\bm 0$:
+        \[
+          k_1(x)=-\frac1\omega\int_{x_0}^{x}\sin\omega s\;b(s)\,\dif s,
+          \qquad
+          k_2(x)=\frac1\omega\int_{x_0}^{x}\cos\omega s\;b(s)\,\dif s .
+        \]
+  \item \emph{Sustituir en el ansatz.} Como $\cos\omega x$ y $\sin\omega x$ no
+        dependen de $s$, entran en las integrales:
+        \[
+          y_p=k_1\cos\omega x+k_2\sin\omega x
+          =\frac1\omega\int_{x_0}^{x}\ubr{\bigl(\sin\omega x\cos\omega s-\cos\omega x\sin\omega s\bigr)}{\sin\omega(x-s)}\,b(s)\,\dif s ,
+        \]
+        es decir,
+        \begin{equation}\label{eq:forzado}
+          y_p(x)=\frac1\omega\int_{x_0}^{x}\sin\omega(x-s)\;b(s)\,\dif s .
+        \end{equation}
+        Es \eqref{eq:variacion-n2} con $w=\omega$ y $a_2=1$.
+  \item \emph{Fuente constante, $b\equiv1$, $x_0=0$.} Con el cambio $u=x-s$,
+        \[
+          y_p(x)=\frac1\omega\int_{0}^{x}\sin\omega u\,\dif u
+          =\frac1\omega\Bigl[-\frac{\cos\omega u}{\omega}\Bigr]_{0}^{x}
+          =\frac{1-\cos\omega x}{\omega^{2}} .
+        \]
+        \emph{Comprobación:} $y_p''=\cos\omega x$, luego
+        $y_p''+\omega^{2}y_p=\cos\omega x+1-\cos\omega x=1$; y
+        $y_p(0)=0$, $y_p'(0)=\sin(0)/\omega=0$: arranca en reposo.
+  \item \emph{Solución general y datos iniciales.} Toda solución es
+        $y=c_1\cos\omega x+c_2\sin\omega x+(1-\cos\omega x)/\omega^{2}$. Con
+        $y(0)=\eta_0$ e $y'(0)=\eta_1$, la
+        \cref{obs:variacion}\,(ii) da
+        \[
+          W(0)\,\bm c=\begin{pmatrix}1 & 0\\ 0 & \omega\end{pmatrix}\begin{pmatrix}c_1\\ c_2\end{pmatrix}
+          =\begin{pmatrix}\eta_0\\ \eta_1\end{pmatrix}
+          \quad\Longrightarrow\quad
+          c_1=\eta_0,\quad c_2=\frac{\eta_1}{\omega},
+        \]
+        \[
+          y(x)=\eta_0\cos\omega x+\frac{\eta_1}{\omega}\sin\omega x+\frac{1-\cos\omega x}{\omega^{2}}
+          =\frac{1}{\omega^{2}}+\Bigl(\eta_0-\frac{1}{\omega^{2}}\Bigr)\cos\omega x+\frac{\eta_1}{\omega}\sin\omega x .
+        \]
+        La segunda forma muestra la física: una fuerza constante desplaza
+        el equilibrio a $y=1/\omega^{2}$, y el oscilador vibra alrededor de
+        él con la misma frecuencia $\omega$.
+\end{enumerate}
 \end{ejemplo}
 
 La forma de \eqref{eq:forzado} es reveladora: la solución es una integral
