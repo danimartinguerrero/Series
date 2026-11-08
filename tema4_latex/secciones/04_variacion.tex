@@ -148,8 +148,15 @@ solución general es $y=y_h+y_p$.
 \end{teorema}
 
 \begin{proof}
-\emph{Idea:} despejar $\kv'$ en \eqref{eq:sistema}, integrar y sustituir
-en el ansatz; después, comprobar que el resultado cumple lo enunciado.
+La demostración tiene dos partes. En la \emph{construcción} (pasos 1--4)
+se razona hacia delante: si $y_p$ ha de tener la forma
+\eqref{eq:ansatz-variacion} con las condiciones \eqref{eq:condiciones},
+¿cómo tiene que ser $\kv$? Eso da una fórmula candidata, pero no prueba
+todavía que funcione. En la \emph{verificación} (pasos 5--7) se parte de la
+$\kv$ obtenida y se comprueban, una a una, las tres afirmaciones del
+enunciado.
+
+\smallskip\noindent\emph{Construcción.}
 \begin{enumerate}[label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=3pt]
   \item \emph{Invertibilidad.} Las entradas de $W$ son $\hat y_i^{(j)}$ con
         $j\le n-1$, continuas en $I$. Como $\{\hat y_i\}$ es un sistema
@@ -165,28 +172,78 @@ en el ansatz; después, comprobar que el resultado cumple lo enunciado.
           \kv'(x)=W^{-1}(x)\,\bv(x)=W^{-1}(x)\,\en\,\frac{b(x)}{a_n(x)},
         \]
         función continua en $I$, porque $b,a_n\in\mathcal C(I)$ y $a_n\neq0$.
-  \item \emph{Integrar.} Por el teorema fundamental del cálculo, aplicado
-        componente a componente, las soluciones $\kv\in\mathcal C^{1}(I)$ del
-        paso 2 son exactamente
+  \item \emph{Integrar.} Sea
         \[
-          \kv(x)=\kv(x_0)+\int_{x_0}^{x}W^{-1}(s)\,\en\,\frac{b(s)}{a_n(s)}\,\dif s .
+          \bm K(x)\defeq\int_{x_0}^{x}W^{-1}(s)\,\en\,\frac{b(s)}{a_n(s)}\,\dif s .
         \]
-        Tomamos $\kv(x_0)=\bm 0$. Otra elección añade a $y_p$ el término
-        $\yv^{\T}(x)\,\kv(x_0)=\sum_ik_i(x_0)\,\hat y_i\in\Ker\Lop$, que se
-        absorbe en $y_h$.
+        Su integrando es continuo (paso 2), así que, por el teorema
+        fundamental del cálculo aplicado componente a componente,
+        $\bm K\in\mathcal C^{1}(I)$, $\bm K'$ es el integrando y
+        $\bm K(x_0)=\bm 0$. Dos funciones $\mathcal C^{1}$ con la misma
+        derivada en un intervalo difieren en una constante, de modo que las
+        soluciones del paso 2 son exactamente
+        \[
+          \kv(x)=\bm c+\bm K(x),\qquad \bm c=\kv(x_0)\in\R^{n}\ \text{constante}.
+        \]
+        \emph{Elección $\bm c=\bm 0$.} Con un $\bm c$ cualquiera, el ansatz
+        da
+        \[
+          y_p=\yv^{\T}(\bm c+\bm K)
+          =\ubr{\sum_{i=1}^{n}c_i\,\hat y_i}{\in\,\Ker\Lop}+\;\yv^{\T}\bm K .
+        \]
+        Los $c_i$ son \emph{números}, no funciones de $x$, y el primer
+        sumando es una combinación lineal con coeficientes constantes de
+        soluciones de la homogénea:
+        $\Lop\bigl[\sum_ic_i\hat y_i\bigr]=\sum_ic_i\,\Lop[\hat y_i]=0$. Tiene
+        la misma forma que $y_h$, y en $y=y_h+y_p$ se funde con las
+        constantes arbitrarias de $y_h$. Elegir $\bm c=\bm 0$ no pierde,
+        pues, ninguna solución: tomamos $\kv=\bm K$.
   \item \emph{Sustituir en el ansatz.} En notación vectorial,
         \eqref{eq:ansatz-variacion} es el producto escalar
         $y_p(x)=\sum_ik_i(x)\,\hat y_i(x)=\yv^{\T}(x)\,\kv(x)$. Como
         $\yv^{\T}(x)$ no depende de la variable de integración $s$, queda
         fuera de la integral, y se obtiene \eqref{eq:variacion}.
-  \item \emph{Comprobación.} $\kv\in\mathcal C^{1}(I)$ cumple
-        \eqref{eq:sistema}, es decir, \eqref{eq:condiciones} y
-        \eqref{eq:ultima-condicion}. Por el \cref{lem:derivadas} y la
-        equivalencia \eqref{eq:ultima-condicion}, $\Lop[y_p]=b$.
-  \item \emph{Datos en $x_0$.} Por \eqref{eq:derivadas-j} y $\kv(x_0)=\bm 0$,
-        $y_p^{(j)}(x_0)=\sum_ik_i(x_0)\,\hat y_i^{(j)}(x_0)=0$ para
-        $j=0,\dots,n-1$.
-  \item \emph{Solución general.} Es el \cref{teo:estructura}.\qedhere
+\end{enumerate}
+
+\smallskip\noindent\emph{Verificación.}
+\begin{enumerate}[resume, label=\textcolor{cian}{\arabic*.}, leftmargin=1.5em, itemsep=3pt]
+  \item \emph{$y_p$ es solución: $\Lop[y_p]=b$.}
+        \begin{itemize}
+          \item Por el paso 3, $\kv=\bm K\in\mathcal C^{1}(I)$ y
+                $\kv'=W^{-1}\bv$, es decir, $W\kv'=\bv$ en todo $I$: se
+                cumple \eqref{eq:sistema}.
+          \item Leída fila a fila como en \eqref{eq:sistema-explicito}, las
+                filas $j=0,\dots,n-2$ dicen
+                $\sum_i\hat y_i^{(j)}k_i'=0$, que son las condiciones
+                \eqref{eq:condiciones}, y la última dice
+                $\sum_i\hat y_i^{(n-1)}k_i'=b/a_n$, que es el segundo
+                miembro de \eqref{eq:ultima-condicion}.
+          \item Se cumplen, por tanto, las hipótesis del
+                \cref{lem:derivadas} ($k_i\in\mathcal C^{1}$ y
+                \eqref{eq:condiciones}): $y_p\in\mathcal C^{n}(I)$ y sus
+                derivadas vienen dadas por \eqref{eq:derivadas-j} y
+                \eqref{eq:derivada-n}.
+          \item Vale entonces la cuenta que precede a
+                \eqref{eq:ultima-condicion}, y con la última fila,
+                \[
+                  \Lop[y_p]=a_n\sum_{i=1}^{n}k_i'\,\hat y_i^{(n-1)}
+                  =a_n\cdot\frac{b}{a_n}=b .
+                \]
+        \end{itemize}
+  \item \emph{$y_p$ arranca en reposo: $y_p^{(j)}(x_0)=0$.} Por
+        \eqref{eq:derivadas-j}, $y_p^{(j)}(x)=\sum_ik_i(x)\,\hat y_i^{(j)}(x)$
+        para $j\le n-1$. Evaluando en $x_0$, donde
+        $\kv(x_0)=\bm K(x_0)=\bm 0$ (integral sobre $[x_0,x_0]$),
+        \[
+          y_p^{(j)}(x_0)=\sum_{i=1}^{n}\ubr{k_i(x_0)}{0}\,\hat y_i^{(j)}(x_0)=0,
+          \qquad j=0,\dots,n-1 .
+        \]
+        Aquí se usa la elección $\bm c=\bm 0$: con otro $\bm c$, los datos
+        de $y_p$ en $x_0$ serían $W(x_0)\,\bm c$ por \eqref{eq:Wc}.
+  \item \emph{Solución general.} El paso 5 proporciona una solución
+        particular. El \cref{teo:estructura}, aplicado a esta $y_p$ y al
+        sistema fundamental $\{\hat y_i\}$, dice que toda solución de
+        $\Lop[y]=b$ es $y=\sum_ic_i\hat y_i+y_p=y_h+y_p$.\qedhere
 \end{enumerate}
 \end{proof}
 
